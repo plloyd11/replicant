@@ -21,6 +21,6 @@ const {title} = Astro.props;
         <slot />
 
         <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
-        <div id="snipcart" data-config-modal-style="side" data-api-key="YmRlYzlmYmUtMmQyZi00ZDdjLWJmZjQtNDVmMmQ4YmUzMjIxNjM3NzM4MzU4MDU0ODI3ODAy" hidden></div>
+        <div id="snipcart" data-config-modal-style="side" data-api-key={import.meta.env.PUBLIC_SNIPCART_API} hidden></div>
     </body>
 </html>
