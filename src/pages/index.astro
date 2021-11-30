@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import GlobalNav from '../components/GlobalNav.vue';
+---
+<BaseLayout title="Homepage">
+    <main>
+        <GlobalNav client:only="vue"/>
+        <h1>hi</h1>
+        <button class="snipcart-add-item"
+            data-item-id="mr-t-shirt"
+            data-item-price="20.00"
+            data-item-url="/"
+            data-item-description="This is a high quality album artwork T-shirt which is printed on pre-washed thick and soft cotton material in full colour. It's one of the best T-shirts you'll have in your collection."
+            data-item-image="https://res.cloudinary.com/observatory-agency/image/upload/v1638240407/replicant/download_dzyeel.webp"
+            data-item-name="Malignant Reality Album Artwork T-shirt"
+            data-item-custom1-name="Size"
+            data-item-custom1-options="Small | Medium | Large | XL | XXL"
+        >
+                Add to cart
+        </button>
+        <button class="snipcart-customer-signin">My account</button>
+    </main>
+</BaseLayout>
