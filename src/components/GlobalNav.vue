@@ -102,7 +102,11 @@
                 <a href="#" class="-m-2 p-2 block font-medium text-gray-900">Create an account</a>
               </div>
               <div class="flow-root">
-                <a href="#" class="-m-2 p-2 block font-medium text-gray-900">Sign in</a>
+                <a
+                  href="#"
+                  class="-m-2 p-2 block font-medium text-gray-900 snipcart-customer-signin"
+                  >Sign in</a
+                >
               </div>
             </div>
 
@@ -207,11 +211,7 @@
                 <div class="hidden lg:flex-1 lg:flex lg:items-center">
                   <a href="#">
                     <span class="sr-only">Workflow</span>
-                    <img
-                      class="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                      alt=""
-                    />
+                    <img class="w-32" src="/public/assets/logo.png" alt="" />
                   </a>
                 </div>
 
@@ -333,18 +333,7 @@
                     Search
                   </a>
 
-                  <div class="flex items-center lg:ml-8">
-                    <!-- Help -->
-                    <a href="#" class="p-2 text-gray-400 hover:text-gray-500 lg:hidden">
-                      <span class="sr-only">Help</span>
-                      <QuestionMarkCircleIcon class="w-6 h-6" aria-hidden="true" />
-                    </a>
-                    <a
-                      href="#"
-                      class="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block"
-                      >Help</a
-                    >
-
+                  <div class="flex items-center">
                     <!-- Cart -->
                     <div class="ml-4 flow-root lg:ml-8 snipcart-checkout">
                       <a href="#" class="group -m-2 p-2 flex items-center">
@@ -397,7 +386,7 @@ const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'];
 const navigation = {
   categories: [
     {
-      name: 'Women',
+      name: 'Releases',
       featured: [
         {
           name: 'New Arrivals',
@@ -427,7 +416,7 @@ const navigation = {
       ]
     },
     {
-      name: 'Men',
+      name: 'Merch',
       featured: [
         {
           name: 'New Arrivals',
@@ -460,8 +449,8 @@ const navigation = {
     }
   ],
   pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' }
+    { name: 'About', href: '#' },
+    { name: 'Dates', href: '#' }
   ]
 };
 
