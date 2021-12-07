@@ -1,0 +1,49 @@
+---
+import {Markdown} from 'astro/components'
+const { product } = Astro.props;
+---
+
+<div class="space-y-4">
+    <a href={product.slug}>
+        <img src={product.images[0].url} class="w-full h-96 object-cover object-center"/>
+    </a>
+    <div>
+        <h2 class="text-xl font-medium">{product.title}</h2>
+        <span>${product.price}.00</span>
+        <Markdown class="mt-2">
+            {product.description}
+        </Markdown>
+    </div>
+
+    {product.productType !== 'clothing' && (
+        <button class="snipcart-add-item relative inline-block px-4 py-2 font-medium group"
+            data-item-id={product.id}
+            data-item-price={product.price}
+            data-item-url={product.slug}
+            data-item-description={product.description}
+            data-item-image={product.images[0].url}
+            data-item-name={product.title}
+        >
+            <span class="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
+            <span class="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
+            <span class="relative text-black group-hover:text-white">Add to cart</span>
+        </button>
+    )}
+
+    {product.productType === 'clothing' && (
+        <button class="snipcart-add-item relative inline-block px-4 py-2 font-medium group"
+            data-item-id={product.id}
+            data-item-price={product.price}
+            data-item-url="/"
+            data-item-description={product.description}
+            data-item-image={product.images[0].url}
+            data-item-name={product.title}
+            data-item-custom1-name="Size"
+            data-item-custom1-options="Small | Medium | Large | XL | XXL"
+        >
+            <span class="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
+            <span class="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
+            <span class="relative text-black group-hover:text-white">Add to cart</span>
+        </button>
+    )}
+</div>

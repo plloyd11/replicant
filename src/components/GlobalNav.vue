@@ -153,65 +153,15 @@
 
     <header class="relative">
       <nav aria-label="Top">
-        <!-- Top navigation -->
-        <div class="bg-gray-900">
-          <div
-            class="max-w-7xl mx-auto h-10 px-4 flex items-center justify-between sm:px-6 lg:px-8"
-          >
-            <!-- Currency selector -->
-            <form>
-              <div>
-                <label for="desktop-currency" class="sr-only">Currency</label>
-                <div
-                  class="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white"
-                >
-                  <select
-                    id="desktop-currency"
-                    name="currency"
-                    class="bg-none bg-gray-900 border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-white group-hover:text-gray-100 focus:outline-none focus:ring-0 focus:border-transparent"
-                  >
-                    <option v-for="currency in currencies" :key="currency">{{ currency }}</option>
-                  </select>
-                  <div class="absolute right-0 inset-y-0 flex items-center pointer-events-none">
-                    <svg
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                      class="w-5 h-5 text-gray-300"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="M6 8l4 4 4-4"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </form>
-
-            <div class="flex items-center space-x-6">
-              <a href="#" class="text-sm font-medium text-white hover:text-gray-100">Sign in</a>
-              <a href="#" class="text-sm font-medium text-white hover:text-gray-100"
-                >Create an account</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Secondary navigation -->
-        <div class="bg-white">
+        <div class="bg-white py-6">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="border-b border-gray-200">
-              <div class="h-16 flex items-center justify-between">
+              <div class="flex items-center justify-between">
                 <!-- Logo (lg+) -->
                 <div class="hidden lg:flex-1 lg:flex lg:items-center">
-                  <a href="#">
-                    <span class="sr-only">Workflow</span>
-                    <img class="w-32" src="/public/assets/logo.png" alt="" />
+                  <a href="/">
+                    <span class="sr-only">Replicant - New Jersey Death Metal</span>
+                    <img class="w-40" src="/assets/logo.png" alt="Replicant Logo" />
                   </a>
                 </div>
 
@@ -318,11 +268,7 @@
                 <!-- Logo (lg-) -->
                 <a href="#" class="lg:hidden">
                   <span class="sr-only">Workflow</span>
-                  <img
-                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                    alt=""
-                    class="h-8 w-auto"
-                  />
+                  <img src="/assets/logo.png" alt="Replicant Logo" class="h-8 w-auto" />
                 </a>
 
                 <div class="flex-1 flex items-center justify-end">
