@@ -1,49 +1,61 @@
 ---
 import {Markdown} from 'astro/components'
+import Lightbox from './Lightbox.astro'
 const { product } = Astro.props;
 ---
 
-<div class="space-y-4">
-    <a href={product.slug}>
-        <img src={product.images[0].url} class="w-full h-96 object-cover object-center"/>
-    </a>
-    <div>
-        <h2 class="text-xl font-medium">{product.title}</h2>
-        <span>${product.price}.00</span>
-        <Markdown class="mt-2">
+<div>
+    <div class="relative">
+        <div class="relative w-full h-72 rounded-lg overflow-hidden">
+            <div class="absolute top-1 right-1">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-replicant-100 text-replicant-800">
+                    {product.productType}
+                </span>
+            </div>
+            <Lightbox image={product.images[0].url} title={product.title} />
+            <div class="absolute bottom-0 inset-x-0 p-2 flex items-end justify-end overflow-hidden">
+                <p class="relative text-lg font-semibold text-replicant-100 text-shadow">${product.price}.00</p>
+            </div>
+        </div>
+        <div class="relative mt-4">
+        <h3 class="text-xl font-medium text-replicant-100">{product.title}</h3>
+        <Markdown class="mt-2 text-replicant-300 line-clamp-2">
             {product.description}
         </Markdown>
+        </div>
     </div>
-
-    {product.productType !== 'clothing' && (
-        <button class="snipcart-add-item relative inline-block px-4 py-2 font-medium group"
-            data-item-id={product.id}
-            data-item-price={product.price}
-            data-item-url={product.slug}
-            data-item-description={product.description}
-            data-item-image={product.images[0].url}
-            data-item-name={product.title}
-        >
-            <span class="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
-            <span class="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
-            <span class="relative text-black group-hover:text-white">Add to cart</span>
-        </button>
-    )}
-
-    {product.productType === 'clothing' && (
-        <button class="snipcart-add-item relative inline-block px-4 py-2 font-medium group"
-            data-item-id={product.id}
-            data-item-price={product.price}
-            data-item-url="/"
-            data-item-description={product.description}
-            data-item-image={product.images[0].url}
-            data-item-name={product.title}
-            data-item-custom1-name="Size"
-            data-item-custom1-options="Small | Medium | Large | XL | XXL"
-        >
-            <span class="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
-            <span class="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
-            <span class="relative text-black group-hover:text-white">Add to cart</span>
-        </button>
-    )}
+    <div class="mt-6">
+        {product.productType !== 'clothing' && (
+            <button class="snipcart-add-item relative flex bg-replicant-200 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-replicant-900 hover:bg-replicant-400 transition-all duration-200"
+                data-item-id={product.id}
+                data-item-price={product.price}
+                data-item-url={product.slug}
+                data-item-description={product.description}
+                data-item-image={product.images[0].url}
+                data-item-name={product.title}
+            >
+                Add to bag
+            </button>
+        )}
+        {product.productType === 'clothing' && (
+            <button class="snipcart-add-item relative flex bg-replicant-200 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-replicant-900 hover:bg-replicant-400 transition-all duration-200"
+                data-item-id={product.id}
+                data-item-price={product.price}
+                data-item-url="/"
+                data-item-description={product.description}
+                data-item-image={product.images[0].url}
+                data-item-name={product.title}
+                data-item-custom1-name="Size"
+                data-item-custom1-options="Small | Medium | Large | XL | XXL"
+            >
+                Add to bag
+            </button>
+        )}
+    </div>
 </div>
+
+<style>
+.text-shadow {
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.6);
+}
+</style>

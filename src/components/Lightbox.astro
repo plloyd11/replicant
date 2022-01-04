@@ -1,0 +1,83 @@
+---
+const {image, title} = Astro.props;
+---
+
+<a class="thumbnail" href={`#${image}`}>
+    <img src={image} alt={title} />
+</a>
+
+<div class="lightbox animate" id={image}>
+    <a class="lightboxClose" href="#!">close</a>
+    <img class="animate" src={image} alt={title} />
+</div>
+
+<style>
+    a.thumbnail img {
+        object-fit: cover;
+        object-position: center;
+        aspect-ratio: 16 / 9;
+        height: 100%;
+        width: 100%;
+    }
+
+    a {
+        outline: none;
+    }
+
+    .lightbox {
+        display: block;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1000;
+    }
+
+    .lightboxClose {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .animate {
+        -webkit-transition: 0.25s ease-in-out;
+        -moz-transition: 0.25s ease-in-out;
+        -ms-transition: 0.25s ease-in-out;
+        -o-transition: 0.25s ease-in-out;
+        transition: 0.25s ease-in-out;
+    }
+
+    /* Styles the lightbox content, centering it vertically and horizontally, adds the zoom-in transition and makes it responsive using a combination of margin and absolute positioning */
+
+    .lightbox img,
+    .lightbox iframe {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 40%;
+        max-height: 40%;
+        border: 2px solid white;
+        box-sizing: border-box;
+    }
+
+    /* Uses the :target pseudo-class to perform the animations upon clicking the .lightbox anchor */
+
+    .lightbox:target {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .lightbox:target img,
+    .lightbox:target iframe {
+        max-width: 95%;
+        max-height: 95%;
+    }
+</style>

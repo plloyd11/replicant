@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .section-header {
+        @apply mb-6 text-2xl text-replicant-200 font-light text-center uppercase lg:text-5xl;
+    }
+}
+
+:root {
+    --font-body: 'Space Grotesk', sans-serif;
+}
+
+html,
+body {
+    font-family: var(--font-body);
+}
