@@ -28,6 +28,7 @@ try {
                             url
                         }
                         productType
+                        updatedAt
                     }
                 }`
             })
@@ -36,6 +37,14 @@ try {
     if(result.ok){
         const resultJSON = await result.json();
         products = resultJSON.data.products;
+        // turn updatedAt into a date object
+        products.forEach(product => {
+            product.updatedAt = new Date(product.updatedAt);
+        });
+        // sort products by updatedAt
+        products.sort((a, b) => {
+            return (b.updatedAt) - (a.updatedAt);
+        });
     } else {
         console.log('fuck')
         throw new Error(`${result.status}: ${result.statusText}`);
@@ -52,7 +61,7 @@ try {
             <h2 class="section-header">Shop</h2>
             <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
                 {
-                    products.reverse().map(product=><Product product={product}/>)
+                    products.map(product=><Product product={product}/>)
                 }
             </div>
         </section>
