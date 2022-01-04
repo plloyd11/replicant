@@ -7,6 +7,7 @@ import Video from '../components/homepage/Video.astro';
 import About from '../components/homepage/About.astro';
 
 let products = null;
+let reviews = null;
 try {
     const result = await fetch(
         import.meta.env.PUBLIC_GRAPHCMS_API,
@@ -30,6 +31,11 @@ try {
                         productType
                         updatedAt
                     }
+                    reviews {
+                        pullQuote
+                        source
+                        linkToReview
+                    }
                 }`
             })
         }
@@ -37,6 +43,8 @@ try {
     if(result.ok){
         const resultJSON = await result.json();
         products = resultJSON.data.products;
+        reviews = resultJSON.data.reviews;
+
         // turn updatedAt into a date object
         products.forEach(product => {
             product.updatedAt = new Date(product.updatedAt);
@@ -55,9 +63,9 @@ try {
 ---
 
 <BaseLayout title="Replicant | New Jersey Death Metal" desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!">
-    <Hero />
+    <Hero reviews={reviews[0]}/>
     <main class="space-y-32 py-16 lg:py-32">
-        <section id="shop" class="max-w-7xl mx-auto px-4 lg:px-6">
+        <section id="shop" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Shop</h2>
             <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
                 {
@@ -65,11 +73,11 @@ try {
                 }
             </div>
         </section>
-        <section id="videos" class="max-w-7xl mx-auto px-4 lg:px-6">
+        <section id="videos" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Videos</h2>
             <Video />
         </section>
-        <section id="about" class="max-w-7xl mx-auto px-4 lg:px-6">
+        <section id="about" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">About Replicant</h2>
             <About />
         </section>

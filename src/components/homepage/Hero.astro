@@ -1,5 +1,9 @@
+---
+const {reviews} = Astro.props;
+---
+
 <section id="intro" class="relative bg-replicant-900">
-    <div class="lg:relative lg:flex lg:items-center h-screen">
+    <div class="lg:relative lg:flex lg:items-center sm:h-screen">
         <div class="mx-auto max-w-7xl w-full pt-16 pb-20 text-center lg:text-left">
             <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
                 <h1
@@ -8,11 +12,11 @@
                     Malignant Reality
                 </h1>
                 <div
-                    class="mt-3 max-w-md mx-auto text-lg text-replicant-400 sm:text-xl md:mt-5 md:max-w-3xl"
+                    class="mt-3 max-w-md mx-auto text-lg text-replicant-300 sm:text-2xl md:mt-5 md:max-w-xl"
                 >
-                    <span>"The dumbest smart album you will ever listen to."</span>
-                    <br>
-                    <a href="https://toiletovhell.com/review-replicant-malignant-reality/" target="_blank" rel="noopener">- Toilet Ov Hell</a>
+                    <span>"{reviews.pullQuote}" -</span>
+
+                    <a href={reviews.linkToReview} target="_blank" rel="noopener" class="underline decoration-primaryColor underline-offset-1"> {reviews.source}</a>
                 </div>
                 <div class="mt-10 sm:flex sm:justify-center lg:justify-start">
                     <div class="rounded-md shadow">
@@ -37,12 +41,12 @@
             </div>
         </div>
         <div
-            class="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full"
+            class="relative h-[31rem] md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full"
         >
             <img
                 class="absolute inset-0 w-full h-full object-cover"
                 src="/assets/mr-cover.jpg"
-                alt=""
+                alt="Malignant Reality album cover"
             />
         </div>
     </div>
