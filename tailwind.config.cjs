@@ -1,7 +1,6 @@
 // tailwind.config.cjs
 module.exports = {
-    content: 'jit',
-    purge: ['./public/**/*.html', './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}'],
+    content: ['./public/**/*.html', './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}'],
     theme: {
         extend: {
             colors: {
@@ -12,15 +11,16 @@ module.exports = {
                 tertiaryColor: '#5C6D7F',
                 tertiaryColorDark: '#45515F',
                 replicant: {
-                    100: '#E4EBF1',
-                    200: '#C9D7E3',
-                    300: '#AFC3D5',
-                    400: '#2A3C50',
-                    500: '#233243',
-                    600: '#1C2835',
-                    700: '#151E28',
-                    800: '#0E141B',
-                    900: '#070A0D'
+                    50: '#F8FAFC',
+                    100: '#F1F5F8',
+                    200: '#E2E6E9',
+                    300: '#C5CCD3',
+                    400: '#89919A',
+                    500: '#4C5661',
+                    600: '#313A45',
+                    700: '#24303D',
+                    800: '#16202C',
+                    900: '#09121A'
                 }
             }
         }

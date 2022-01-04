@@ -5,22 +5,22 @@
     let navItems = [
         {
             name: 'shop',
-            anchor: '#shop'
+            anchor: '#shop',
         },
         {
             name: 'videos',
-            anchor: '#videos'
+            anchor: '#videos',
         },
         {
             name: 'about',
-            anchor: '#about'
+            anchor: '#about',
         },
-    ]
+    ];
     let mobileMenu = false;
 
     const toggleMobileMenu = () => {
         mobileMenu = !mobileMenu;
-    }
+    };
 </script>
 
 <header class="shadow z-10 w-full sm:fixed sm:top-5 sm:max-w-[calc(100%-80px)] sm:left-[40px]">
@@ -106,7 +106,7 @@
                 transition:slide={{
                     duration: 300,
                     opacity: 0.75,
-                    easing: cubicOut
+                    easing: cubicOut,
                 }}
                 class="absolute top-[88px] z-[15] inset-x-0 transition transform origin-top-right max-w-xs mx-auto"
             >

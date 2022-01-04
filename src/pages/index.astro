@@ -29,7 +29,7 @@ try {
                             url
                         }
                         productType
-                        updatedAt
+                        createdAt
                     }
                     reviews {
                         pullQuote
@@ -45,13 +45,13 @@ try {
         products = resultJSON.data.products;
         reviews = resultJSON.data.reviews;
 
-        // turn updatedAt into a date object
+        // turn createdAt into a date object
         products.forEach(product => {
-            product.updatedAt = new Date(product.updatedAt);
+            product.createdAt = new Date(product.createdAt);
         });
-        // sort products by updatedAt
+        // sort products by createdAt
         products.sort((a, b) => {
-            return (b.updatedAt) - (a.updatedAt);
+            return (b.createdAt) - (a.createdAt);
         });
     } else {
         console.log('fuck')
@@ -64,7 +64,7 @@ try {
 
 <BaseLayout title="Replicant | New Jersey Death Metal" desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!">
     <Hero reviews={reviews[0]}/>
-    <main class="space-y-32 py-16 lg:py-32">
+    <main class="space-y-20 lg:space-y-32 py-16 lg:py-32">
         <section id="shop" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Shop</h2>
             <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
