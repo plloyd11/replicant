@@ -16,3 +16,12 @@ html,
 body {
     font-family: var(--font-body);
 }
+
+.snipcart-button-primary {
+    background-color: #7e6e55;
+    color: #fff;
+}
+
+.snipcart-button-primary:hover {
+    background-color: #615542;
+}

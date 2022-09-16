@@ -20,10 +20,10 @@ module.exports = {
                     600: '#313A45',
                     700: '#24303D',
                     800: '#16202C',
-                    900: '#09121A'
-                }
-            }
-        }
+                    900: '#09121A',
+                },
+            },
+        },
     },
-    plugins: [require('@tailwindcss/line-clamp')]
+    plugins: [require('@tailwindcss/line-clamp')],
 };

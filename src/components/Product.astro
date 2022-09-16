@@ -1,5 +1,4 @@
 ---
-import {Markdown} from 'astro/components'
 import Lightbox from './Lightbox.astro'
 const { product } = Astro.props;
 ---
@@ -19,9 +18,9 @@ const { product } = Astro.props;
         </div>
         <div class="relative mt-4">
         <h3 class="text-xl font-medium text-replicant-100">{product.title}</h3>
-        <Markdown class="mt-2 text-replicant-300 sm:line-clamp-3">
+        <p class="mt-2 text-replicant-300 sm:line-clamp-3">
             {product.description}
-        </Markdown>
+        </p>
         </div>
     </div>
     <div class="mt-6">

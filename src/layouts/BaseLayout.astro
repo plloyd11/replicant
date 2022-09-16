@@ -1,6 +1,7 @@
 ---
 import GlobalNav from '../components/GlobalNav.svelte';
 import GlobalFooter from '../components/GlobalFooter.astro';
+import "../styles/global.css";
 
 const {title, desc} = Astro.props;
 ---
@@ -38,7 +39,6 @@ const {title, desc} = Astro.props;
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" href={Astro.resolve('../styles/global.css')}>
         <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" />
 
         <link rel="preconnect" href="https://app.snipcart.com" />
