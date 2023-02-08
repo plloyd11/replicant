@@ -4,7 +4,7 @@
 
 @layer components {
     .section-header {
-        @apply mb-6 text-2xl text-replicant-200 font-light text-center uppercase lg:text-5xl;
+        @apply mb-12 text-2xl font-medium tracking-wider text-center uppercase text-replicant-200 lg:text-5xl;
     }
 }
 

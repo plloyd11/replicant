@@ -1,5 +1,5 @@
 ---
-const {reviews} = Astro.props;
+const { reviews } = Astro.props;
 ---
 
 <section id="intro" class="relative bg-replicant-900">
@@ -16,7 +16,14 @@ const {reviews} = Astro.props;
                 >
                     <span>"{reviews.pullQuote}" -</span>
 
-                    <a href={reviews.linkToReview} target="_blank" rel="noopener" class="underline decoration-primaryColor underline-offset-1"> {reviews.source}</a>
+                    <a
+                        href={reviews.linkToReview}
+                        target="_blank"
+                        rel="noopener"
+                        class="underline decoration-primaryColor underline-offset-1"
+                    >
+                        {reviews.source}
+                    </a>
                 </div>
                 <div class="mt-10 sm:flex sm:justify-center lg:justify-start">
                     <div class="rounded-md shadow">

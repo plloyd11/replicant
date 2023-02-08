@@ -1,0 +1,43 @@
+---
+import Lightbox from '../Lightbox.astro';
+let { shows } = Astro.props;
+
+// format date
+shows = shows.map((show) => {
+    const date = new Date(show.date);
+    const month = date.toLocaleString('default', { month: 'long' });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const formattedDate = `${month} ${day}, ${year}`;
+    return {
+        ...show,
+        date: formattedDate,
+    };
+});
+---
+
+<div class="grid grid-cols-2 gap-4">
+    <div>
+        {
+            shows.map((show) => (
+                <div class="text-replicant-200">
+                    <Lightbox image={show.flyer.url} title={show.title} />
+                    <div class="mt-4 space-y-2">
+                        <p class="text-lg">{show.title}</p>
+                        <div class="mt-4 space-x-2">
+                            <span class="inline-block text-lg">{show.date}</span>
+                            <span class="inline-block">•</span>
+                            <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${show.venue.latitude},${show.venue.longitude}`}
+                                target="_blank"
+                                class="inline-block text-lg underline text-primaryColor hover:text-primaryColorDark"
+                            >
+                                {show.venueName}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</div>

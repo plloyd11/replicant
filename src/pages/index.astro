@@ -4,27 +4,28 @@ import Product from '../components/Product.astro';
 
 import Hero from '../components/homepage/Hero.astro';
 import Video from '../components/homepage/Video.astro';
+import Shows from '../components/homepage/Shows.astro';
 import About from '../components/homepage/About.astro';
 
 let products = null;
 let reviews = null;
+let shows = null;
+
 try {
-    const result = await fetch(
-        import.meta.env.PUBLIC_GRAPHCMS_API,
-        {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: 'POST',
-            body: JSON.stringify({
-                query: `query{
+    const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            query: `query{
                     products{
                         slug
                         id
                         title
                         description
                         price
-                        images{
+                        images {
                             id
                             url
                         }
@@ -37,48 +38,72 @@ try {
                         source
                         linkToReview
                     }
-                }`
-            })
-        }
-    );
-    if(result.ok){
+                    shows {
+                        title
+                        date
+                        flyer {
+                            url
+                        }
+                        venueName
+                        venue {
+                            latitude
+                            longitude
+                        }
+                        description {
+                            html
+                        }
+                    }
+                }`,
+        }),
+    });
+    if (result.ok) {
         const resultJSON = await result.json();
         products = resultJSON.data.products;
         reviews = resultJSON.data.reviews;
+        shows = resultJSON.data.shows;
 
         // turn createdAt into a date object
-        products.forEach(product => {
+        products.forEach((product) => {
             product.createdAt = new Date(product.createdAt);
         });
         // sort products by createdAt
         products.sort((a, b) => {
-            return (b.createdAt) - (a.createdAt);
+            return b.createdAt - a.createdAt;
+        });
+
+        shows.sort((a, b) => {
+            return b.date - a.date;
         });
     } else {
-        console.log('fuck')
+        console.log('fuck');
         throw new Error(`${result.status}: ${result.statusText}`);
     }
-} catch(error) {
+} catch (error) {
     console.error(error);
 }
 ---
 
-<BaseLayout title="Replicant | New Jersey Death Metal" desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!">
-    <Hero reviews={reviews[0]}/>
-    <main class="space-y-20 lg:space-y-32 py-16 lg:py-32">
-        <section id="shop" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+<BaseLayout
+    title="Replicant | New Jersey Death Metal"
+    desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
+>
+    <Hero reviews={reviews[0]} />
+    <main class="py-16 space-y-20 lg:space-y-32 lg:py-32">
+        <section id="shop" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Shop</h2>
-            <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
-                {
-                    products.map(product=><Product product={product}/>)
-                }
+            <div class="grid grid-cols-1 mt-8 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
+                {products.map((product) => <Product product={product} />)}
             </div>
         </section>
-        <section id="videos" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="videos" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Videos</h2>
             <Video />
         </section>
-        <section id="about" class="max-w-7xl mx-auto px-4 lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="shows" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+            <h2 class="section-header">Upcoming Shows</h2>
+            <Shows shows={shows} />
+        </section>
+        <section id="about" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">About Replicant</h2>
             <About />
         </section>
