@@ -1,5 +1,7 @@
 ---
 const { reviews } = Astro.props;
+import { Image } from 'astro:assets';
+import Malignant from '../../assets/mr-cover.jpg';
 ---
 
 <section id="intro" class="relative bg-replicant-900">
@@ -50,11 +52,7 @@ const { reviews } = Astro.props;
         <div
             class="relative h-[31rem] md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full"
         >
-            <img
-                class="absolute inset-0 w-full h-full object-cover"
-                src="/assets/mr-cover.jpg"
-                alt="Malignant Reality album cover"
-            />
+            <Image src={Malignant} alt="Malignant Reality album cover" class="absolute inset-0 w-full h-full object-cover" />
         </div>
     </div>
 </section>

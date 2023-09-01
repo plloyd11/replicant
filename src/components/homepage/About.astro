@@ -17,29 +17,37 @@ let members = [
         role: 'Guitar',
     },
 ];
+import { Image } from 'astro:assets';
+import Band from '../../assets/press-photo.jpg';
 ---
 
-<img src="/assets/press-photo.jpg" alt="Replicant Press Photo" />
-<ul class="mt-4">
-    {
-        members.map((member) => (
-            <li class="text-replicant-200">
-                <span class="text-lg">
-                    {member.name} • {member.role}
-                </span>
-            </li>
-        ))
-    }
-</ul>
-<p class="mt-6 text-lg leading-relaxed text-replicant-200">
-    Unheralded death metal kings Replicant return with an album that will send shock waves through
-    the scene. They've honed their brand of technical, dissonant and groovy death metal and forged a
-    sound that's nigh unparalleled. They've distilled the best elements of them all into a sonically
-    potent, visceral and frankly devastating album that's perfect in nearly all aspects. This is the
-    sound of death metal of the times - it's forward-thinking, suitably dissonant, effortlessly
-    catchy, semi-technical and simply explosive in its execution. There are various twists and turns
-    that keep things interesting and even unpredictable, without derailing its powerful momentum.
-    It's rare to come across an album that's so well-rounded, impactful and one that leaves a
-    lasting impression. Replicant have not only completely surpassed expectations from people with
-    their new one, but have set new standards for contemporary death metal with 'Malignant Reality'.
-</p>
+<Image src={Band} alt="Replicant Press Photo" />
+<div class="sm:grid sm:gap-6 sm:grid-cols-12">
+    <div class="sm:col-span-5">
+        <ul class="mt-4">
+            {
+                members.map((member) => (
+                    <li class="text-replicant-200">
+                        <span class="text-lg">
+                            {member.name} • {member.role}
+                        </span>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+    <div class="sm:col-span-7">
+        <p class="mt-6 text-lg leading-relaxed text-replicant-200">
+            Unheralded death metal kings Replicant return with an album that will send shock waves through
+            the scene. They've honed their brand of technical, dissonant and groovy death metal and forged a
+            sound that's nigh unparalleled. They've distilled the best elements of them all into a sonically
+            potent, visceral and frankly devastating album that's perfect in nearly all aspects. This is the
+            sound of death metal of the times - it's forward-thinking, suitably dissonant, effortlessly
+            catchy, semi-technical and simply explosive in its execution. There are various twists and turns
+            that keep things interesting and even unpredictable, without derailing its powerful momentum.
+            It's rare to come across an album that's so well-rounded, impactful and one that leaves a
+            lasting impression. Replicant have not only completely surpassed expectations from people with
+            their new one, but have set new standards for contemporary death metal with 'Malignant Reality'.
+        </p>
+    </div>
+</div>

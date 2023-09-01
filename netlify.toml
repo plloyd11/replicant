@@ -1,9 +1,9 @@
 [build]
-  command = "yarn build"
+  command = "pnpm build"
   publish = "dist"
 
 [dev]
-  command = "yarn dev"
+  command = "pnpm dev"
   framework = "#custom"
   port = 8080
   targetPort = 3000
