@@ -1,7 +1,7 @@
 ---
 const { reviews } = Astro.props;
 import { Image } from 'astro:assets';
-import Malignant from '../../assets/mr-cover.jpg';
+import IM from '../../assets/im.png';
 ---
 
 <section id="intro" class="relative bg-replicant-900">
@@ -11,9 +11,12 @@ import Malignant from '../../assets/mr-cover.jpg';
                 <h1
                     class="text-4xl uppercase tracking-wide font-bold text-replicant-100 sm:text-5xl md:text-6xl lg:text-5xl xl:text-7xl"
                 >
-                    Malignant Reality
+                    Infinite Mortality
                 </h1>
-                <div
+                <div>
+                    <p class="mt-3 max-w-md mx-auto text-lg text-replicant-300 sm:text-2xl md:mt-5 md:max-w-xl">Pre-Order the new album on Bandcamp.</p>
+                </div>
+                <!-- <div
                     class="mt-3 max-w-md mx-auto text-lg text-replicant-300 sm:text-2xl md:mt-5 md:max-w-xl"
                 >
                     <span>"{reviews.pullQuote}" -</span>
@@ -26,24 +29,26 @@ import Malignant from '../../assets/mr-cover.jpg';
                     >
                         {reviews.source}
                     </a>
-                </div>
+                </div> -->
                 <div class="mt-10 sm:flex sm:justify-center lg:justify-start">
                     <div class="rounded-md shadow">
                         <a
-                            href="#shop"
+                        href="https://replicantband.bandcamp.com/album/infinite-mortality"
+                        target="_blank"
+                        rel="noopener"
                             class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-replicant-100 bg-primaryColor hover:bg-primaryColorDark md:py-4 md:text-lg md:px-10"
                         >
-                            Buy Now
+                            Pre-Order Now
                         </a>
                     </div>
                     <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
                         <a
-                            href="https://replicantband.bandcamp.com/"
-                            target="_blank"
-                            rel="noopener"
+
+                            href="#shop"
+
                             class="w-full flex items-center justify-center px-8 py-3 border border-primaryColor text-base font-medium rounded-md text-primaryColor bg-transparent hover:bg-primaryColorDark hover:text-replicant-100 md:py-4 md:text-lg md:px-10"
                         >
-                            Digital Album
+                            Grab some merch
                         </a>
                     </div>
                 </div>
@@ -52,7 +57,7 @@ import Malignant from '../../assets/mr-cover.jpg';
         <div
             class="relative h-[31rem] md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full"
         >
-            <Image src={Malignant} alt="Malignant Reality album cover" class="absolute inset-0 w-full h-full object-cover" />
+            <Image src={IM} alt="Infinite Mortality album cover" class="absolute inset-0 w-full h-full object-cover" />
         </div>
     </div>
 </section>
