@@ -16,11 +16,12 @@ shows = shows.map((show) => {
 });
 ---
 
-<div class="grid gap-4 sm:grid-cols-2">
-    <div>
-        {
-            shows.map((show) => (
-                <div class="text-replicant-200">
+<div class="grid gap-12 sm:grid-cols-2">
+    {
+        shows
+            .sort((a, b) => new Date(a.date) - new Date(b.date))
+            .map((show) => (
+                <div class="text-replicant-200 col-span-1">
                     <Lightbox image={show.flyer.url} title={show.title} />
                     <div class="mt-4 space-y-2">
                         <p class="text-lg">{show.title}</p>
@@ -38,6 +39,5 @@ shows = shows.map((show) => {
                     </div>
                 </div>
             ))
-        }
-    </div>
+    }
 </div>
