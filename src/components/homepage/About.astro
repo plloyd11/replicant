@@ -12,21 +12,25 @@ let members = [
         name: 'Itay Keren',
         role: 'Guitars, Vocals, Void Channels',
     },
+    {
+        name: 'Justin Spaeth',
+        role: 'Drums',
+    },
 ];
 
 import { Image } from 'astro:assets';
 import Band from '../../assets/press-photo.jpg';
 ---
 
-<Image src={Band} alt="Replicant Press Photo" class="object-cover object-center h-[600px]" />
-<div class="sm:grid sm:gap-6 sm:grid-cols-12">
+<Image src={Band} alt="Replicant Press Photo" class="object-cover object-center h-[700px]" />
+<div class="sm:grid sm:gap-4 sm:grid-cols-12">
     <div class="sm:col-span-5">
-        <ul class="mt-6">
+        <ul class="mt-6 space-y-1">
             {
                 members.map((member) => (
                     <li class="text-replicant-200">
                         <span class="text-lg">
-                            {member.name} • {member.role}
+                            {member.name} • <span class="text-replicant-300">{member.role}</span>
                         </span>
                     </li>
                 ))
@@ -35,7 +39,21 @@ import Band from '../../assets/press-photo.jpg';
     </div>
     <div class="sm:col-span-7">
         <p class="mt-6 text-lg leading-relaxed text-replicant-200">
-            After having smashed prevailing standards for the style with their unique approach on their highly lauded previous release, Replicant take things further still with their new full length, finding ways to make their music even more convoluted and impactful while retaining their trademark dissonant and catchy sound. They've found ways to add new aspects to it without hampering the momentum, constantly changing things up with the listener's body still lashing uncontrollably. The songs veer off in their own unexpected, thrilling directions while upholding the inherent semblance of groove, only to reconnect later with greater force. Things seem to add up and make sense as the album progresses, an ostensibly innocuous mechanical contraption getting constant upgrades to become potentially world-ending. There's fire in the songwriting, the members refusing to succumb to the lull of complacency and working furiously, constantly on the songs to elevate them to a rarefied category. It sees the stature of the band rising, the sound evolving methodically and convincingly, the album giving more than what could be expected from them having already established their identity, and in turn setting new standards for others yet again.
+            After having smashed prevailing standards for the style with their unique approach on
+            their highly lauded previous release, Replicant take things further still with their new
+            full length, finding ways to make their music even more convoluted and impactful while
+            retaining their trademark dissonant and catchy sound. They've found ways to add new
+            aspects to it without hampering the momentum, constantly changing things up with the
+            listener's body still lashing uncontrollably. The songs veer off in their own
+            unexpected, thrilling directions while upholding the inherent semblance of groove, only
+            to reconnect later with greater force. Things seem to add up and make sense as the album
+            progresses, an ostensibly innocuous mechanical contraption getting constant upgrades to
+            become potentially world-ending. There's fire in the songwriting, the members refusing
+            to succumb to the lull of complacency and working furiously, constantly on the songs to
+            elevate them to a rarefied category. It sees the stature of the band rising, the sound
+            evolving methodically and convincingly, the album giving more than what could be
+            expected from them having already established their identity, and in turn setting new
+            standards for others yet again.
         </p>
     </div>
 </div>
