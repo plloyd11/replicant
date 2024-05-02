@@ -1,57 +1,81 @@
 ---
 import GlobalNav from '../components/GlobalNav.svelte';
 import GlobalFooter from '../components/GlobalFooter.astro';
-import "../styles/global.css";
+import '../styles/global.css';
 
-const {title, desc} = Astro.props;
+const { title, desc } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="scroll-smooth">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
 
-        <meta name="description" content={desc}>
+        <meta name="description" content={desc} />
 
         <!-- Primary Meta Tags -->
         <title>Replicant | New Jersey Death Metal</title>
-        <meta name="title" content="Replicant | New Jersey Death Metal">
-        <meta name="description" content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!">
+        <meta name="title" content="Replicant | New Jersey Death Metal" />
+        <meta
+            name="description"
+            content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
+        />
 
         <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://replicant.band/">
-        <meta property="og:title" content="Replicant | New Jersey Death Metal">
-        <meta property="og:description" content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!">
-        <meta property="og:image" content="https://res.cloudinary.com/observatory-agency/image/upload/c_crop,w_2800,h_1800,g_auto/v1702392695/replicant/Press%20Photos/press-photo_pzhvai.jpg">
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://replicant.band/" />
+        <meta property="og:title" content="Replicant | New Jersey Death Metal" />
+        <meta
+            property="og:description"
+            content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
+        />
+        <meta
+            property="og:image"
+            content="https://res.cloudinary.com/observatory-agency/image/upload/v1714658516/replicant/Press%20Photos/press-photo_ymfxpw.jpg"
+        />
 
         <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://replicant.band/">
-        <meta property="twitter:title" content="Replicant | New Jersey Death Metal">
-        <meta property="twitter:description" content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!">
-        <meta property="twitter:image" content="https://res.cloudinary.com/observatory-agency/image/upload/c_crop,w_2800,h_1800,g_auto/v1702392695/replicant/Press%20Photos/press-photo_pzhvai.jpg">
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://replicant.band/" />
+        <meta property="twitter:title" content="Replicant | New Jersey Death Metal" />
+        <meta
+            property="twitter:description"
+            content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
+        />
+        <meta
+            property="twitter:image"
+            content="https://res.cloudinary.com/observatory-agency/image/upload/v1714658516/replicant/Press%20Photos/press-photo_ymfxpw.jpg"
+        />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
 
         <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" />
 
         <link rel="preconnect" href="https://app.snipcart.com" />
         <link rel="preconnect" href="https://cdn.snipcart.com" />
 
-        <script defer data-domain="replicant.band" src="https://plausible.io/js/plausible.js"></script>
-
+        <script defer data-domain="replicant.band" src="https://plausible.io/js/plausible.js"
+        ></script>
     </head>
     <body class="bg-replicant-900">
-        <GlobalNav client:load="svelte"/>
+        <GlobalNav client:load="svelte" />
         <slot />
         <GlobalFooter />
         <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
-        <div id="snipcart" data-config-modal-style="side" data-api-key={import.meta.env.PUBLIC_SNIPCART_API} hidden></div>
+        <div
+            id="snipcart"
+            data-config-modal-style="side"
+            data-api-key={import.meta.env.PUBLIC_SNIPCART_API}
+            hidden
+        >
+        </div>
     </body>
 </html>

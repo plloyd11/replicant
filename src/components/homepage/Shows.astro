@@ -21,7 +21,7 @@ shows = shows.map((show) => {
         shows
             .sort((a, b) => new Date(a.date) - new Date(b.date))
             .map((show) => (
-                <div class="text-replicant-200 col-span-1">
+                <div class="col-span-1 text-replicant-200 h-fit">
                     <Lightbox image={show.flyer.url} title={show.title} />
                     <div class="mt-4 space-y-2">
                         <p class="text-lg">{show.title}</p>
