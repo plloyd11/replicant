@@ -2,10 +2,16 @@
 import Lightbox from './Lightbox.astro';
 const { product } = Astro.props;
 
-console.log(product);
+// Create a new Date object from the product.preOrder string
+const preOrderDate = new Date(product.preOrder);
+
+// Format the date as mm/dd/yy
+const formattedPreOrderDate = `${
+    preOrderDate.getMonth() + 1
+}/${preOrderDate.getDate()}/${preOrderDate.getFullYear().toString()}`;
 ---
 
-<div>
+<div class="flex flex-col justify-between">
     <div class="relative">
         <div class="relative w-full h-72 rounded-lg overflow-hidden">
             <div class="absolute top-1 right-1">
@@ -24,6 +30,13 @@ console.log(product);
         </div>
         <div class="relative mt-4">
             <h3 class="text-xl font-medium text-replicant-100">{product.title}</h3>
+            {
+                product.preOrder && (
+                    <p class="text-sm font-light italic text-secondaryColor mt-1">
+                        This item is a pre-order and will ship on {formattedPreOrderDate}
+                    </p>
+                )
+            }
             <p class="mt-2 text-replicant-300 sm:line-clamp-3">
                 {product.description}
             </p>
