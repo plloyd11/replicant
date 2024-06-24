@@ -1,14 +1,16 @@
 ---
+import { Image } from 'astro:assets';
 const { image, title } = Astro.props;
 ---
 
 <a class="thumbnail" href={`#${image}`}>
-    <img src={image} alt={title} />
+    <Image src={image} alt={title} width="790" height="576" />
 </a>
 
 <div class="lightbox animate" id={image}>
     <a class="lightboxClose" href="#!">close</a>
-    <img class="animate" src={image} alt={title} />
+    <!-- <img class="animate" src={image} alt={title} /> -->
+    <Image class="animate" src={image} alt={title} inferSize={true} />
 </div>
 
 <style>
