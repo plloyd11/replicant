@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Product from '../components/Product.astro';
+import CategoryFilter from '../components/CategoryFilter.svelte';
 
 import Hero from '../components/homepage/Hero.astro';
 import Video from '../components/homepage/Video.astro';
@@ -10,6 +11,7 @@ import About from '../components/homepage/About.astro';
 let products = null;
 let reviews = null;
 let shows = null;
+let categories = [];
 
 try {
     const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
@@ -76,8 +78,11 @@ try {
         shows.sort((a, b) => {
             return b.date - a.date;
         });
+
+        // Extract unique categories
+        categories = ['All', ...new Set(products.map((product) => product.productType))];
     } else {
-        console.log('fuck');
+        console.log('Error fetching data');
         throw new Error(`${result.status}: ${result.statusText}`);
     }
 } catch (error) {
@@ -92,8 +97,12 @@ try {
     <Hero reviews={reviews[0]} />
     <main class="py-16 space-y-20 lg:space-y-40 lg:py-32">
         <section id="shop" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header">Shop</h2>
-            <div class="grid grid-cols-1 mt-8 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
+            <h2 class="section-header !mb-8">Shop</h2>
+            <CategoryFilter client:load categories={categories} />
+            <div
+                id="product-grid"
+                class="grid grid-cols-1 mt-16 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3"
+            >
                 {products.map((product) => <Product product={product} />)}
             </div>
         </section>
@@ -111,3 +120,35 @@ try {
         </section>
     </main>
 </BaseLayout>
+
+<script is:inline>
+    function initializeFilter() {
+        const productGrid = document.getElementById('product-grid');
+        if (!productGrid) {
+            console.error('Product grid not found');
+            return;
+        }
+        const products = Array.from(productGrid.children);
+
+        document.addEventListener('categoryChange', (event) => {
+            const selectedCategory = event.detail.category;
+            console.log('Selected category:', selectedCategory); // Debug log
+            products.forEach((product) => {
+                const productType = product.dataset.productType;
+                console.log('Product type:', productType); // Debug log
+                if (selectedCategory === 'All' || productType === selectedCategory) {
+                    product.style.display = '';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Run the initialization function when the DOM is fully loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeFilter);
+    } else {
+        initializeFilter();
+    }
+</script>
