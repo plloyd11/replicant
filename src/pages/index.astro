@@ -4,10 +4,10 @@ import Product from '../components/Product.astro';
 import CategoryFilter from '../components/CategoryFilter.svelte';
 
 import Hero from '../components/homepage/Hero.astro';
-import Video from '../components/homepage/Video.astro';
-import Shows from '../components/homepage/Shows.astro';
-import Contact from '../components/homepage/Contact.astro';
-import About from '../components/homepage/About.astro';
+import Transmissions from '../components/homepage/Transmissions.astro';
+import Emanations from '../components/homepage/Emanations.astro';
+import Communications from '../components/homepage/Communications.astro';
+import Build from '../components/homepage/Build.astro';
 
 let products = null;
 let reviews = null;
@@ -97,7 +97,7 @@ try {
 >
     <Hero reviews={reviews[0]} />
     <main class="py-16 space-y-20 lg:space-y-40 lg:py-32">
-        <section id="shop" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="hardware" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header !mb-8">Hardware</h2>
             <CategoryFilter client:load categories={categories} />
             <div
@@ -107,24 +107,27 @@ try {
                 {products.map((product) => <Product product={product} />)}
             </div>
         </section>
-        <section id="videos" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section
+            id="transmissions"
+            class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32"
+        >
             <h2 class="section-header">Transmissions</h2>
-            <Video />
+            <Transmissions />
         </section>
-        <section id="shows" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="emanations" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Emanations</h2>
-            <Shows shows={shows} />
+            <Emanations shows={shows} />
         </section>
         <section
             id="communications"
             class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32"
         >
             <h2 class="section-header">Communications</h2>
-            <Contact />
+            <Communications />
         </section>
-        <section id="about" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="build" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Build</h2>
-            <About />
+            <Build />
         </section>
     </main>
 </BaseLayout>
