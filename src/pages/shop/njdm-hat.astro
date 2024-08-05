@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+    title="Replicant | New Jersey Death Metal"
+    desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
+>
+    <div class="mt-0 sm:mt-24">
+        <div class="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+                <!-- Image gallery -->
+                <div class="flex flex-col-reverse">
+                    <!-- Image selector -->
+                    <div class="hidden w-full max-w-2xl mx-auto mt-6 sm:block lg:max-w-none">
+                        <div
+                            class="grid grid-cols-4 gap-6"
+                            aria-orientation="horizontal"
+                            role="tablist"
+                        >
+                            <button
+                                id="tabs-1-tab-1"
+                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                                aria-controls="tabs-1-panel-1"
+                                role="tab"
+                                type="button"
+                            >
+                                <span class="sr-only">Angled view</span>
+                                <span class="absolute inset-0 overflow-hidden rounded-md">
+                                    <img
+                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg"
+                                        alt=""
+                                        class="object-cover object-center w-full h-full"
+                                    />
+                                </span>
+                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
+                                <span
+                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
+                                    aria-hidden="true"></span>
+                            </button>
+
+                            <button
+                                id="tabs-2-tab-2"
+                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                                aria-controls="tabs-2-panel-2"
+                                role="tab"
+                                type="button"
+                            >
+                                <span class="sr-only">Angled view</span>
+                                <span class="absolute inset-0 overflow-hidden rounded-md">
+                                    <img
+                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-02.jpg"
+                                        alt=""
+                                        class="object-cover object-center w-full h-full"
+                                    />
+                                </span>
+                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
+                                <span
+                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
+                                    aria-hidden="true"></span>
+                            </button>
+
+                            <button
+                                id="tabs-3-tab-3"
+                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                                aria-controls="tabs-3-panel-3"
+                                role="tab"
+                                type="button"
+                            >
+                                <span class="sr-only">Angled view</span>
+                                <span class="absolute inset-0 overflow-hidden rounded-md">
+                                    <img
+                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-03.jpg"
+                                        alt=""
+                                        class="object-cover object-center w-full h-full"
+                                    />
+                                </span>
+                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
+                                <span
+                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
+                                    aria-hidden="true"></span>
+                            </button>
+
+                            <button
+                                id="tabs-4-tab-4"
+                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                                aria-controls="tabs-4-panel-4"
+                                role="tab"
+                                type="button"
+                            >
+                                <span class="sr-only">Angled view</span>
+                                <span class="absolute inset-0 overflow-hidden rounded-md">
+                                    <img
+                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg"
+                                        alt=""
+                                        class="object-cover object-center w-full h-full"
+                                    />
+                                </span>
+                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
+                                <span
+                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
+                                    aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="w-full aspect-h-1 aspect-w-1">
+                        <!-- Main image, show/hide based on tab state. -->
+                        <div
+                            id="tabs-1-panel-1"
+                            aria-labelledby="tabs-1-tab-1"
+                            role="tabpanel"
+                            tabindex="0"
+                        >
+                            <img
+                                src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg"
+                                alt="Angled front view with bag zipped and handles upright."
+                                class="object-cover object-center w-full h-full sm:rounded-lg"
+                            />
+                        </div>
+
+                        <!-- More images... -->
+                    </div>
+                </div>
+
+                <!-- Product info -->
+                <div class="px-4 mt-10 sm:mt-16 sm:px-0 lg:mt-0">
+                    <h1 class="text-3xl font-semibold text-replicant-100">NJDM Hat</h1>
+
+                    <div class="mt-3">
+                        <h2 class="sr-only">Product information</h2>
+                        <p class="text-3xl tracking-tight text-replicant-100">$35</p>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="sr-only">Description</h3>
+
+                        <div class="space-y-6 text-lg">
+                            <p class="text-replicant-300">
+                                Elevate your style with the Replicant "New Jersey Death Metal" Hat,
+                                a must-have for fans of the genre. This black, low-profile cotton
+                                twill dad cap features intricate, eye-catching sunflower yellow
+                                embroidery that perfectly captures the essence of death metal. The
+                                front boasts the distinctive Replicant logo, while the back proudly
+                                displays "New Jersey Death Metal" in bold, gothic script. Crafted
+                                for both comfort and durability, this hat is the perfect accessory
+                                for any metalhead looking to make a statement.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex mt-10">
+                        <button
+                            class="flex items-center justify-center flex-1 max-w-xs px-8 py-3 text-base font-medium text-white border border-transparent rounded-md snipcart-add-item bg-primaryColor hover:bg-primaryColorDark focus:outline-none focus:ring-2 focus:ring-replicant-800 focus:ring-offset-2 focus:ring-offset-replicant-500 sm:w-full"
+                            data-item-id="6969696"
+                            data-item-price="35"
+                            data-item-url="/shop/njdm-hat"
+                            data-item-image=""
+                            data-item-name="NJDM Hat">Add to bag</button
+                        >
+                    </div>
+
+                    <section aria-labelledby="details-heading" class="mt-12">
+                        <h2 id="details-heading" class="sr-only">Additional details</h2>
+
+                        <div class="border-t divide-y divide-gray-200">
+                            <div>
+                                <span class="block mt-6 font-medium text-replicant-100"
+                                    >Features</span
+                                >
+                                <div class="pb-6 mt-1 prose">
+                                    <ul role="list" class="text-replicant-300">
+                                        <li>Design: RPCT002 Hat by Replicant</li>
+                                        <li>Garment Type: Low-Profile Cotton Twill Dad Cap</li>
+                                        <li>Garment Color: Black</li>
+                                        <li>Stitch Type: Flat</li>
+                                        <li>
+                                            Front Embroidery: Replicant logo in sunflower yellow,
+                                            16,000 stitches
+                                        </li>
+                                        <li>
+                                            Back Embroidery: "New Jersey Death Metal" in sunflower
+                                            yellow, 5,000 stitches
+                                        </li>
+                                        <li>Material: High-quality, durable cotton twill fabric</li>
+                                        <li>
+                                            Adjustable Strap: Ensures a perfect fit for all head
+                                            sizes
+                                        </li>
+                                        <li>Unisex Design: Suitable for both men and women</li>
+                                        <li>Size: One size fits all (OS)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- More sections... -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</BaseLayout>

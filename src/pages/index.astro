@@ -6,6 +6,7 @@ import CategoryFilter from '../components/CategoryFilter.svelte';
 import Hero from '../components/homepage/Hero.astro';
 import Video from '../components/homepage/Video.astro';
 import Shows from '../components/homepage/Shows.astro';
+import Contact from '../components/homepage/Contact.astro';
 import About from '../components/homepage/About.astro';
 
 let products = null;
@@ -97,7 +98,7 @@ try {
     <Hero reviews={reviews[0]} />
     <main class="py-16 space-y-20 lg:space-y-40 lg:py-32">
         <section id="shop" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header !mb-8">Shop</h2>
+            <h2 class="section-header !mb-8">Hardware</h2>
             <CategoryFilter client:load categories={categories} />
             <div
                 id="product-grid"
@@ -107,15 +108,22 @@ try {
             </div>
         </section>
         <section id="videos" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header">Videos</h2>
+            <h2 class="section-header">Transmissions</h2>
             <Video />
         </section>
         <section id="shows" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header">Upcoming Shows</h2>
+            <h2 class="section-header">Emanations</h2>
             <Shows shows={shows} />
         </section>
+        <section
+            id="communications"
+            class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32"
+        >
+            <h2 class="section-header">Communications</h2>
+            <Contact />
+        </section>
         <section id="about" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header">About Replicant</h2>
+            <h2 class="section-header">Build</h2>
             <About />
         </section>
     </main>

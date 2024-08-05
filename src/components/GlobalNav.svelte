@@ -1,22 +1,26 @@
 <script>
-    import { fly, slide } from 'svelte/transition';
-    import { backIn, cubicOut } from 'svelte/easing';
+    import { slide } from 'svelte/transition';
+    import { cubicOut } from 'svelte/easing';
 
     let navItems = [
         {
-            name: 'shop',
+            name: 'hardware',
             anchor: '#shop',
         },
         {
-            name: 'videos',
+            name: 'transmissions',
             anchor: '#videos',
         },
         {
-            name: 'shows',
+            name: 'emanations',
             anchor: '#shows',
         },
         {
-            name: 'about',
+            name: 'communications',
+            anchor: '#communications',
+        },
+        {
+            name: 'build',
             anchor: '#about',
         },
     ];
@@ -28,22 +32,20 @@
 </script>
 
 <header class="shadow z-10 w-full sm:fixed sm:top-5 sm:max-w-[calc(100%-80px)] sm:left-[40px]">
-    <nav aria-label="Top" class="relative py-2 rounded bg-replicant-800">
-        <div
-            class="relative z-10 grid w-full h-full grid-cols-2 px-4 sm:px-6 lg:px-8 sm:grid-cols-3"
-        >
-            <div class="items-center hidden space-x-8 sm:flex">
-                {#each navItems as navItem}
-                    <a href={navItem.anchor} class="text-lg font-medium text-replicant-200">
-                        {navItem.name}
-                    </a>
-                {/each}
-            </div>
-            <div class="flex justify-start sm:justify-center">
-                <a href="#intro">
+    <nav aria-label="Top" class="relative py-4 rounded bg-replicant-800">
+        <div class="relative z-10 w-full h-full px-4 sm:px-6 lg:px-8 flex justify-between">
+            <div class="flex justify-start sm:justify-center gap-8">
+                <a href="/">
                     <span class="sr-only">Replicant - New Jersey Death Metal</span>
                     <img src="/assets/logo-white.png" alt="Replicant Logo" class="w-24" />
                 </a>
+                <div class="items-center hidden space-x-8 sm:flex">
+                    {#each navItems as navItem}
+                        <a href={navItem.anchor} class="text-lg font-medium text-replicant-200">
+                            {navItem.name}
+                        </a>
+                    {/each}
+                </div>
             </div>
             <div class="flex items-center justify-end space-x-8">
                 <div class="items-center hidden space-x-2 cursor-pointer sm:flex">

@@ -25,3 +25,7 @@ body {
 .snipcart-button-primary:hover {
     background-color: #615542;
 }
+
+.aspect-video {
+    aspect-ratio: 16 / 9
+}
