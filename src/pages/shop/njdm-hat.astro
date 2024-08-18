@@ -1,5 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import hat1 from '../../assets/hat/hat-1.jpg';
+import hat2 from '../../assets/hat/hat-2.jpg';
+import hat3 from '../../assets/hat/hat-3.jpg';
+
+const images = [hat1, hat2, hat3];
 ---
 
 <BaseLayout
@@ -18,108 +24,43 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                             aria-orientation="horizontal"
                             role="tablist"
                         >
-                            <button
-                                id="tabs-1-tab-1"
-                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
-                                aria-controls="tabs-1-panel-1"
-                                role="tab"
-                                type="button"
-                            >
-                                <span class="sr-only">Angled view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                                    <img
-                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg"
-                                        alt=""
-                                        class="object-cover object-center w-full h-full"
-                                    />
-                                </span>
-                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
-                                <span
-                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
-                                    aria-hidden="true"></span>
-                            </button>
-
-                            <button
-                                id="tabs-2-tab-2"
-                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
-                                aria-controls="tabs-2-panel-2"
-                                role="tab"
-                                type="button"
-                            >
-                                <span class="sr-only">Angled view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                                    <img
-                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-02.jpg"
-                                        alt=""
-                                        class="object-cover object-center w-full h-full"
-                                    />
-                                </span>
-                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
-                                <span
-                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
-                                    aria-hidden="true"></span>
-                            </button>
-
-                            <button
-                                id="tabs-3-tab-3"
-                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
-                                aria-controls="tabs-3-panel-3"
-                                role="tab"
-                                type="button"
-                            >
-                                <span class="sr-only">Angled view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                                    <img
-                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-03.jpg"
-                                        alt=""
-                                        class="object-cover object-center w-full h-full"
-                                    />
-                                </span>
-                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
-                                <span
-                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
-                                    aria-hidden="true"></span>
-                            </button>
-
-                            <button
-                                id="tabs-4-tab-4"
-                                class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
-                                aria-controls="tabs-4-panel-4"
-                                role="tab"
-                                type="button"
-                            >
-                                <span class="sr-only">Angled view</span>
-                                <span class="absolute inset-0 overflow-hidden rounded-md">
-                                    <img
-                                        src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg"
-                                        alt=""
-                                        class="object-cover object-center w-full h-full"
-                                    />
-                                </span>
-                                <!-- Selected: "ring-indigo-500", Not Selected: "ring-transparent" -->
-                                <span
-                                    class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
-                                    aria-hidden="true"></span>
-                            </button>
+                            {
+                                images.map((image, index) => (
+                                    <button
+                                        id={`tabs-${index + 1}-tab-${index + 1}`}
+                                        class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                                        aria-controls={`tabs-${index + 1}-panel-${index + 1}`}
+                                        role="tab"
+                                        type="button"
+                                        data-image-index={index}
+                                    >
+                                        <span class="sr-only">View {index + 1}</span>
+                                        <span class="absolute inset-0 overflow-hidden rounded-md">
+                                            <Image
+                                                src={image}
+                                                alt={`Product image ${index + 1}`}
+                                                class="object-cover object-center w-full h-full"
+                                            />
+                                        </span>
+                                        <span
+                                            class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
+                                            aria-hidden="true"
+                                        />
+                                    </button>
+                                ))
+                            }
                         </div>
                     </div>
 
                     <div class="w-full aspect-h-1 aspect-w-1">
-                        <!-- Main image, show/hide based on tab state. -->
-                        <div
-                            id="tabs-1-panel-1"
-                            aria-labelledby="tabs-1-tab-1"
-                            role="tabpanel"
-                            tabindex="0"
-                        >
-                            <img
-                                src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg"
-                                alt="Angled front view with bag zipped and handles upright."
-                                class="object-cover object-center w-full h-full sm:rounded-lg"
+                        <!-- Main image container -->
+                        <div id="main-image-container" class="w-full h-full">
+                            <Image
+                                src={images[0]}
+                                alt="Main product image"
+                                class="object-cover object-center w-full h-full"
                             />
                         </div>
-
-                        <!-- More images... -->
                     </div>
                 </div>
 
@@ -137,14 +78,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
                         <div class="space-y-6 text-lg">
                             <p class="text-replicant-300">
-                                Elevate your style with the Replicant "New Jersey Death Metal" Hat,
-                                a must-have for fans of the genre. This black, low-profile cotton
-                                twill dad cap features intricate, eye-catching sunflower yellow
-                                embroidery that perfectly captures the essence of death metal. The
-                                front boasts the distinctive Replicant logo, while the back proudly
-                                displays "New Jersey Death Metal" in bold, gothic script. Crafted
-                                for both comfort and durability, this hat is the perfect accessory
-                                for any metalhead looking to make a statement.
+                                This black, low-profile cotton twill dad cap features intricate,
+                                eye-catching sunflower yellow embroidery that perfectly captures the
+                                essence of death metal. The front boasts the distinctive Replicant
+                                logo, while the back proudly displays "New Jersey Death Metal" in
+                                bold, gothic script. These are limited to twenty pieces, and might
+                                not be printed again. So make the most of it!
                             </p>
                         </div>
                     </div>
@@ -192,8 +131,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                                     </ul>
                                 </div>
                             </div>
-
-                            <!-- More sections... -->
                         </div>
                     </section>
                 </div>
@@ -201,3 +138,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </div>
     </div>
 </BaseLayout>
+
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mainImageContainer = document.getElementById('main-image-container');
+        const thumbnails = document.querySelectorAll('[data-image-index]');
+
+        thumbnails.forEach((thumbnail) => {
+            thumbnail.addEventListener('click', () => {
+                const imageIndex = thumbnail.getAttribute('data-image-index');
+                const newImageSrc = thumbnail.querySelector('img').src;
+
+                const mainImage = mainImageContainer.querySelector('img');
+                mainImage.src = newImageSrc;
+                mainImage.srcset = ''; // Clear srcset to ensure the new src is used
+            });
+        });
+    });
+</script>
