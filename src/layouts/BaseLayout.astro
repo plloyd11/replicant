@@ -1,6 +1,8 @@
 ---
 import GlobalNav from '../components/GlobalNav.svelte';
 import GlobalFooter from '../components/GlobalFooter.astro';
+import Banner from '../components/Banner.astro';
+
 import '../styles/global.css';
 
 const { title, desc } = Astro.props;
@@ -68,6 +70,7 @@ const { title, desc } = Astro.props;
     <body class="bg-replicant-900">
         <GlobalNav client:load="svelte" />
         <slot />
+        <Banner />
         <GlobalFooter />
         <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>
         <div
