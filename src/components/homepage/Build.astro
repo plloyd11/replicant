@@ -22,7 +22,16 @@ import { Image } from 'astro:assets';
 import Band from '../../assets/press-photo.jpg';
 ---
 
-<Image src={Band} alt="Replicant Press Photo" class="object-cover object-center h-[700px]" />
+<Image
+    src={Band}
+    alt="Replicant Press Photo"
+    class="object-cover object-center w-full"
+    width={1600}
+    height={900}
+    loading="lazy"
+    decoding="async"
+    quality={85}
+/>
 <div class="sm:grid sm:gap-4 sm:grid-cols-12">
     <div class="sm:col-span-5">
         <ul class="mt-6 space-y-1">

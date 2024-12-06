@@ -4,20 +4,27 @@ const { image, title } = Astro.props;
 ---
 
 <a class="thumbnail" href={`#${image}`}>
-    <Image src={image} alt={title} width="790" height="576" />
+    <Image
+        src={image}
+        alt={title}
+        width={400}
+        height={300}
+        loading="lazy"
+        decoding="async"
+        quality={80}
+    />
 </a>
 
 <div class="lightbox animate" id={image}>
     <a class="lightboxClose" href="#!">close</a>
-    <!-- <img class="animate" src={image} alt={title} /> -->
-    <Image class="animate" src={image} alt={title} inferSize={true} />
+    <Image class="animate" src={image} alt={title} width={1200} height={900} quality={90} />
 </div>
 
 <style>
     a.thumbnail img {
         object-fit: cover;
         object-position: center;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 4 / 3;
         height: 100%;
         width: 100%;
     }

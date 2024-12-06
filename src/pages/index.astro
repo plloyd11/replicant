@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Product from '../components/Product.astro';
 import CategoryFilter from '../components/CategoryFilter.svelte';
+import PromoBanner from '../components/PromoBanner.astro';
 
 import Hero from '../components/homepage/Hero.astro';
 import Transmissions from '../components/homepage/Transmissions.astro';
@@ -9,10 +10,39 @@ import Emanations from '../components/homepage/Emanations.astro';
 import Communications from '../components/homepage/Communications.astro';
 import Build from '../components/homepage/Build.astro';
 
-let products = null;
-let reviews = null;
-let shows = null;
-let categories = [];
+interface Product {
+    slug: string;
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    images: { id: string; url: string }[];
+    productType: string;
+    productWeight: number;
+    preOrder: boolean;
+    fileGuid: string;
+    createdAt: Date;
+}
+
+interface Review {
+    pullQuote: string;
+    source: string;
+    linkToReview: string;
+}
+
+interface Show {
+    title: string;
+    date: string;
+    flyer: { url: string };
+    venueName: string;
+    venue: { latitude: number; longitude: number };
+    description: { html: string };
+}
+
+let products: Product[] = [];
+let reviews: Review[] = [];
+let shows: Show[] = [];
+let categories: string[] = [];
 
 try {
     const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
@@ -73,11 +103,11 @@ try {
         });
         // sort products by createdAt
         products.sort((a, b) => {
-            return b.createdAt - a.createdAt;
+            return b.createdAt.getTime() - a.createdAt.getTime();
         });
 
         shows.sort((a, b) => {
-            return b.date - a.date;
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
 
         // Extract unique categories
@@ -96,7 +126,8 @@ try {
     desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
 >
     <Hero reviews={reviews[0]} />
-    <main class="py-16 space-y-20 lg:space-y-40 lg:py-32">
+    <main class="py-16 space-y-20 lg:space-y-40 lg:py-24">
+        <PromoBanner />
         <section id="hardware" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header !mb-8">Hardware</h2>
             <CategoryFilter client:load categories={categories} />
