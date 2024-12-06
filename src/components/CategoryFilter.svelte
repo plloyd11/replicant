@@ -1,21 +1,19 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte';
 
-    export let categories = [];
+    export let categories: string[] = [];
     export let selectedCategory = 'All';
 
     const dispatch = createEventDispatcher();
 
-    // Reactive statement to sort categories
     $: sortedCategories = [
         'All',
         ...categories.filter((c) => c !== 'All').sort((a, b) => a.localeCompare(b)),
     ];
 
-    function handleCategoryChange(category) {
+    function handleCategoryChange(category: string) {
         selectedCategory = category;
         dispatch('filterChange', { category });
-        // Dispatch a custom event that can be caught by the parent
         const event = new CustomEvent('categoryChange', { detail: { category }, bubbles: true });
         document.dispatchEvent(event);
     }
