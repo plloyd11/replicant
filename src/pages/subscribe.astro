@@ -7,15 +7,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
 >
     <main class="flex items-center justify-center h-screen">
-        <div class="px-20 py-12 rounded-lg shadow-xl bg-replicant-700">
+        <div class="px-4 py-4 rounded-lg shadow-xl lg:px-20 lg:py-12 bg-replicant-700">
             <div class="max-w-4xl callout">
                 <div>
-                    <h1 class="uppercase text-[6rem] text-white font-semibold leading-none">
+                    <h1
+                        class="uppercase text-center text-4xl sm:text-7xl md:text-left md:text-[6rem] text-white font-semibold leading-none"
+                    >
                         Be the first to know
                     </h1>
                 </div>
                 <div class="flex flex-col gap-6">
-                    <img src="/assets/vc.svg" alt="Void Channels Logo" />
+                    <img src="/assets/vc.svg" alt="Void Channels Logo" class="px-1" />
                     <p class="text-white">
                         Subscribe to our newsletter to be the first to the know about the latest
                         news, merch drops, and tour dates.
