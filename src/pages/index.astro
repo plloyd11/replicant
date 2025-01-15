@@ -67,6 +67,7 @@ try {
                         preOrder
                         fileGuid
                         createdAt
+                        updatedAt
                     }
                     reviews {
                         pullQuote
@@ -103,6 +104,8 @@ try {
         });
         // sort products by createdAt
         products.sort((a, b) => {
+            if (a.productType === 'clothing' && b.productType !== 'clothing') return -1;
+            if (b.productType === 'clothing' && a.productType !== 'clothing') return 1;
             return b.createdAt.getTime() - a.createdAt.getTime();
         });
 
