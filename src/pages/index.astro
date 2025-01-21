@@ -104,8 +104,8 @@ try {
         });
         // sort products by createdAt
         products.sort((a, b) => {
-            if (a.productType === 'clothing' && b.productType !== 'clothing') return -1;
-            if (b.productType === 'clothing' && a.productType !== 'clothing') return 1;
+            if (a.productType === 'vinyl' && b.productType !== 'vinyl') return -1;
+            if (b.productType === 'vinyl' && a.productType !== 'vinyl') return 1;
             return b.createdAt.getTime() - a.createdAt.getTime();
         });
 
@@ -130,7 +130,7 @@ try {
 >
     <Hero reviews={reviews[0]} />
     <main class="py-16 space-y-20 lg:space-y-40 lg:py-24">
-        <PromoBanner />
+        <!-- <PromoBanner /> -->
         <section id="hardware" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header !mb-8">Hardware</h2>
             <CategoryFilter client:load categories={categories} />
