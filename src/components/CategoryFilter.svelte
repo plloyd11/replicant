@@ -24,7 +24,7 @@
         {#each sortedCategories as category}
             <button
                 class="px-4 py-1.5 rounded-full hover:bg-primaryColor {selectedCategory === category
-                    ? 'bg-primaryColor text-replicant-200'
+                    ? 'bg-primaryColor text-replicant-900'
                     : 'bg-replicant-800 text-replicant-100'}"
                 on:click={() => handleCategoryChange(category)}
             >

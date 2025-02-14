@@ -31,15 +31,15 @@
     };
 </script>
 
-<header class="shadow z-10 w-full sm:fixed sm:top-5 sm:max-w-[calc(100%-80px)] sm:left-[40px]">
-    <nav aria-label="Top" class="relative py-4 rounded bg-replicant-800">
+<header class="z-10 w-full shadow">
+    <nav aria-label="Top" class="relative py-4 rounded">
         <div class="relative z-10 flex justify-between w-full h-full px-4 sm:px-6 lg:px-8">
             <div class="flex justify-start gap-8 sm:justify-center">
                 <a href="/">
                     <span class="sr-only">Replicant - New Jersey Death Metal</span>
                     <img src="/assets/logo-white.png" alt="Replicant Logo" class="w-24" />
                 </a>
-                <div class="items-center hidden space-x-8 sm:flex">
+                <div class="items-center hidden space-x-8 lg:flex">
                     {#each navItems as navItem}
                         <a href={navItem.anchor} class="text-lg font-medium text-replicant-200">
                             {navItem.name}
@@ -67,7 +67,7 @@
                         account
                     </button>
                 </div>
-                <div on:click={toggleMobileMenu} class="sm:hidden">
+                <div on:click={toggleMobileMenu} class="lg:hidden">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="w-6 h-6 cursor-pointer text-replicant-100"
