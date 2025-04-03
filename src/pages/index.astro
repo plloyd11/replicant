@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Product from '../components/Product.astro';
 import CategoryFilter from '../components/CategoryFilter.svelte';
-import PromoBanner from '../components/PromoBanner.astro';
 
 import Hero from '../components/homepage/Hero.astro';
 import Transmissions from '../components/homepage/Transmissions.astro';
@@ -22,6 +21,7 @@ interface Product {
     preOrder: boolean;
     fileGuid: string;
     createdAt: Date;
+    sale: boolean;
 }
 
 interface Review {
@@ -58,6 +58,7 @@ try {
                         title
                         description
                         price
+                        sale
                         images {
                             id
                             url
@@ -102,6 +103,10 @@ try {
         products.forEach((product) => {
             product.createdAt = new Date(product.createdAt);
         });
+
+        // Filter out items that are on sale
+        products = products.filter((product) => !product.sale);
+
         // sort products by createdAt
         products.sort((a, b) => {
             if (a.productType === 'clothing' && b.productType !== 'clothing') return -1;
@@ -130,9 +135,14 @@ try {
 >
     <Hero reviews={reviews[0]} />
     <main class="py-16 space-y-20 lg:space-y-40 lg:py-24">
-        <!-- <PromoBanner /> -->
         <section id="hardware" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header !mb-8">Hardware</h2>
+            <p class="text-center text-replicant-300 mb-8">
+                Check out our <a
+                    href="/shop/sale"
+                    class="text-primaryColor hover:text-primaryColor/80 underline">merch sale</a
+                > for sick ass deals
+            </p>
             <CategoryFilter client:load categories={categories} />
             <div
                 id="product-grid"

@@ -1,0 +1,157 @@
+---
+import Lightbox from './Lightbox.astro';
+const { product } = Astro.props;
+
+// Apply the 15% discount to the product price
+const salePrice = (product.price * 0.85).toFixed(2);
+
+// Format sizes for display
+function formatSizes(sizes) {
+    if (!sizes) {
+        // If product is clothing but no sizes provided, add default sizes
+        if (product.productType === 'clothing') {
+            return 'Small · Medium · Large · XL · 2XL · 3XL';
+        }
+        return '';
+    }
+
+    // Convert to string and normalize
+    const sizesStr = String(sizes);
+
+    // Split by pipe or comma, then clean each size individually
+    const sizeArray = sizesStr.split(/\||,/).map((size) => {
+        let cleanSize = size
+            .trim()
+            .replace(/_/g, ' ') // Replace underscores with spaces
+            .replace(/\bsmall\b/i, 'Small')
+            .replace(/\bmedium\b/i, 'Medium')
+            .replace(/\blarge\b/i, 'Large')
+            .replace(/\bxl\b/i, 'XL')
+            .replace(/\bdouble xl\b/i, '2XL')
+            .replace(/\btriple xl\b/i, '3XL')
+            .replace(/\bxxl\b/i, '2XL')
+            .replace(/\bxxxl\b/i, '3XL');
+
+        return cleanSize;
+    });
+
+    // Join with dot separator
+    return sizeArray.join(' · ');
+}
+
+// Process the sizes for display
+const formattedSizes = formatSizes(product.sizes);
+console.log('Original sizes:', product.sizes);
+console.log('Formatted sizes:', formattedSizes);
+
+// Extract the individual size options for the dropdown
+const sizeOptions = product.sizes
+    ? // If product has size data
+      String(product.sizes)
+          .split(/\||,/)
+          .map((size) => size.trim())
+          .filter((size) => size) // Remove empty entries
+          .map((size) => {
+              // Standardize size formatting for dropdown
+              return size
+                  .replace(/\bsmall\b/i, 'Small')
+                  .replace(/\bmedium\b/i, 'Medium')
+                  .replace(/\blarge\b/i, 'Large')
+                  .replace(/\bxl\b/i, 'XL')
+                  .replace(/\bxxl\b/i, '2XL')
+                  .replace(/\bxxxl\b/i, '3XL')
+                  .replace(/double_xl/i, '2XL')
+                  .replace(/triple_xl/i, '3XL');
+          })
+    : // Otherwise use default sizes for clothing
+      product.productType === 'clothing'
+      ? ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL']
+      : [];
+
+// For debugging
+console.log('Size options for dropdown:', sizeOptions);
+
+// Process the sizes for filtering (same format but stored for JavaScript access)
+const filterSizes = formattedSizes;
+---
+
+<div
+    class="flex flex-col justify-between"
+    data-product-type={product.productType}
+    data-sizes={filterSizes}
+>
+    <div class="relative">
+        <!-- Size data for filtering - visible to screen readers but accessible to JS -->
+        <span class="size-data sr-only">{filterSizes}</span>
+
+        <div class="relative w-full overflow-hidden rounded-lg h-96">
+            <Lightbox image={product.images[0].url} title={product.title} />
+        </div>
+        <div class="relative mt-4 space-y-3">
+            <h3 class="text-lg font-medium font-body text-replicant-100">{product.title}</h3>
+            <div class="flex items-center gap-2">
+                <p
+                    class="relative text-lg font-semibold text-replicant-100 text-shadow line-through opacity-70"
+                >
+                    ${product.price}.00
+                </p>
+                <p class="relative text-lg font-semibold text-primaryColor text-shadow">
+                    ${salePrice}
+                </p>
+            </div>
+            <p class="mt-2 text-replicant-300 sm:line-clamp-3">
+                {product.description}
+            </p>
+            {
+                product.sizes && (
+                    <p class="mt-1 text-sm text-secondaryColor italic size-display">
+                        Available sizes: {formattedSizes}
+                    </p>
+                )
+            }
+        </div>
+    </div>
+    <div class="mt-6">
+        <button
+            class="relative flex items-center justify-center px-8 py-2 text-sm font-medium transition-all duration-200 border border-transparent rounded-md snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
+            data-item-id={product.id}
+            data-item-price={salePrice}
+            data-item-url="/"
+            data-item-description={product.description}
+            data-item-image={product.images[0].url}
+            data-item-name={product.title}
+            data-item-weight={product.productWeight}
+            data-item-custom1-name={sizeOptions.length > 0 ? 'Size' : null}
+            data-item-custom1-options={sizeOptions.length > 0 ? sizeOptions.join(' | ') : null}
+        >
+            Add to bag
+        </button>
+    </div>
+</div>
+
+<style>
+    .text-shadow {
+        text-shadow: 0 2px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    .size-display {
+        letter-spacing: 0.055em;
+    }
+
+    .size-display :global(.dot) {
+        margin: 0 0.25rem;
+        opacity: 0.7;
+    }
+</style>
