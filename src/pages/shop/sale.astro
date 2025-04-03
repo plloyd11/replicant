@@ -58,7 +58,6 @@ try {
         products = resultJSON.data.products;
 
         // Log the raw products data to see what sizes field contains
-        console.log('Raw data from API:');
         products.slice(0, 3).forEach((product, index) => {
             console.log(`Product ${index + 1} - ${product.title}:`, {
                 sizes: product.sizes,
@@ -165,8 +164,10 @@ try {
     desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
 >
     <main>
-        <div class="text-center bg-primaryColor/5 py-16">
-            <h1 class="text-5xl font-bold tracking-tight text-replicant-100">Merch Sale</h1>
+        <div class="text-center bg-primaryColor/5 py-8 sm:py-16 px-2">
+            <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-replicant-100">
+                Merch Sale
+            </h1>
             <p class="mx-auto mt-4 max-w-3xl text-lg text-replicant-300">
                 We're back from tour and blowing out some merch. Snag some shit before it's gone!
             </p>
@@ -174,13 +175,10 @@ try {
                 <CategoryFilter client:load categories={sizes} />
             </div>
         </div>
-        <section
-            id="hardware"
-            class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32 py-12"
-        >
+        <section class="px-4 mx-auto max-w-7xl lg:px-6 py-4 sm:py-8">
             <div
                 id="product-grid"
-                class="grid grid-cols-1 mt-16 gap-y-12 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3"
+                class="grid grid-cols-1 mt-6 sm:mt-16 gap-y-12 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3"
             >
                 {products.map((product) => <ProductSale product={product} />)}
             </div>

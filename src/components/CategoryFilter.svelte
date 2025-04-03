@@ -66,7 +66,7 @@
     <div class="flex flex-wrap justify-center gap-4 px-4">
         {#each sortedCategories as category}
             <button
-                class="px-4 py-1.5 rounded-full hover:bg-primaryColor min-w-[60px] whitespace-nowrap {selectedCategory ===
+                class="px-4 text-sm sm:text-base py-1.5 rounded-full hover:bg-primaryColor min-w-[60px] whitespace-nowrap {selectedCategory ===
                 category
                     ? 'bg-primaryColor text-replicant-900'
                     : 'bg-replicant-800 text-replicant-100'}"
