@@ -166,11 +166,10 @@ try {
     <main>
         <div class="text-center bg-primaryColor/5 py-8 sm:py-16 px-2">
             <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-replicant-100">
-                Summer Sale
+                Infinite Exhaustion Summer Tour Merch Blowout
             </h1>
             <p class="mx-auto mt-4 max-w-3xl text-lg text-replicant-300">
-                We're about to hit the road in August for our summer trek with Pyrrhon, and we're
-                clearing out some merch. Snag some shit and help us pay for gas 💪
+                We've returned from our European tour and are clearing out the remaining shirts.
             </p>
             <div class="mt-12">
                 <CategoryFilter client:load categories={sizes} />
@@ -198,7 +197,6 @@ try {
             return;
         }
         const products = Array.from(productGrid.children);
-        console.log('Found products for filtering:', products.length);
 
         document.addEventListener('categoryChange', (event) => {
             const selectedValue = event.detail.category;

@@ -1,6 +1,7 @@
 ---
 import GlobalNav from '../components/GlobalNav.svelte';
 import GlobalFooter from '../components/GlobalFooter.astro';
+import Banner from '../components/Banner.astro';
 
 import '../styles/global.css';
 
@@ -67,6 +68,7 @@ const { title, desc } = Astro.props;
         ></script>
     </head>
     <body class="bg-replicant-900">
+        <Banner />
         <GlobalNav client:load="svelte" />
         <slot />
         <GlobalFooter />
