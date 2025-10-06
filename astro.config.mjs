@@ -9,19 +9,7 @@ export default defineConfig({
         plugins: [tailwindcss()]
     },
     image: {
-        service: {
-            entrypoint: 'astro/assets/services/sharp'
-        },
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'media.graphassets.com'
-            },
-            {
-                protocol: 'https',
-                hostname: '**.graphassets.com'
-            }
-        ]
+        domains: ['ca-central-1.graphassets.com', 'media.graphassets.com'],
     },
     redirects: {
         "/shop/europe": "/",

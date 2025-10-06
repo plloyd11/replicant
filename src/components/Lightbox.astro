@@ -1,33 +1,43 @@
 ---
-import { Image } from 'astro:assets';
-
 const { image, title } = Astro.props;
+
+// Helper function to optimize GraphCMS image URLs
+function optimizeImageUrl(url: string, width: number, height: number, quality: number = 80) {
+    if (!url) return url;
+
+    // For GraphCMS/Hygraph images, add transformation parameters
+    if (url.includes('graphassets.com')) {
+        // Use Hygraph's image transformation API
+        // Format: /resize=width:W,height:H,fit:crop/quality=value:Q/compress/
+        const transformations = [
+            `resize=width:${width},height:${height},fit:max`,
+            `quality=value:${quality}`,
+            'compress',
+        ].join('/');
+
+        // Insert transformations before the asset ID
+        const parts = url.split('/');
+        const assetIndex = parts.findIndex((part) => part.length > 20 && !part.includes('.'));
+        if (assetIndex > 0) {
+            parts.splice(assetIndex, 0, transformations);
+            return parts.join('/');
+        }
+    }
+
+    return url;
+}
+
+const thumbnailUrl = optimizeImageUrl(image, 596, 384, 85);
+const fullImageUrl = optimizeImageUrl(image, 1200, 900, 75);
 ---
 
 <a class="thumbnail" href={`#${image}`}>
-    <Image
-        src={image}
-        alt={title}
-        width={596}
-        height={384}
-        loading="lazy"
-        decoding="async"
-        quality={85}
-        format="avif"
-    />
+    <img src={thumbnailUrl} alt={title} width={596} height={384} loading="lazy" decoding="async" />
 </a>
 
 <div class="lightbox animate" id={image}>
     <a class="lightboxClose" href="#!">close</a>
-    <Image
-        class="animate"
-        src={image}
-        alt={title}
-        width={1200}
-        height={900}
-        quality={80}
-        format="avif"
-    />
+    <img class="animate" src={fullImageUrl} alt={title} width={1200} height={900} />
 </div>
 
 <style>
