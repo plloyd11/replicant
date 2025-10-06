@@ -1,5 +1,6 @@
 ---
 import Lightbox from './Lightbox.astro';
+
 const { product } = Astro.props;
 
 // Create a new Date object from the product.preOrder string
@@ -9,30 +10,120 @@ const preOrderDate = new Date(product.preOrder);
 const formattedPreOrderDate = `${
     preOrderDate.getMonth() + 1
 }/${preOrderDate.getDate()}/${preOrderDate.getFullYear().toString()}`;
+
+// Calculate sale price if item is on sale (20% discount)
+const salePrice = product.sale ? (product.price * 0.8).toFixed(2) : null;
+const displayPrice = product.sale ? salePrice : product.price;
+
+// Process size options for sale and regular items
+const sizeOptions = product.sizes
+    ? // If product has size data, use it
+      String(product.sizes)
+          .split(/\||,/)
+          .map((size) => size.trim())
+          .filter((size) => size) // Remove empty entries
+          .map((size) => {
+              // Standardize size formatting
+              return size
+                  .replace(/\bsmall\b/i, 'Small')
+                  .replace(/\bmedium\b/i, 'Medium')
+                  .replace(/\blarge\b/i, 'Large')
+                  .replace(/\bxl\b/i, 'XL')
+                  .replace(/\bxxl\b/i, '2XL')
+                  .replace(/\bxxxl\b/i, '3XL')
+                  .replace(/double_xl/i, '2XL')
+                  .replace(/triple_xl/i, '3XL');
+          })
+          .join(' | ')
+    : // Otherwise use default sizes for non-sale clothing items
+      product.productType === 'clothing' && !product.sale
+      ? 'Small | Medium | Large | XL | XXL | XXXL'
+      : null;
+
+// Format sizes for filtering (display format with dots)
+function formatSizes(sizes) {
+    if (!sizes) {
+        if (product.productType === 'clothing') {
+            return 'Small · Medium · Large · XL · 2XL · 3XL';
+        }
+        return '';
+    }
+
+    const sizesStr = String(sizes);
+    const sizeArray = sizesStr.split(/\||,/).map((size) => {
+        let cleanSize = size
+            .trim()
+            .replace(/_/g, ' ')
+            .replace(/\bsmall\b/i, 'Small')
+            .replace(/\bmedium\b/i, 'Medium')
+            .replace(/\blarge\b/i, 'Large')
+            .replace(/\bxl\b/i, 'XL')
+            .replace(/\bdouble xl\b/i, '2XL')
+            .replace(/\btriple xl\b/i, '3XL')
+            .replace(/\bxxl\b/i, '2XL')
+            .replace(/\bxxxl\b/i, '3XL');
+        return cleanSize;
+    });
+
+    return sizeArray.join(' · ');
+}
+
+const filterSizes = formatSizes(product.sizes);
 ---
 
-<div class="flex flex-col justify-between" data-product-type={product.productType}>
+<div
+    class="flex flex-col justify-between"
+    data-product-type={product.productType}
+    data-sizes={filterSizes}
+    data-sale={product.sale ? 'true' : 'false'}
+>
     <div class="relative">
-        <div class="relative w-full overflow-hidden rounded-lg h-72">
-            <div class="absolute top-1 right-1">
+        <div class="overflow-hidden relative w-full h-96 rounded-lg">
+            {
+                product.sale && (
+                    <div class="absolute top-1 right-1 z-10">
+                        <span class="inline-flex items-center px-3 pt-0.5 text-sm font-bold rounded-full bg-primary text-replicant-900">
+                            SALE
+                        </span>
+                    </div>
+                )
+            }
+            <!-- <div class="absolute top-1 right-1">
                 <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-replicant-100 text-replicant-800"
+                    class="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-full bg-replicant-100 text-replicant-800"
                 >
                     {product.productType}
                 </span>
-            </div>
+            </div> -->
             <Lightbox image={product.images[0].url} title={product.title} />
-            <div class="absolute inset-x-0 bottom-0 flex items-end justify-end p-2 overflow-hidden">
-                <p class="relative text-lg font-semibold text-replicant-100 text-shadow">
-                    ${product.price}.00
-                </p>
+            <!-- Floor fade gradient for better price readability -->
+            <div class="floor-fade"></div>
+            <div
+                class="flex overflow-hidden absolute inset-x-0 bottom-0 z-10 justify-end items-end p-2"
+            >
+                {
+                    product.sale ? (
+                        <div class="flex gap-2 items-center">
+                            <p class="relative text-sm font-semibold line-through text-replicant-100/70 text-shadow">
+                                ${product.price}.00
+                            </p>
+                            <p class="relative text-lg font-bold text-primary text-shadow">
+                                ${salePrice}
+                            </p>
+                        </div>
+                    ) : (
+                        <p class="relative text-lg font-semibold text-replicant-100 text-shadow">
+                            ${product.price}.00
+                        </p>
+                    )
+                }
             </div>
         </div>
         <div class="relative mt-4">
-            <h3 class="text-lg font-medium font-body text-replicant-100">{product.title}</h3>
+            <p class="text-xl font-medium text-replicant-100">{product.title}</p>
             {
                 product.preOrder && (
-                    <p class="mt-1 text-sm italic font-light text-secondaryColor">
+                    <p class="mt-1 text-sm italic font-light text-secondary">
                         This item is a pre-order and will ship on {formattedPreOrderDate}
                     </p>
                 )
@@ -46,24 +137,24 @@ const formattedPreOrderDate = `${
         {
             product.productType === 'clothing' ? (
                 <button
-                    class="relative flex items-center justify-center px-8 py-2 text-sm font-medium transition-all duration-200 border border-transparent rounded-md snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
+                    class="flex relative justify-center items-center px-8 py-2 text-sm font-medium rounded-md border border-transparent transition-all duration-200 cursor-pointer snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
                     data-item-id={product.id}
-                    data-item-price={product.price}
+                    data-item-price={displayPrice}
                     data-item-url="/"
                     data-item-description={product.description}
                     data-item-image={product.images[0].url}
                     data-item-name={product.title}
                     data-item-weight={product.productWeight}
-                    data-item-custom1-name="Size"
-                    data-item-custom1-options="Small | Medium | Large | XL | XXL | XXXL"
+                    data-item-custom1-name={sizeOptions ? 'Size' : null}
+                    data-item-custom1-options={sizeOptions}
                 >
                     Add to bag
                 </button>
             ) : product.productType === 'digital' ? (
                 <button
-                    class="relative flex items-center justify-center px-8 py-2 text-sm font-medium transition-all duration-200 border border-transparent rounded-md snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
+                    class="flex relative justify-center items-center px-8 py-2 text-sm font-medium rounded-md border border-transparent transition-all duration-200 cursor-pointer snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
                     data-item-id={product.id}
-                    data-item-price={product.price}
+                    data-item-price={displayPrice}
                     data-item-url="/"
                     data-item-file-guid={product.fileGuid}
                     data-item-shippable="false"
@@ -75,9 +166,9 @@ const formattedPreOrderDate = `${
                 </button>
             ) : (
                 <button
-                    class="relative flex items-center justify-center px-8 py-2 text-sm font-medium transition-all duration-200 border border-transparent rounded-md snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
+                    class="flex relative justify-center items-center px-8 py-2 text-sm font-medium rounded-md border border-transparent transition-all duration-200 cursor-pointer snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
                     data-item-id={product.id}
-                    data-item-price={product.price}
+                    data-item-price={displayPrice}
                     data-item-url="/"
                     data-item-description={product.description}
                     data-item-image={product.images[0].url}
@@ -94,5 +185,16 @@ const formattedPreOrderDate = `${
 <style>
     .text-shadow {
         text-shadow: 0 2px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    .floor-fade {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 1;
     }
 </style>

@@ -22,6 +22,7 @@ interface Product {
 
 let products: Product[] = [];
 let sizes: string[] = [];
+let categories: string[] = [];
 
 try {
     const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
@@ -57,15 +58,6 @@ try {
         const resultJSON = await result.json();
         products = resultJSON.data.products;
 
-        // Log the raw products data to see what sizes field contains
-        products.slice(0, 3).forEach((product, index) => {
-            console.log(`Product ${index + 1} - ${product.title}:`, {
-                sizes: product.sizes,
-                productType: product.productType,
-                sale: product.sale,
-            });
-        });
-
         // turn createdAt into a date object
         products.forEach((product) => {
             product.createdAt = new Date(product.createdAt);
@@ -78,19 +70,20 @@ try {
             return b.createdAt.getTime() - a.createdAt.getTime();
         });
 
+        // Extract unique categories from product types
+        const allCategories = new Set<string>();
+        products.forEach((product) => {
+            if (product.productType) {
+                allCategories.add(product.productType);
+            }
+        });
+        categories = Array.from(allCategories).sort();
+
         // Extract unique sizes from all products
         const allSizes = new Set<string>();
-        allSizes.add('All');
-
-        // Debug counter for clothing with sizes
-        let clothingItemsWithSizes = 0;
 
         products.forEach((product) => {
-            console.log(`Processing sizes for ${product.title}:`, product.sizes);
-
             if (product.sizes && typeof product.sizes === 'string') {
-                clothingItemsWithSizes++;
-
                 // Split sizes by pipe and add each individually
                 product.sizes.split('|').forEach((size) => {
                     // Clean up the size
@@ -104,36 +97,18 @@ try {
                         .replace('triple_xl', '3XL')
                         .replace('double_xl', '2XL');
 
-                    console.log(`  Adding size: ${cleanSize} (from ${size})`);
-                    allSizes.add(cleanSize);
+                    if (cleanSize) {
+                        allSizes.add(cleanSize);
+                    }
                 });
             }
         });
 
-        console.log(`Found ${clothingItemsWithSizes} items with size data`);
-        console.log('AllSizes set:', allSizes);
-
-        // If we found no sizes (or only "All"), use product types as fallback
-        if (allSizes.size <= 1) {
-            console.log('No sizes found, falling back to hardcoded sizes');
-
-            // Use hardcoded sizes for clothing items in the correct order
-            if (products.some((p) => p.productType === 'clothing')) {
-                sizes = ['All', 'Small', 'Medium', 'Large', 'XL', '2XL', '3XL'];
-                console.log('Using hardcoded sizes in standard order:', sizes);
-            } else {
-                // Extract unique categories as fallback
-                const productTypes = [
-                    'All',
-                    ...new Set(products.map((product) => product.productType)),
-                ];
-                sizes = productTypes;
-            }
+        // If we found no sizes, use default clothing sizes
+        if (allSizes.size === 0 && products.some((p) => p.productType === 'clothing')) {
+            sizes = ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL'];
         } else {
             sizes = Array.from(allSizes).sort((a, b) => {
-                if (a === 'All') return -1;
-                if (b === 'All') return 1;
-
                 const sizeOrder = {
                     Small: 1,
                     Medium: 2,
@@ -146,10 +121,6 @@ try {
                 return (sizeOrder[a] || 99) - (sizeOrder[b] || 99);
             });
         }
-
-        // Debug log to check if sizes are being properly extracted
-        console.log('Available sizes:', sizes);
-        console.log('Number of sale products:', products.length);
     } else {
         console.log('Error fetching data');
         throw new Error(`${result.status}: ${result.statusText}`);
@@ -164,32 +135,23 @@ try {
     desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
 >
     <main>
-        <div class="text-center bg-primaryColor/5 py-8 sm:py-16 px-2">
+        <div class="text-center bg-primary/5 py-8 sm:py-16 px-2">
             <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-replicant-100">
                 Infinite Exhaustion Summer Tour Merch Blowout
             </h1>
             <p class="mx-auto mt-4 max-w-3xl text-lg text-replicant-300">
                 We've returned from our European tour and are clearing out the remaining shirts.
             </p>
-            <div class="mt-12">
-                <CategoryFilter client:load categories={sizes} />
-            </div>
         </div>
-        <section class="px-4 mx-auto max-w-7xl lg:px-6 py-4 sm:py-8">
-            <div
-                id="product-grid"
-                class="grid grid-cols-1 mt-6 sm:mt-16 gap-y-12 sm:grid-cols-2 sm:gap-x-10"
-            >
+        <CategoryFilter client:load categories={categories} sizes={sizes}>
+            <div id="product-grid" class="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-10">
                 {products.map((product) => <ProductSale product={product} />)}
             </div>
-        </section>
+        </CategoryFilter>
     </main>
 </BaseLayout>
 
 <script is:inline>
-    // Order of sizes for filtering
-    const sizeOrder = ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL'];
-
     function initializeFilter() {
         const productGrid = document.getElementById('product-grid');
         if (!productGrid) {
@@ -198,35 +160,44 @@ try {
         }
         const products = Array.from(productGrid.children);
 
-        document.addEventListener('categoryChange', (event) => {
-            const selectedValue = event.detail.category;
-            console.log('Selected filter value:', selectedValue);
+        document.addEventListener('filtersChange', (event) => {
+            const { categories: selectedCategories, sizes: selectedSizes } = event.detail;
 
             products.forEach((product) => {
-                // Always show all products when "All" is selected
-                if (selectedValue === 'All') {
+                const productType = product.dataset.productType;
+                const productSizes = product.dataset.sizes || '';
+
+                // If no filters are selected, show all products
+                if (selectedCategories.length === 0 && selectedSizes.length === 0) {
                     product.style.display = '';
                     return;
                 }
 
-                const productType = product.dataset.productType;
-                const productSizes = product.dataset.sizes || '';
+                let showProduct = false;
 
-                // If it's a clothing item and we're filtering by a size
-                if (productType === 'clothing' && sizeOrder.includes(selectedValue)) {
-                    // Show if it has that size
-                    if (productSizes && productSizes.includes(selectedValue)) {
-                        product.style.display = '';
-                    } else {
-                        product.style.display = 'none';
+                // Check if product matches any selected category
+                if (selectedCategories.length > 0) {
+                    if (selectedCategories.includes(productType)) {
+                        showProduct = true;
                     }
                 }
-                // If we're filtering by product type
-                else if (selectedValue === productType) {
-                    product.style.display = '';
-                } else {
-                    product.style.display = 'none';
+
+                // Check if product matches any selected size
+                if (selectedSizes.length > 0) {
+                    const hasMatchingSize = selectedSizes.some((size) =>
+                        productSizes.includes(size)
+                    );
+
+                    // If we have both category and size filters, product must match both
+                    if (selectedCategories.length > 0) {
+                        showProduct = showProduct && hasMatchingSize;
+                    } else {
+                        // If only size filters, just check size
+                        showProduct = hasMatchingSize;
+                    }
                 }
+
+                product.style.display = showProduct ? '' : 'none';
             });
         });
     }

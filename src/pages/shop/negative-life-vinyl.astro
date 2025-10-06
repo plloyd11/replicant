@@ -14,12 +14,12 @@ const images = [img4, img1, img2, img3];
     desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
 >
     <div class="">
-        <div class="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <div class="px-4 py-16 mx-auto max-w-2xl sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
                 <!-- Image gallery -->
                 <div class="flex flex-col-reverse">
                     <!-- Image selector -->
-                    <div class="hidden w-full max-w-2xl mx-auto mt-6 sm:block lg:max-w-none">
+                    <div class="hidden mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
                         <div
                             class="grid grid-cols-4 gap-6"
                             aria-orientation="horizontal"
@@ -29,22 +29,23 @@ const images = [img4, img1, img2, img3];
                                 images.map((image, index) => (
                                     <button
                                         id={`tabs-${index + 1}-tab-${index + 1}`}
-                                        class="relative flex items-center justify-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                                        class="flex relative justify-center items-center h-24 text-sm font-medium uppercase bg-white rounded-md cursor-pointer text-replicant-100 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
                                         aria-controls={`tabs-${index + 1}-panel-${index + 1}`}
                                         role="tab"
                                         type="button"
                                         data-image-index={index}
                                     >
                                         <span class="sr-only">View {index + 1}</span>
-                                        <span class="absolute inset-0 overflow-hidden rounded-md">
+                                        <span class="overflow-hidden absolute inset-0 rounded-md">
                                             <Image
                                                 src={image}
                                                 alt={`Product image ${index + 1}`}
                                                 class="object-cover object-center w-full h-full"
+                                                format="avif"
                                             />
                                         </span>
                                         <span
-                                            class="absolute inset-0 rounded-md pointer-events-none ring-2 ring-transparent ring-offset-2"
+                                            class="absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 pointer-events-none"
                                             aria-hidden="true"
                                         />
                                     </button>
@@ -89,7 +90,7 @@ const images = [img4, img1, img2, img3];
 
                     <div class="flex mt-10">
                         <button
-                            class="flex items-center justify-center flex-1 max-w-xs px-8 py-3 text-base font-medium border border-transparent rounded-md text-replicant-900 snipcart-add-item bg-primaryColor hover:bg-primaryColorDark focus:outline-none focus:ring-2 focus:ring-replicant-800 focus:ring-offset-2 focus:ring-offset-replicant-500 sm:w-full"
+                            class="flex flex-1 justify-center items-center px-8 py-3 max-w-xs text-base font-medium rounded-md border border-transparent text-replicant-900 snipcart-add-item bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-replicant-800 focus:ring-offset-2 focus:ring-offset-replicant-500 sm:w-full"
                             data-item-id="0000002"
                             data-item-price="25"
                             data-item-url="/shop/negative-life-vinyl"

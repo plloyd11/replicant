@@ -4,8 +4,8 @@
 
     let navItems = [
         {
-            name: 'hardware',
-            anchor: '#hardware',
+            name: 'merch',
+            anchor: '#merch',
         },
         {
             name: 'transmissions',
@@ -33,13 +33,13 @@
 
 <header class="z-10 w-full shadow">
     <nav aria-label="Top" class="relative py-4 rounded">
-        <div class="relative z-10 flex justify-between w-full h-full px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-start gap-8 sm:justify-center">
+        <div class="flex relative z-10 justify-between px-4 w-full h-full sm:px-6 lg:px-8">
+            <div class="flex gap-8 justify-start sm:justify-center">
                 <a href="/">
                     <span class="sr-only">Replicant - New Jersey Death Metal</span>
                     <img src="/assets/logo-white.png" alt="Replicant Logo" class="w-24" />
                 </a>
-                <div class="items-center hidden space-x-8 lg:flex">
+                <div class="hidden items-center space-x-8 lg:flex">
                     {#each navItems as navItem}
                         <a href={navItem.anchor} class="text-lg font-medium text-replicant-200">
                             {navItem.name}
@@ -47,11 +47,11 @@
                     {/each}
                 </div>
             </div>
-            <div class="flex items-center justify-end space-x-8">
-                <div class="items-center hidden space-x-2 cursor-pointer sm:flex">
+            <div class="flex justify-end items-center space-x-8">
+                <div class="hidden items-center space-x-2 cursor-pointer sm:flex">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-7 w-7 text-replicant-200"
+                        class="w-7 h-7 text-replicant-200"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -86,7 +86,7 @@
                 <div class="flex items-center space-x-2 cursor-pointer snipcart-checkout">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-7 w-7 text-replicant-200"
+                        class="w-7 h-7 text-replicant-200"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -101,7 +101,7 @@
                     <button class="font-medium text-replicant-200">
                         <span class="hidden sm:inline-block">bag</span>
                         <span
-                            class="ml-2 text-sm font-medium text-tertiaryColor group-hover:text-gray-800 snipcart-items-count"
+                            class="ml-2 text-sm font-medium text-tertiary group-hover:text-gray-800 snipcart-items-count"
                         />
                     </button>
                 </div>
@@ -117,7 +117,7 @@
                 class="absolute top-[88px] z-[15] inset-x-0 transition transform origin-top-right max-w-xs mx-auto"
             >
                 <div
-                    class="p-6 divide-y-2 rounded-bl-lg rounded-br-lg shadow-2xl ring-1 ring-black ring-opacity-5 bg-replicant-700 divide-gray-50"
+                    class="p-6 rounded-br-lg rounded-bl-lg divide-y-2 divide-gray-50 ring-1 ring-black ring-opacity-5 shadow-2xl bg-replicant-700"
                 >
                     <div class="flex flex-col space-y-4">
                         {#each navItems as navItem}
@@ -126,12 +126,12 @@
                             </a>
                         {/each}
                         <div
-                            class="flex items-center justify-between space-x-2 cursor-pointer snipcart-customer-signin"
+                            class="flex justify-between items-center space-x-2 cursor-pointer snipcart-customer-signin"
                         >
                             <button class="font-medium text-replicant-200"> account </button>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                class="h-7 w-7 text-replicant-200"
+                                class="w-7 h-7 text-replicant-200"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"

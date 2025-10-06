@@ -21,7 +21,8 @@ interface Product {
     preOrder: boolean;
     fileGuid: string;
     createdAt: Date;
-    sale: boolean;
+    sale?: boolean;
+    sizes?: string;
 }
 
 interface Review {
@@ -43,6 +44,7 @@ let products: Product[] = [];
 let reviews: Review[] = [];
 let shows: Show[] = [];
 let categories: string[] = [];
+let sizes: string[] = [];
 
 try {
     const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
@@ -59,6 +61,7 @@ try {
                         description
                         price
                         sale
+                        sizes
                         images {
                             id
                             url
@@ -104,10 +107,7 @@ try {
             product.createdAt = new Date(product.createdAt);
         });
 
-        // Filter out items that are on sale
-        products = products.filter((product) => !product.sale);
-
-        // sort products by createdAt
+        // sort products by createdAt (sale items first, then by date)
         products.sort((a, b) => {
             if (a.productType === 'clothing' && b.productType !== 'clothing') return -1;
             if (b.productType === 'clothing' && a.productType !== 'clothing') return 1;
@@ -118,8 +118,57 @@ try {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
 
-        // Extract unique categories
-        categories = ['All', ...new Set(products.map((product) => product.productType))];
+        // Extract unique categories from product types
+        const allCategories = new Set<string>();
+        products.forEach((product) => {
+            if (product.productType) {
+                allCategories.add(product.productType);
+            }
+        });
+
+        // Add "Sale" category if any products are on sale
+        if (products.some((product) => product.sale)) {
+            allCategories.add('Sale');
+        }
+
+        categories = Array.from(allCategories).sort();
+
+        // Extract unique sizes from all products
+        const allSizes = new Set<string>();
+        products.forEach((product) => {
+            if (product.sizes && typeof product.sizes === 'string') {
+                product.sizes.split('|').forEach((size) => {
+                    const cleanSize = size
+                        .trim()
+                        .replace('Small', 'Small')
+                        .replace('Medium', 'Medium')
+                        .replace('Large', 'Large')
+                        .replace('XXL', '2XL')
+                        .replace('XXXL', '3XL')
+                        .replace('triple_xl', '3XL')
+                        .replace('double_xl', '2XL');
+                    if (cleanSize) {
+                        allSizes.add(cleanSize);
+                    }
+                });
+            }
+        });
+
+        if (allSizes.size === 0 && products.some((p) => p.productType === 'clothing')) {
+            sizes = ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL'];
+        } else {
+            sizes = Array.from(allSizes).sort((a, b) => {
+                const sizeOrder = {
+                    Small: 1,
+                    Medium: 2,
+                    Large: 3,
+                    XL: 4,
+                    '2XL': 5,
+                    '3XL': 6,
+                };
+                return (sizeOrder[a] || 99) - (sizeOrder[b] || 99);
+            });
+        }
     } else {
         console.log('Error fetching data');
         throw new Error(`${result.status}: ${result.statusText}`);
@@ -135,40 +184,92 @@ try {
 >
     <Hero reviews={reviews[0]} />
     <main class="py-10 space-y-20 lg:space-y-40 lg:py-16">
-        <section id="hardware" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header !mb-8">Hardware</h2>
-            <CategoryFilter client:load categories={categories} />
-            <div
-                id="product-grid"
-                class="grid grid-cols-1 mt-16 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3"
-            >
-                {products.map((product) => <Product product={product} />)}
-            </div>
+        <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+            <h2 class="section-header !mb-8">Merch</h2>
+            <CategoryFilter client:load categories={categories} sizes={sizes}>
+                <div>
+                    <div
+                        id="product-grid"
+                        class="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3"
+                    >
+                        {products.map((product) => <Product product={product} />)}
+                    </div>
+                    <div id="no-results" class="hidden no-results">
+                        <div class="no-results-content">
+                            <p class="mb-2 text-3xl font-bold text-replicant-100">🤘</p>
+                            <p class="text-xl font-bold text-replicant-100">
+                                We're sold outta this shit, try something else dawg!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </CategoryFilter>
         </section>
         <section
             id="transmissions"
-            class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32"
+            class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32"
         >
             <h2 class="section-header">Transmissions</h2>
             <Transmissions />
         </section>
-        <section id="emanations" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="emanations" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Emanations</h2>
+            <p class="text-2xl text-center text-replicant-200">
+                We're done with shows until next year. STUDIO TIME ⚔️
+            </p>
             <Emanations shows={shows} />
         </section>
         <section
             id="communications"
-            class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32"
+            class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32"
         >
             <h2 class="section-header">Communications</h2>
             <Communications />
         </section>
-        <section id="build" class="px-4 mx-auto max-w-7xl lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <section id="build" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Build</h2>
             <Build />
         </section>
     </main>
 </BaseLayout>
+
+<style is:global>
+    .product-item {
+        transition: opacity 0.3s ease-in-out;
+        opacity: 1;
+    }
+
+    .product-item.hiding {
+        opacity: 0;
+    }
+
+    .product-item.hidden {
+        display: none;
+    }
+
+    .no-results {
+        transition: opacity 0.3s ease-in-out;
+        opacity: 1;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .no-results.hidden {
+        opacity: 0;
+        pointer-events: none;
+        display: none;
+    }
+
+    .no-results-content {
+        text-align: center;
+        padding: 3rem;
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.02);
+    }
+</style>
 
 <script is:inline>
     function initializeFilter() {
@@ -179,18 +280,85 @@ try {
         }
         const products = Array.from(productGrid.children);
 
-        document.addEventListener('categoryChange', (event) => {
-            const selectedCategory = event.detail.category;
-            console.log('Selected category:', selectedCategory); // Debug log
-            products.forEach((product) => {
+        // Add product-item class to all products
+        products.forEach((product) => {
+            product.classList.add('product-item');
+        });
+
+        document.addEventListener('filtersChange', (event) => {
+            const { categories: selectedCategories, sizes: selectedSizes } = event.detail;
+            const noResultsEl = document.getElementById('no-results');
+            let visibleCount = 0;
+
+            products.forEach((product, index) => {
                 const productType = product.dataset.productType;
-                console.log('Product type:', productType); // Debug log
-                if (selectedCategory === 'All' || productType === selectedCategory) {
-                    product.style.display = '';
+                const productSizes = product.dataset.sizes || '';
+                const isSale = product.dataset.sale === 'true';
+
+                // If no filters are selected, show all products
+                if (selectedCategories.length === 0 && selectedSizes.length === 0) {
+                    // Remove hidden class and hiding class
+                    product.classList.remove('hidden', 'hiding');
+                    visibleCount++;
+                    return;
+                }
+
+                let showProduct = false;
+
+                // Check if product matches any selected category
+                if (selectedCategories.length > 0) {
+                    // Check for regular product type match
+                    if (selectedCategories.includes(productType)) {
+                        showProduct = true;
+                    }
+                    // Check if "Sale" is selected and this is a sale item
+                    if (selectedCategories.includes('Sale') && isSale) {
+                        showProduct = true;
+                    }
+                }
+
+                // Check if product matches any selected size
+                if (selectedSizes.length > 0) {
+                    const hasMatchingSize = selectedSizes.some((size) =>
+                        productSizes.includes(size)
+                    );
+
+                    // If we have both category and size filters, product must match both
+                    if (selectedCategories.length > 0) {
+                        showProduct = showProduct && hasMatchingSize;
+                    } else {
+                        // If only size filters, just check size
+                        showProduct = hasMatchingSize;
+                    }
+                }
+
+                if (showProduct) {
+                    // Show product with a slight stagger effect
+                    product.classList.remove('hidden', 'hiding');
+                    product.style.transitionDelay = `${index * 0.03}s`;
+                    visibleCount++;
                 } else {
-                    product.style.display = 'none';
+                    // Hide product with animation
+                    product.style.transitionDelay = '0s';
+                    product.classList.add('hiding');
+
+                    // After animation completes, add hidden class
+                    setTimeout(() => {
+                        if (product.classList.contains('hiding')) {
+                            product.classList.add('hidden');
+                        }
+                    }, 300); // Match the transition duration
                 }
             });
+
+            // Show/hide no results message
+            if (noResultsEl) {
+                if (visibleCount === 0) {
+                    noResultsEl.classList.remove('hidden');
+                } else {
+                    noResultsEl.classList.add('hidden');
+                }
+            }
         });
     }
 

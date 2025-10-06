@@ -1,5 +1,6 @@
 ---
 import Lightbox from './Lightbox.astro';
+
 const { product } = Astro.props;
 
 // Apply the 15% discount to the product price
@@ -41,8 +42,6 @@ function formatSizes(sizes) {
 
 // Process the sizes for display
 const formattedSizes = formatSizes(product.sizes);
-console.log('Original sizes:', product.sizes);
-console.log('Formatted sizes:', formattedSizes);
 
 // Extract the individual size options for the dropdown
 const sizeOptions = product.sizes
@@ -68,9 +67,6 @@ const sizeOptions = product.sizes
       ? ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL']
       : [];
 
-// For debugging
-console.log('Size options for dropdown:', sizeOptions);
-
 // Process the sizes for filtering (same format but stored for JavaScript access)
 const filterSizes = formattedSizes;
 ---
@@ -82,20 +78,20 @@ const filterSizes = formattedSizes;
 >
     <div class="relative">
         <!-- Size data for filtering - visible to screen readers but accessible to JS -->
-        <span class="size-data sr-only">{filterSizes}</span>
+        <span class="sr-only size-data">{filterSizes}</span>
 
         <div class="relative w-full overflow-hidden rounded-lg h-[500px]">
             <Lightbox image={product.images[0].url} title={product.title} />
         </div>
         <div class="relative mt-4 space-y-3">
             <h3 class="text-lg font-medium font-body text-replicant-100">{product.title}</h3>
-            <div class="flex items-center gap-2">
+            <div class="flex gap-2 items-center">
                 <p
-                    class="relative text-lg font-semibold text-replicant-100 text-shadow line-through opacity-70"
+                    class="relative text-lg font-semibold line-through opacity-70 text-replicant-100 text-shadow"
                 >
                     ${product.price}.00
                 </p>
-                <p class="relative text-lg font-semibold text-primaryColor text-shadow">
+                <p class="relative text-lg font-semibold text-primary text-shadow">
                     ${salePrice}
                 </p>
             </div>
@@ -104,7 +100,7 @@ const filterSizes = formattedSizes;
             </p>
             {
                 product.sizes && (
-                    <p class="mt-1 text-sm text-secondaryColor italic size-display">
+                    <p class="mt-1 text-sm italic text-secondary size-display">
                         Available sizes: {formattedSizes}
                     </p>
                 )
@@ -113,7 +109,7 @@ const filterSizes = formattedSizes;
     </div>
     <div class="mt-6">
         <button
-            class="relative flex items-center justify-center px-8 py-2 text-sm font-medium transition-all duration-200 border border-transparent rounded-md snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
+            class="flex relative justify-center items-center px-8 py-2 text-sm font-medium rounded-md border border-transparent transition-all duration-200 snipcart-add-item bg-replicant-200 text-replicant-900 hover:bg-replicant-400"
             data-item-id={product.id}
             data-item-price={salePrice}
             data-item-url="/shop/sale/"

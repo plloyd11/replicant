@@ -1,17 +1,25 @@
 ---
 const { reviews } = Astro.props;
 import { Image } from 'astro:assets';
-import bois from '../../assets/hero.png';
+
+// Import all hero images
+const heroImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/heros/*.jpg', {
+    eager: true,
+});
+const heroImagesArray = Object.values(heroImages);
+
+// Randomly select one hero image
+const randomHero = heroImagesArray[Math.floor(Math.random() * heroImagesArray.length)];
 ---
 
-<section id="intro" class="relative mt-12 lg:mt-24 bg-replicant-900">
+<section id="intro" class="relative mt-6 bg-replicant-900">
     <div class="lg:relative lg:flex lg:items-center">
-        <div class="relative flex flex-col mx-auto max-w-screen-2xl">
-            <svg
+        <div class="flex relative flex-col mx-auto max-w-screen-2xl">
+            <!-- <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 706 376"
-                class="absolute max-w-3xl -translate-x-1/2 -top-10 left-1/2"
+                class="absolute -bottom-10 left-1/2 max-w-3xl -translate-x-1/2"
             >
                 <g clip-path="url(#a)">
                     <path
@@ -45,19 +53,23 @@ import bois from '../../assets/hero.png';
                         <path fill="#fff" d="M0 0h706v375.5H0z"></path>
                     </clipPath>
                 </defs>
-            </svg>
+            </svg> -->
             <div
-                class="flex items-center justify-between order-2 w-full px-4 mt-2 lg:mt-0 2xl:px-0 lg:order-1"
+                class="flex order-2 justify-between items-center px-4 mt-2 w-full lg:mt-0 2xl:px-0 lg:order-1"
             >
                 <p class="text-sm font-semibold uppercase text-replicant-300 xl:text-xl">
-                    Feral neuronic sonic depravity
+                    Respect New Jersey or prepare for combat
                 </p>
                 <p class="text-sm font-semibold uppercase text-replicant-300 xl:text-xl">
                     EST. MMXIV
                 </p>
             </div>
             <div class="order-1 lg:order-2">
-                <Image src={bois} alt="Replicant Dudes hangin' out in Germany" class="" />
+                <Image
+                    src={randomHero.default}
+                    alt="Photo of one of the members in Replicant playing a live show"
+                    format="avif"
+                />
             </div>
         </div>
     </div>

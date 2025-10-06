@@ -1,6 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    /* Font Families */
+    --font-display: "Iceberg", serif;
+    --font-body: "Overpass", serif;
+
+    /* Custom Colors */
+    --color-primary: #DA9252;
+    --color-primary-dark: #E38A3B;
+    --color-secondary: #968154;
+    --color-secondary-dark: #766542;
+    --color-tertiary: #5C6D7F;
+    --color-tertiary-dark: #45515F;
+
+    /* Replicant Color Palette */
+    --color-replicant-50: #F8FAFC;
+    --color-replicant-100: #F1F5F8;
+    --color-replicant-200: #E2E6E9;
+    --color-replicant-300: #E4ECDF;
+    --color-replicant-400: #89919A;
+    --color-replicant-500: #4C5661;
+    --color-replicant-600: #313A45;
+    --color-replicant-700: #262626;
+    --color-replicant-800: #2A2A2A;
+    --color-replicant-900: #161616;
+}
 
 @layer components {
     .section-header {
@@ -9,14 +33,14 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Iceberg", serif;
+    font-family: var(--font-display);
     font-weight: 400;
     font-style: normal;
 }
 
 html,
 body {
-    font-family: "Overpass", serif;
+    font-family: var(--font-body);
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;

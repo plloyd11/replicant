@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+
 const { image, title } = Astro.props;
 ---
 
@@ -11,13 +12,22 @@ const { image, title } = Astro.props;
         height={384}
         loading="lazy"
         decoding="async"
-        quality={100}
+        quality={85}
+        format="avif"
     />
 </a>
 
 <div class="lightbox animate" id={image}>
     <a class="lightboxClose" href="#!">close</a>
-    <Image class="animate" src={image} alt={title} width={1200} height={900} quality={90} />
+    <Image
+        class="animate"
+        src={image}
+        alt={title}
+        width={1200}
+        height={900}
+        quality={80}
+        format="avif"
+    />
 </div>
 
 <style>
