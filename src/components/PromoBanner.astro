@@ -1,45 +1,52 @@
-<div class="py-12">
-    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div
-            class="relative isolate flex flex-col gap-20 overflow-hidden bg-black px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-16 xl:flex-row xl:items-start"
-        >
-            <div class="flex flex-col xl:max-w-xl">
-                <h2
-                    class="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+<div>
+    <div class="mx-auto max-w-7xl py-2 px-4 promo-banner shadow-xl rounded-xl">
+        <div class="relative isolate overflow-hidden px-6 py-24 text-center sm:px-16">
+            <h2 class="text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
+                Void Channels
+            </h2>
+            <p class="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-white">
+                Subscribe to our newsletter to be the first to the know about the latest news, merch
+                drops, and tour dates.
+            </p>
+            <div class="mt-10 flex items-center justify-center gap-x-6">
+                <form
+                    class="w-full max-w-md"
+                    action="https://buttondown.com/api/emails/embed-subscribe/replicant"
+                    method="post"
+                    target="popupwindow"
+                    onsubmit="window.open('https://buttondown.com/replicant', 'popupwindow')"
                 >
-                    Void Channels
-                </h2>
-                <p class="mt-4 text-lg text-gray-300">
-                    Subscribe to our newsletter to be the first to the know about the latest news,
-                    merch drops, and tour dates.
-                </p>
+                    <div class="flex gap-x-4">
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input
+                            id="email-address"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            required
+                            class="min-w-0 flex-auto rounded-md px-3.5 pt-2 pb-1 text-base text-white outline -outline-offset-1 outline-white/10 placeholder:text-replicant-300/80 bg-replicant-600/80 focus:outline focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"
+                            placeholder="Enter your email"
+                        />
+                        <button
+                            type="submit"
+                            class="flex items-center justify-center px-4 py-2 text-base cursor-pointer font-medium text-replicant-900 border border-transparent rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                        >
+                            Subscribe
+                        </button>
+                    </div>
+                </form>
             </div>
-            <form
-                class="w-full max-w-md"
-                action="https://buttondown.com/api/emails/embed-subscribe/replicant"
-                method="post"
-                target="popupwindow"
-                onsubmit="window.open('https://buttondown.com/replicant', 'popupwindow')"
-            >
-                <div class="flex gap-x-4">
-                    <label for="email-address" class="sr-only">Email address</label>
-                    <input
-                        id="email-address"
-                        name="email"
-                        type="email"
-                        autocomplete="email"
-                        required
-                        class="min-w-0 flex-auto rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-white sm:text-sm/6"
-                        placeholder="Enter your email"
-                    />
-                    <button
-                        type="submit"
-                        class="flex items-center justify-center px-4 py-2 text-base font-medium text-white border border-transparent rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                    >
-                        Subscribe
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
+
+<style>
+    .promo-banner {
+        background-image:
+            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('https://res.cloudinary.com/observatory-team/image/upload/c_limit,w_1280,f_avif/v1759845562/ninj_zij5kg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>

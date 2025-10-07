@@ -8,6 +8,7 @@ import Transmissions from '../components/homepage/Transmissions.astro';
 import Emanations from '../components/homepage/Emanations.astro';
 import Communications from '../components/homepage/Communications.astro';
 import Build from '../components/homepage/Build.astro';
+import PromoBanner from '../components/PromoBanner.astro';
 
 interface Product {
     slug: string;
@@ -196,11 +197,11 @@ try {
 ---
 
 <BaseLayout
-    title="Replicant | New Jersey Death Metal"
-    desc="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
+    title="Replicant | New Jersey Death Metal | Official Site"
+    desc="Official site of Replicant, technical death metal from New Jersey. Stream music, shop vinyl & merch, book shows. New album Infinite Mortality available now."
 >
     <Hero reviews={reviews[0]} />
-    <main class="py-10 space-y-20 lg:space-y-40 lg:py-16">
+    <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
         <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header !mb-8">Merch</h2>
             <CategoryFilter client:load categories={categories} sizes={sizes}>
@@ -222,6 +223,7 @@ try {
                 </div>
             </CategoryFilter>
         </section>
+        <PromoBanner />
         <section
             id="transmissions"
             class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32"
