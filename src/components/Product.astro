@@ -3,6 +3,9 @@ import Lightbox from './Lightbox.astro';
 
 const { product } = Astro.props;
 
+// Safely get image URL or use placeholder
+const imageUrl = product.image?.url || product.image?.secure_url || '/assets/logo.png';
+
 // Create a new Date object from the product.preOrder string
 const preOrderDate = new Date(product.preOrder);
 
@@ -95,7 +98,7 @@ const filterSizes = formatSizes(product.sizes);
                     {product.productType}
                 </span>
             </div> -->
-            <Lightbox image={product.images[0].url} title={product.title} />
+            <Lightbox image={imageUrl} title={product.title} />
             <!-- Floor fade gradient for better price readability -->
             <div class="floor-fade"></div>
             <div
@@ -128,7 +131,7 @@ const filterSizes = formatSizes(product.sizes);
                     </p>
                 )
             }
-            <p class="mt-2 text-replicant-300 sm:line-clamp-3">
+            <p class="mt-2 text-replicant-400 sm:line-clamp-3">
                 {product.description}
             </p>
         </div>
@@ -142,13 +145,13 @@ const filterSizes = formatSizes(product.sizes);
                     data-item-price={displayPrice}
                     data-item-url="/"
                     data-item-description={product.description}
-                    data-item-image={product.images[0].url}
+                    data-item-image={imageUrl}
                     data-item-name={product.title}
                     data-item-weight={product.productWeight}
                     data-item-custom1-name={sizeOptions ? 'Size' : null}
                     data-item-custom1-options={sizeOptions}
                 >
-                    Add to bag
+                    ADD TO BAG
                 </button>
             ) : product.productType === 'digital' ? (
                 <button
@@ -159,10 +162,10 @@ const filterSizes = formatSizes(product.sizes);
                     data-item-file-guid={product.fileGuid}
                     data-item-shippable="false"
                     data-item-description={product.description}
-                    data-item-image={product.images[0].url}
+                    data-item-image={imageUrl}
                     data-item-name={product.title}
                 >
-                    Add to bag
+                    ADD TO BAG
                 </button>
             ) : (
                 <button
@@ -171,11 +174,11 @@ const filterSizes = formatSizes(product.sizes);
                     data-item-price={displayPrice}
                     data-item-url="/"
                     data-item-description={product.description}
-                    data-item-image={product.images[0].url}
+                    data-item-image={imageUrl}
                     data-item-name={product.title}
                     data-item-weight={product.productWeight}
                 >
-                    Add to bag
+                    ADD TO BAG
                 </button>
             )
         }

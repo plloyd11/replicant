@@ -31,10 +31,26 @@
     function toggleCategory(category: string) {
         if (selectedCategories.has(category)) {
             selectedCategories.delete(category);
+
+            // If clothing is unchecked, clear all size selections
+            if (category === 'clothing') {
+                selectedSizes.clear();
+                selectedSizes = selectedSizes; // Trigger reactivity
+            }
         } else {
             selectedCategories.add(category);
         }
         selectedCategories = selectedCategories; // Trigger reactivity
+
+        // Auto-clear sizes if only non-clothing categories are selected
+        if (selectedCategories.size > 0) {
+            const hasClothing = selectedCategories.has('clothing');
+            if (!hasClothing) {
+                selectedSizes.clear();
+                selectedSizes = selectedSizes; // Trigger reactivity
+            }
+        }
+
         handleFilterChange();
     }
 
@@ -43,6 +59,11 @@
             selectedSizes.delete(size);
         } else {
             selectedSizes.add(size);
+            // Auto-select clothing category when a size is selected
+            if (!selectedCategories.has('clothing')) {
+                selectedCategories.add('clothing');
+                selectedCategories = selectedCategories; // Trigger reactivity
+            }
         }
         selectedSizes = selectedSizes; // Trigger reactivity
         handleFilterChange();
@@ -113,7 +134,7 @@
                                 <legend class="block text-lg font-medium text-replicant-100"
                                     >Category</legend
                                 >
-                                <div class="pt-6 space-y-3">
+                                <div class="pt-4 space-y-2">
                                     {#each categoriesList as category, i}
                                         <div class="flex gap-3">
                                             <div class="flex items-center h-5 shrink-0">
@@ -146,50 +167,53 @@
                                                 >{category}</label
                                             >
                                         </div>
-                                    {/each}
-                                </div>
-                            </fieldset>
-                        </div>
-                    {/if}
 
-                    {#if sizesList.length > 0}
-                        <div class="py-6 first:pt-0 last:pb-0">
-                            <fieldset>
-                                <legend class="block text-lg font-medium text-replicant-100"
-                                    >Sizes</legend
-                                >
-                                <div class="pt-6 space-y-3">
-                                    {#each sizesList as size, i}
-                                        <div class="flex gap-3">
-                                            <div class="flex items-center h-5 shrink-0">
-                                                <div class="grid grid-cols-1 group size-4">
-                                                    <input
-                                                        id="sizes-{i}"
-                                                        type="checkbox"
-                                                        checked={selectedSizes.has(size)}
-                                                        on:change={() => toggleSize(size)}
-                                                        class="col-start-1 row-start-1 bg-transparent rounded-sm border appearance-none border-replicant-600 checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                                                    />
-                                                    <svg
-                                                        viewBox="0 0 14 14"
-                                                        fill="none"
-                                                        class="col-start-1 row-start-1 justify-self-center self-center pointer-events-none size-3.5 stroke-replicant-900"
-                                                    >
-                                                        <path
-                                                            d="M3 8L6 11L11 3.5"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="opacity-0 group-has-[:checked]:opacity-100"
-                                                        />
-                                                    </svg>
+                                        <!-- Nested sizes under clothing -->
+                                        {#if category === 'clothing' && sizesList.length > 0}
+                                            <div class="mt-2 ml-6 space-y-1.5">
+                                                <div class="text-sm font-medium text-replicant-200">
+                                                    Sizes
                                                 </div>
+                                                {#each sizesList as size, j}
+                                                    <div class="flex gap-3">
+                                                        <div class="flex items-center h-5 shrink-0">
+                                                            <div
+                                                                class="grid grid-cols-1 group size-4"
+                                                            >
+                                                                <input
+                                                                    id="sizes-{j}"
+                                                                    type="checkbox"
+                                                                    checked={selectedSizes.has(
+                                                                        size,
+                                                                    )}
+                                                                    on:change={() =>
+                                                                        toggleSize(size)}
+                                                                    class="col-start-1 row-start-1 bg-transparent rounded-sm border appearance-none border-replicant-600 checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                                                                />
+                                                                <svg
+                                                                    viewBox="0 0 14 14"
+                                                                    fill="none"
+                                                                    class="col-start-1 row-start-1 justify-self-center self-center pointer-events-none size-3.5 stroke-replicant-900"
+                                                                >
+                                                                    <path
+                                                                        d="M3 8L6 11L11 3.5"
+                                                                        stroke-width="2"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        class="opacity-0 group-has-[:checked]:opacity-100"
+                                                                    />
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                        <label
+                                                            for="sizes-{j}"
+                                                            class="text-sm capitalize text-replicant-400"
+                                                            >{size}</label
+                                                        >
+                                                    </div>
+                                                {/each}
                                             </div>
-                                            <label
-                                                for="sizes-{i}"
-                                                class="capitalize text-replicant-300">{size}</label
-                                            >
-                                        </div>
+                                        {/if}
                                     {/each}
                                 </div>
                             </fieldset>
@@ -207,18 +231,31 @@
 </main>
 
 <!-- Mobile filter dialog -->
-<dialog
-    id="mobile-filters"
-    class="overflow-hidden rounded-lg backdrop:bg-black/50 lg:hidden"
-    on:click={(e) => {
-        if (e.target === e.currentTarget) closeMobileFilters();
-    }}
->
+<dialog id="mobile-filters" class="overflow-hidden rounded-lg backdrop:bg-black/50 lg:hidden">
     <div
         class="fixed inset-0 transition-opacity duration-300 ease-linear bg-black/25 data-closed:opacity-0"
+        on:click={closeMobileFilters}
+        on:keydown={(e) => {
+            if (e.key === 'Escape') closeMobileFilters();
+        }}
+        role="button"
+        tabindex="-1"
+        aria-label="Close filters"
     ></div>
 
-    <div class="flex fixed inset-0 focus:outline-none">
+    <div
+        class="flex fixed inset-0 focus:outline-none"
+        on:click={(e) => {
+            // Close if clicking outside the panel
+            if (e.target === e.currentTarget) closeMobileFilters();
+        }}
+        on:keydown={(e) => {
+            if (e.key === 'Escape') closeMobileFilters();
+        }}
+        role="button"
+        tabindex="-1"
+        aria-label="Filter dialog overlay"
+    >
         <div
             class="flex overflow-y-auto relative flex-col pt-4 pb-6 ml-auto max-w-xs shadow-xl transform size-full bg-replicant-900"
         >
@@ -261,6 +298,7 @@
                                         toggleFilterSection('filter-section-category-mobile')}
                                     class="flex justify-between items-center p-2 w-full text-replicant-400 hover:text-replicant-100"
                                     commandfor="filter-section-category-mobile"
+                                    aria-expanded="true"
                                 >
                                     <span class="text-sm font-medium text-replicant-100"
                                         >Category</span
@@ -282,117 +320,95 @@
                                     </span>
                                 </button>
                             </legend>
-                            <div
-                                id="filter-section-category-mobile"
-                                hidden
-                                class="block px-4 pt-4 pb-2"
-                            >
-                                <div class="space-y-6">
+                            <div id="filter-section-category-mobile" class="block px-4 pt-4 pb-2">
+                                <div class="space-y-4">
                                     {#each categoriesList as category, i}
-                                        <div class="flex gap-3">
-                                            <div class="flex items-center h-5 shrink-0">
-                                                <div class="grid grid-cols-1 group size-4">
-                                                    <input
-                                                        id="category-{i}-mobile"
-                                                        type="checkbox"
-                                                        checked={selectedCategories.has(category)}
-                                                        on:change={() => toggleCategory(category)}
-                                                        class="col-start-1 row-start-1 bg-transparent rounded-sm border appearance-none border-replicant-600 checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                                                    />
-                                                    <svg
-                                                        viewBox="0 0 14 14"
-                                                        fill="none"
-                                                        class="col-start-1 row-start-1 justify-self-center self-center pointer-events-none size-3.5 stroke-replicant-900"
-                                                    >
-                                                        <path
-                                                            d="M3 8L6 11L11 3.5"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="opacity-0 group-has-[:checked]:opacity-100"
+                                        <div>
+                                            <div class="flex gap-3">
+                                                <div class="flex items-center h-5 shrink-0">
+                                                    <div class="grid grid-cols-1 group size-4">
+                                                        <input
+                                                            id="category-{i}-mobile"
+                                                            type="checkbox"
+                                                            checked={selectedCategories.has(
+                                                                category,
+                                                            )}
+                                                            on:change={() =>
+                                                                toggleCategory(category)}
+                                                            class="col-start-1 row-start-1 bg-transparent rounded-sm border appearance-none border-replicant-600 checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                                                         />
-                                                    </svg>
+                                                        <svg
+                                                            viewBox="0 0 14 14"
+                                                            fill="none"
+                                                            class="col-start-1 row-start-1 justify-self-center self-center pointer-events-none size-3.5 stroke-replicant-900"
+                                                        >
+                                                            <path
+                                                                d="M3 8L6 11L11 3.5"
+                                                                stroke-width="2"
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="opacity-0 group-has-[:checked]:opacity-100"
+                                                            />
+                                                        </svg>
+                                                    </div>
                                                 </div>
+                                                <label
+                                                    for="category-{i}-mobile"
+                                                    class="capitalize text-replicant-300"
+                                                    >{category}</label
+                                                >
                                             </div>
-                                            <label
-                                                for="category-{i}-mobile"
-                                                class="capitalize text-replicant-300"
-                                                >{category}</label
-                                            >
-                                        </div>
-                                    {/each}
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                {/if}
 
-                {#if sizesList.length > 0}
-                    <div class="pt-4 pb-4 border-t border-gray-200/10">
-                        <fieldset>
-                            <legend class="px-2 w-full">
-                                <button
-                                    type="button"
-                                    on:click={() =>
-                                        toggleFilterSection('filter-section-sizes-mobile')}
-                                    class="flex justify-between items-center p-2 w-full text-replicant-400 hover:text-replicant-100"
-                                    commandfor="filter-section-sizes-mobile"
-                                >
-                                    <span class="text-sm font-medium text-replicant-100">Sizes</span
-                                    >
-                                    <span class="flex items-center ml-6 h-7">
-                                        <svg
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                            data-slot="icon"
-                                            aria-hidden="true"
-                                            class="transform rotate-0 size-5"
-                                        >
-                                            <path
-                                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                                clip-rule="evenodd"
-                                                fill-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </span>
-                                </button>
-                            </legend>
-                            <div
-                                id="filter-section-sizes-mobile"
-                                hidden
-                                class="block px-4 pt-4 pb-2"
-                            >
-                                <div class="space-y-6">
-                                    {#each sizesList as size, i}
-                                        <div class="flex gap-3">
-                                            <div class="flex items-center h-5 shrink-0">
-                                                <div class="grid grid-cols-1 group size-4">
-                                                    <input
-                                                        id="sizes-{i}-mobile"
-                                                        type="checkbox"
-                                                        checked={selectedSizes.has(size)}
-                                                        on:change={() => toggleSize(size)}
-                                                        class="col-start-1 row-start-1 bg-transparent rounded-sm border appearance-none border-replicant-600 checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                                                    />
-                                                    <svg
-                                                        viewBox="0 0 14 14"
-                                                        fill="none"
-                                                        class="col-start-1 row-start-1 justify-self-center self-center pointer-events-none size-3.5 stroke-replicant-900"
+                                            <!-- Nested sizes under clothing in mobile -->
+                                            {#if category === 'clothing' && sizesList.length > 0}
+                                                <div class="mt-3 ml-6 space-y-2">
+                                                    <div
+                                                        class="text-xs font-medium text-replicant-200 uppercase tracking-wider"
                                                     >
-                                                        <path
-                                                            d="M3 8L6 11L11 3.5"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="opacity-0 group-has-[:checked]:opacity-100"
-                                                        />
-                                                    </svg>
+                                                        Sizes
+                                                    </div>
+                                                    {#each sizesList as size, j}
+                                                        <div class="flex gap-3">
+                                                            <div
+                                                                class="flex items-center h-5 shrink-0"
+                                                            >
+                                                                <div
+                                                                    class="grid grid-cols-1 group size-4"
+                                                                >
+                                                                    <input
+                                                                        id="sizes-{j}-mobile"
+                                                                        type="checkbox"
+                                                                        checked={selectedSizes.has(
+                                                                            size,
+                                                                        )}
+                                                                        on:change={() =>
+                                                                            toggleSize(size)}
+                                                                        class="col-start-1 row-start-1 bg-transparent rounded-sm border appearance-none border-replicant-600 checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                                                                    />
+                                                                    <svg
+                                                                        viewBox="0 0 14 14"
+                                                                        fill="none"
+                                                                        class="col-start-1 row-start-1 justify-self-center self-center pointer-events-none size-3.5 stroke-replicant-900"
+                                                                    >
+                                                                        <path
+                                                                            d="M3 8L6 11L11 3.5"
+                                                                            stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            class="opacity-0 group-has-[:checked]:opacity-100"
+                                                                        />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <label
+                                                                for="sizes-{j}-mobile"
+                                                                class="text-sm capitalize text-replicant-400"
+                                                                >{size}</label
+                                                            >
+                                                        </div>
+                                                    {/each}
                                                 </div>
-                                            </div>
-                                            <label
-                                                for="sizes-{i}-mobile"
-                                                class="capitalize text-replicant-300">{size}</label
-                                            >
+                                            {/if}
                                         </div>
                                     {/each}
                                 </div>

@@ -1,15 +1,11 @@
 ---
-const { reviews } = Astro.props;
 import { Image } from 'astro:assets';
 
-// Import all hero images
+// Import all hero images eagerly so they're available at build time
 const heroImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/heros/*.jpg', {
     eager: true,
 });
 const heroImagesArray = Object.values(heroImages);
-
-// Randomly select one hero image
-const randomHero = heroImagesArray[Math.floor(Math.random() * heroImagesArray.length)];
 ---
 
 <section id="intro" class="relative mt-6 bg-replicant-900">
@@ -65,12 +61,41 @@ const randomHero = heroImagesArray[Math.floor(Math.random() * heroImagesArray.le
                 </p>
             </div>
             <div class="order-1 lg:order-2">
-                <Image
-                    src={randomHero.default}
-                    alt="Photo of one of the members in Replicant playing a live show"
-                    format="avif"
-                />
+                <div id="hero-images" class="relative">
+                    {
+                        heroImagesArray.map((hero, index) => (
+                            <Image
+                                class="hero-image"
+                                data-index={index}
+                                src={hero.default}
+                                alt="Photo of one of the members in Replicant playing a live show"
+                                format="avif"
+                                style={index === 0 ? '' : 'display: none;'}
+                            />
+                        ))
+                    }
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    // This runs on every page load in the browser
+    function randomizeHeroImage() {
+        const heroImages = document.querySelectorAll<HTMLImageElement>('.hero-image');
+        if (heroImages.length === 0) return;
+
+        // Hide all images first
+        heroImages.forEach((img) => {
+            img.style.display = 'none';
+        });
+
+        // Randomly select and show one
+        const randomIndex = Math.floor(Math.random() * heroImages.length);
+        heroImages[randomIndex].style.display = 'block';
+    }
+
+    // Run immediately when the page loads
+    randomizeHeroImage();
+</script>

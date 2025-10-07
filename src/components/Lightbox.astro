@@ -1,12 +1,15 @@
 ---
 const { image, title } = Astro.props;
+
+// Create a safe ID from the image URL
+const safeId = `lightbox-${image.split('/').pop()?.split('.')[0] || Math.random().toString(36).substr(2, 9)}`;
 ---
 
-<a class="thumbnail" href={`#${image}`}>
+<a class="thumbnail" href={`#${safeId}`}>
     <img src={image} alt={title} width={596} height={384} loading="lazy" decoding="async" />
 </a>
 
-<div class="lightbox animate" id={image}>
+<div class="lightbox animate" id={safeId}>
     <a class="lightboxClose" href="#!">close</a>
     <img class="animate" src={image} alt={title} width={1200} height={900} />
 </div>

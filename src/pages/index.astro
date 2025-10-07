@@ -15,7 +15,7 @@ interface Product {
     title: string;
     description: string;
     price: number;
-    images: { id: string; url: string }[];
+    image: any; // Cloudinary JSON object with secure_url, url, etc.
     productType: string;
     productWeight: number;
     preOrder: boolean;
@@ -62,10 +62,7 @@ try {
                         price
                         sale
                         sizes
-                        images {
-                            id
-                            url
-                        }
+                        image
                         productType
                         productWeight
                         preOrder
@@ -102,9 +99,29 @@ try {
         reviews = resultJSON.data.reviews;
         shows = resultJSON.data.shows;
 
-        // turn createdAt into a date object
+        // Function to transform Cloudinary URLs to AVIF format with quality optimization
+        const transformCloudinaryUrl = (url: string) => {
+            if (url.includes('res.cloudinary.com')) {
+                // Add f_avif (format) and q_auto (quality) transformations
+                // Also change the file extension to .avif for clarity
+                return url
+                    .replace('/upload/', '/upload/f_avif,q_auto/')
+                    .replace(/\.(png|jpg|jpeg|webp)$/i, '.avif');
+            }
+            return url;
+        };
+
+        // turn createdAt into a date object and normalize image URLs
         products.forEach((product) => {
             product.createdAt = new Date(product.createdAt);
+            // Normalize image: if it's a Cloudinary object, ensure url is set to secure_url
+            if (product.image) {
+                if (typeof product.image === 'object' && product.image.secure_url) {
+                    product.image.url = transformCloudinaryUrl(product.image.secure_url);
+                } else if (typeof product.image === 'object' && product.image.url) {
+                    product.image.url = transformCloudinaryUrl(product.image.url);
+                }
+            }
         });
 
         // sort products by createdAt (sale items first, then by date)
@@ -318,17 +335,27 @@ try {
                 }
 
                 // Check if product matches any selected size
+                // Size filters only apply to clothing items
                 if (selectedSizes.length > 0) {
-                    const hasMatchingSize = selectedSizes.some((size) =>
-                        productSizes.includes(size)
-                    );
+                    // Only apply size filter to clothing items
+                    if (productType === 'clothing') {
+                        const hasMatchingSize = selectedSizes.some((size) =>
+                            productSizes.includes(size)
+                        );
 
-                    // If we have both category and size filters, product must match both
-                    if (selectedCategories.length > 0) {
-                        showProduct = showProduct && hasMatchingSize;
-                    } else {
-                        // If only size filters, just check size
-                        showProduct = hasMatchingSize;
+                        // If we have both category and size filters, product must match both
+                        if (selectedCategories.length > 0) {
+                            showProduct = showProduct && hasMatchingSize;
+                        } else {
+                            // If only size filters, just check size
+                            showProduct = hasMatchingSize;
+                        }
+                    }
+                    // Non-clothing items are not affected by size filters
+                    // If category is selected and matches, keep showProduct as is
+                    // If no category is selected, hide non-clothing items when size filter is active
+                    else if (selectedCategories.length === 0) {
+                        showProduct = false;
                     }
                 }
 
