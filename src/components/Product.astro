@@ -1,5 +1,6 @@
 ---
 import Lightbox from './Lightbox.astro';
+import { getSizeOptions, formatSizesForDisplay } from '../utils/sizes';
 
 const { product } = Astro.props;
 
@@ -18,63 +19,12 @@ const formattedPreOrderDate = `${
 const salePrice = product.sale ? (product.price * 0.8).toFixed(2) : null;
 const displayPrice = product.sale ? salePrice : product.price;
 
-// Process size options for sale and regular items
-const sizeOptions = product.sizes
-    ? // If product has size data, use it
-      String(product.sizes)
-          .split(/\||,/)
-          .map((size) => size.trim())
-          .filter((size) => size) // Remove empty entries
-          .map((size) => {
-              // Standardize size formatting
-              return size
-                  .replace(/\bsmall\b/i, 'Small')
-                  .replace(/\bmedium\b/i, 'Medium')
-                  .replace(/\blarge\b/i, 'Large')
-                  .replace(/\bxl\b/i, 'XL')
-                  .replace(/\bxxl\b/i, '2XL')
-                  .replace(/\bxxxl\b/i, '3XL')
-                  .replace(/double_xl/i, '2XL')
-                  .replace(/triple_xl/i, '3XL');
-          })
-          .join(' | ')
-    : // Otherwise use default sizes for non-sale clothing items
-      product.productType === 'clothing' && !product.sale
-      ? 'Small | Medium | Large | XL | XXL | XXXL'
-      : null;
-
-// Format sizes for filtering (display format with dots)
-function formatSizes(sizes) {
-    if (!sizes) {
-        if (product.productType === 'clothing') {
-            return 'Small · Medium · Large · XL · 2XL · 3XL';
-        }
-        return '';
-    }
-
-    const sizesStr = String(sizes);
-    const sizeArray = sizesStr.split(/\||,/).map((size) => {
-        let cleanSize = size
-            .trim()
-            .replace(/_/g, ' ')
-            .replace(/\bsmall\b/i, 'Small')
-            .replace(/\bmedium\b/i, 'Medium')
-            .replace(/\blarge\b/i, 'Large')
-            .replace(/\bxl\b/i, 'XL')
-            .replace(/\bdouble xl\b/i, '2XL')
-            .replace(/\btriple xl\b/i, '3XL')
-            .replace(/\bxxl\b/i, '2XL')
-            .replace(/\bxxxl\b/i, '3XL');
-        return cleanSize;
-    });
-
-    return sizeArray.join(' · ');
-}
-
-const filterSizes = formatSizes(product.sizes);
+const sizeOptions = getSizeOptions(product.sizes, product.productType, product.sale);
+const filterSizes = formatSizesForDisplay(product.sizes, product.productType);
 ---
 
-<div
+<article
+    aria-label={product.title}
     class="flex flex-col justify-between"
     data-product-type={product.productType}
     data-sizes={filterSizes}
@@ -91,13 +41,6 @@ const filterSizes = formatSizes(product.sizes);
                     </div>
                 )
             }
-            <!-- <div class="absolute top-1 right-1">
-                <span
-                    class="inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-full bg-replicant-100 text-replicant-800"
-                >
-                    {product.productType}
-                </span>
-            </div> -->
             <Lightbox image={imageUrl} title={product.title} />
             <!-- Floor fade gradient for better price readability -->
             <div class="floor-fade"></div>
@@ -183,7 +126,7 @@ const filterSizes = formatSizes(product.sizes);
             )
         }
     </div>
-</div>
+</article>
 
 <style>
     .text-shadow {

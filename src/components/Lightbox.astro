@@ -10,7 +10,7 @@ const safeId = `lightbox-${image.split('/').pop()?.split('.')[0] || Math.random(
 </a>
 
 <div class="lightbox animate" id={safeId}>
-    <a class="lightboxClose" href="#!">close</a>
+    <a class="lightboxClose" href="#!" aria-label="Close lightbox">close</a>
     <img class="animate" src={image} alt={title} width={1200} height={900} />
 </div>
 
@@ -48,10 +48,6 @@ const safeId = `lightbox-${image.split('/').pop()?.split('.')[0] || Math.random(
     }
 
     .animate {
-        -webkit-transition: 0.25s ease-in-out;
-        -moz-transition: 0.25s ease-in-out;
-        -ms-transition: 0.25s ease-in-out;
-        -o-transition: 0.25s ease-in-out;
         transition: 0.25s ease-in-out;
     }
 

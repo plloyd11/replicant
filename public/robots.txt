@@ -1,1 +1,6 @@
 User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_image/
+
+Sitemap: https://replicant.band/sitemap-index.xml

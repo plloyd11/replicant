@@ -5,69 +5,81 @@ import Banner from '../components/Banner.astro';
 
 import '../styles/global.css';
 
-const { title, desc } = Astro.props;
+const defaultTitle = 'Replicant | New Jersey Death Metal';
+const defaultDesc = 'Official site of Replicant, technical death metal from New Jersey. Stream music, shop vinyl & merch, book shows.';
+const defaultImage = 'https://res.cloudinary.com/observatory-agency/image/upload/v1714658516/replicant/Press%20Photos/press-photo_ymfxpw.jpg';
+
+const { title = defaultTitle, desc = defaultDesc, image = defaultImage } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+        <link rel="canonical" href={canonicalURL} />
+
         <title>{title}</title>
-
         <meta name="description" content={desc} />
-
-        <!-- Primary Meta Tags -->
-        <title>Replicant | New Jersey Death Metal</title>
-        <meta name="title" content="Replicant | New Jersey Death Metal" />
-        <meta
-            name="description"
-            content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
-        />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://replicant.band/" />
-        <meta property="og:title" content="Replicant | New Jersey Death Metal" />
-        <meta
-            property="og:description"
-            content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
-        />
-        <meta
-            property="og:image"
-            content="https://res.cloudinary.com/observatory-agency/image/upload/v1714658516/replicant/Press%20Photos/press-photo_ymfxpw.jpg"
-        />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={desc} />
+        <meta property="og:image" content={image} />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://replicant.band/" />
-        <meta property="twitter:title" content="Replicant | New Jersey Death Metal" />
-        <meta
-            property="twitter:description"
-            content="Site for the New Jersey based Death Metal band Replicant. Buy some shit!"
-        />
-        <meta
-            property="twitter:image"
-            content="https://res.cloudinary.com/observatory-agency/image/upload/v1714658516/replicant/Press%20Photos/press-photo_ymfxpw.jpg"
-        />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={desc} />
+        <meta property="twitter:image" content={image} />
+
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "MusicGroup",
+            "name": "Replicant",
+            "url": "https://replicant.band",
+            "genre": ["Death Metal", "Technical Death Metal"],
+            "image": defaultImage,
+            "sameAs": [
+                "https://replicantdm.bandcamp.com",
+                "https://www.instagram.com/replicantdm",
+                "https://www.facebook.com/replicantband"
+            ]
+        })} />
 
         <script
             type="text/javascript"
             src="//script.crazyegg.com/pages/scripts/0130/9529.js"
-            async="async"></script>
+            async></script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Iceberg&family=Overpass:ital,wght@0,100..900;1,100..900&display=swap"
             rel="stylesheet"
+            media="print"
+            onload="this.media='all'"
         />
-
-        <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" />
+        <noscript>
+            <link
+                href="https://fonts.googleapis.com/css2?family=Iceberg&family=Overpass:ital,wght@0,100..900;1,100..900&display=swap"
+                rel="stylesheet"
+            />
+        </noscript>
 
         <link rel="preconnect" href="https://app.snipcart.com" />
         <link rel="preconnect" href="https://cdn.snipcart.com" />
+        <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" media="print" onload="this.media='all'" />
+        <noscript>
+            <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.css" />
+        </noscript>
 
         <script defer data-domain="replicant.band" src="https://plausible.io/js/plausible.js"
         ></script>

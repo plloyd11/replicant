@@ -1,77 +1,22 @@
 ---
 import Lightbox from './Lightbox.astro';
+import { parseSizes, formatSizesForDisplay } from '../utils/sizes';
 
 const { product } = Astro.props;
 
-// Apply the 15% discount to the product price
+// Apply the 20% discount to the product price
 const salePrice = (product.price * 0.8).toFixed(2);
 
-// Format sizes for display
-function formatSizes(sizes) {
-    if (!sizes) {
-        // If product is clothing but no sizes provided, add default sizes
-        if (product.productType === 'clothing') {
-            return 'Small · Medium · Large · XL · 2XL · 3XL';
-        }
-        return '';
-    }
-
-    // Convert to string and normalize
-    const sizesStr = String(sizes);
-
-    // Split by pipe or comma, then clean each size individually
-    const sizeArray = sizesStr.split(/\||,/).map((size) => {
-        let cleanSize = size
-            .trim()
-            .replace(/_/g, ' ') // Replace underscores with spaces
-            .replace(/\bsmall\b/i, 'Small')
-            .replace(/\bmedium\b/i, 'Medium')
-            .replace(/\blarge\b/i, 'Large')
-            .replace(/\bxl\b/i, 'XL')
-            .replace(/\bdouble xl\b/i, '2XL')
-            .replace(/\btriple xl\b/i, '3XL')
-            .replace(/\bxxl\b/i, '2XL')
-            .replace(/\bxxxl\b/i, '3XL');
-
-        return cleanSize;
-    });
-
-    // Join with dot separator
-    return sizeArray.join(' · ');
+const formattedSizes = formatSizesForDisplay(product.sizes, product.productType);
+const sizeOptions = parseSizes(product.sizes);
+if (sizeOptions.length === 0 && product.productType === 'clothing') {
+    sizeOptions.push('Small', 'Medium', 'Large', 'XL', '2XL', '3XL');
 }
-
-// Process the sizes for display
-const formattedSizes = formatSizes(product.sizes);
-
-// Extract the individual size options for the dropdown
-const sizeOptions = product.sizes
-    ? // If product has size data
-      String(product.sizes)
-          .split(/\||,/)
-          .map((size) => size.trim())
-          .filter((size) => size) // Remove empty entries
-          .map((size) => {
-              // Standardize size formatting for dropdown
-              return size
-                  .replace(/\bsmall\b/i, 'Small')
-                  .replace(/\bmedium\b/i, 'Medium')
-                  .replace(/\blarge\b/i, 'Large')
-                  .replace(/\bxl\b/i, 'XL')
-                  .replace(/\bxxl\b/i, '2XL')
-                  .replace(/\bxxxl\b/i, '3XL')
-                  .replace(/double_xl/i, '2XL')
-                  .replace(/triple_xl/i, '3XL');
-          })
-    : // Otherwise use default sizes for clothing
-      product.productType === 'clothing'
-      ? ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL']
-      : [];
-
-// Process the sizes for filtering (same format but stored for JavaScript access)
 const filterSizes = formattedSizes;
 ---
 
-<div
+<article
+    aria-label={product.title}
     class="flex flex-col justify-between"
     data-product-type={product.productType}
     data-sizes={filterSizes}
@@ -123,7 +68,7 @@ const filterSizes = formattedSizes;
             Add to bag
         </button>
     </div>
-</div>
+</article>
 
 <style>
     .text-shadow {

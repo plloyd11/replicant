@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductSale from '../../components/ProductSale.astro';
 import CategoryFilter from '../../components/CategoryFilter.svelte';
+import { extractUniqueSizes } from '../../utils/sizes';
 
 interface Product {
     slug: string;
@@ -79,54 +80,12 @@ try {
         });
         categories = Array.from(allCategories).sort();
 
-        // Extract unique sizes from all products
-        const allSizes = new Set<string>();
-
-        products.forEach((product) => {
-            if (product.sizes && typeof product.sizes === 'string') {
-                // Split sizes by pipe and add each individually
-                product.sizes.split('|').forEach((size) => {
-                    // Clean up the size
-                    const cleanSize = size
-                        .trim()
-                        .replace('Small', 'Small')
-                        .replace('Medium', 'Medium')
-                        .replace('Large', 'Large')
-                        .replace('XXL', '2XL')
-                        .replace('XXXL', '3XL')
-                        .replace('triple_xl', '3XL')
-                        .replace('double_xl', '2XL');
-
-                    if (cleanSize) {
-                        allSizes.add(cleanSize);
-                    }
-                });
-            }
-        });
-
-        // If we found no sizes, use default clothing sizes
-        if (allSizes.size === 0 && products.some((p) => p.productType === 'clothing')) {
-            sizes = ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL'];
-        } else {
-            sizes = Array.from(allSizes).sort((a, b) => {
-                const sizeOrder = {
-                    Small: 1,
-                    Medium: 2,
-                    Large: 3,
-                    XL: 4,
-                    '2XL': 5,
-                    '3XL': 6,
-                };
-
-                return (sizeOrder[a] || 99) - (sizeOrder[b] || 99);
-            });
-        }
+        sizes = extractUniqueSizes(products);
     } else {
-        console.log('Error fetching data');
         throw new Error(`${result.status}: ${result.statusText}`);
     }
 } catch (error) {
-    console.error(error);
+    throw error;
 }
 ---
 
@@ -154,10 +113,7 @@ try {
 <script is:inline>
     function initializeFilter() {
         const productGrid = document.getElementById('product-grid');
-        if (!productGrid) {
-            console.error('Product grid not found');
-            return;
-        }
+        if (!productGrid) return;
         const products = Array.from(productGrid.children);
 
         document.addEventListener('filtersChange', (event) => {
