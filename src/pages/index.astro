@@ -170,6 +170,59 @@ try {
     title="Replicant | New Jersey Death Metal | Official Site"
     desc="Official site of Replicant, technical death metal from New Jersey. Stream music, shop vinyl & merch, book shows. New album Infinite Mortality available now."
 >
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            itemListElement: products.map((product, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                item: {
+                    '@type': 'Product',
+                    name: product.title,
+                    description: product.description,
+                    image: product.image?.url,
+                    offers: {
+                        '@type': 'Offer',
+                        price: product.sale
+                            ? (product.price * 0.8).toFixed(2)
+                            : product.price.toFixed(2),
+                        priceCurrency: 'USD',
+                        availability: 'https://schema.org/InStock',
+                    },
+                },
+            })),
+        })}
+    />
+    {
+        shows.length > 0 && (
+            <script
+                type="application/ld+json"
+                set:html={JSON.stringify(
+                    shows.map((show) => ({
+                        '@context': 'https://schema.org',
+                        '@type': 'MusicEvent',
+                        name: show.title,
+                        startDate: show.date,
+                        location: {
+                            '@type': 'Place',
+                            name: show.venueName,
+                            geo: {
+                                '@type': 'GeoCoordinates',
+                                latitude: show.venue.latitude,
+                                longitude: show.venue.longitude,
+                            },
+                        },
+                        performer: {
+                            '@type': 'MusicGroup',
+                            name: 'Replicant',
+                        },
+                    })),
+                )}
+            />
+        )
+    }
     <Hero reviews={reviews[0]} />
     <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
         <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
@@ -309,7 +362,7 @@ try {
                     // Only apply size filter to clothing items
                     if (productType === 'clothing') {
                         const hasMatchingSize = selectedSizes.some((size) =>
-                            productSizes.includes(size)
+                            productSizes.includes(size),
                         );
 
                         // If we have both category and size filters, product must match both

@@ -1,14 +1,36 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 
-// Import all hero images eagerly so they're available at build time
-const heroImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/heros/*.jpg', {
+const heroImageFiles = import.meta.glob<{ default: ImageMetadata }>('../../assets/heros/*.jpg', {
     eager: true,
 });
-const heroImagesArray = Object.values(heroImages);
+
+const heroAlts = [
+    'Replicant performing live on stage',
+    'Replicant guitarist shredding during a live set',
+    'Replicant band member performing at a metal show',
+    'Replicant on stage at a live concert',
+    'Replicant playing an intense live performance',
+    'Replicant death metal live on stage',
+    'Replicant band performing at a live show',
+];
+
+const processedImages = await Promise.all(
+    Object.values(heroImageFiles).map((hero) =>
+        getImage({ src: hero.default, format: 'avif', quality: 90 }),
+    ),
+);
+
+const heroData = processedImages.map((img, i) => ({
+    src: img.src,
+    alt: heroAlts[i] || 'Replicant live performance',
+}));
+
+const firstImage = processedImages[0];
 ---
 
 <section id="intro" class="relative mt-6 bg-replicant-900">
+    <h1 class="sr-only">Replicant - Technical Death Metal from New Jersey</h1>
     <div class="lg:relative lg:flex lg:items-center">
         <div class="flex relative flex-col mx-auto max-w-screen-2xl">
             <div
@@ -27,41 +49,25 @@ const heroImagesArray = Object.values(heroImages);
             </div>
             <div class="order-1 lg:order-2">
                 <div id="hero-images" class="relative">
-                    {
-                        heroImagesArray.map((hero, index) => (
-                            <Image
-                                class="hero-image"
-                                data-index={index}
-                                src={hero.default}
-                                alt="Photo of one of the members in Replicant playing a live show"
-                                format="avif"
-                                quality={90}
-                                style={index === 0 ? '' : 'display: none;'}
-                            />
-                        ))
-                    }
+                    <img
+                        id="hero-img"
+                        src={heroData[0].src}
+                        alt={heroData[0].alt}
+                        width={firstImage.attributes.width}
+                        height={firstImage.attributes.height}
+                    />
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<script>
-    // This runs on every page load in the browser
-    function randomizeHeroImage() {
-        const heroImages = document.querySelectorAll<HTMLImageElement>('.hero-image');
-        if (heroImages.length === 0) return;
-
-        // Hide all images first
-        heroImages.forEach((img) => {
-            img.style.display = 'none';
-        });
-
-        // Randomly select and show one
-        const randomIndex = Math.floor(Math.random() * heroImages.length);
-        heroImages[randomIndex].style.display = 'block';
+<script define:vars={{ heroData }}>
+    const img = document.getElementById('hero-img');
+    if (img && heroData.length > 1) {
+        const randomIndex = Math.floor(Math.random() * heroData.length);
+        const chosen = heroData[randomIndex];
+        img.src = chosen.src;
+        img.alt = chosen.alt;
     }
-
-    // Run immediately when the page loads
-    randomizeHeroImage();
 </script>
