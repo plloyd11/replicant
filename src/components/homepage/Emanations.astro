@@ -2,7 +2,10 @@
 import Lightbox from '../Lightbox.astro';
 let { shows } = Astro.props;
 
-// format date
+// sort by raw date (oldest first) before formatting
+shows.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+// format date for display
 shows = shows.map((show) => {
     const date = new Date(show.date);
     const month = date.toLocaleString('default', { month: 'long' });
@@ -18,9 +21,7 @@ shows = shows.map((show) => {
 
 <div class="grid gap-12 sm:grid-cols-2">
     {
-        shows
-            .sort((a, b) => new Date(a.date) - new Date(b.date))
-            .map((show) => (
+        shows.map((show) => (
                 <div class="col-span-1 text-replicant-200 h-fit">
                     <Lightbox image={show.flyer.url} title={show.title} />
                     <div class="mt-4 space-y-2">

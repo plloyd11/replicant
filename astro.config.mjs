@@ -21,8 +21,4 @@ export default defineConfig({
     image: {
         domains: ['ca-central-1.graphassets.com', 'media.graphassets.com'],
     },
-    redirects: {
-        "/shop/europe": "/",
-        "/shop/negative-life-vinyl": "/",
-    }
 });

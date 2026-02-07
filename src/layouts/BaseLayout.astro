@@ -1,7 +1,11 @@
 ---
+import { getImage } from 'astro:assets';
+import logoSrc from '../assets/logo-white.png';
 import GlobalNav from '../components/GlobalNav.svelte';
 import GlobalFooter from '../components/GlobalFooter.astro';
 import '../styles/global.css';
+
+const optimizedLogo = await getImage({ src: logoSrc, width: 192, format: 'avif', quality: 80 });
 
 const defaultTitle = 'Replicant | New Jersey Death Metal';
 const defaultDesc =
@@ -101,7 +105,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         ></script>
     </head>
     <body class="bg-replicant-900">
-        <GlobalNav client:load="svelte" />
+        <GlobalNav client:load="svelte" logoSrc={optimizedLogo.src} />
         <slot />
         <GlobalFooter />
         <script async src="https://cdn.snipcart.com/themes/v3.3.0/default/snipcart.js"></script>

@@ -24,6 +24,7 @@
             anchor: '#build',
         },
     ];
+    let { logoSrc = '/assets/logo-white.png' } = $props();
     let mobileMenu = false;
 
     const toggleMobileMenu = () => {
@@ -37,7 +38,7 @@
             <div class="flex gap-8 justify-start sm:justify-center">
                 <a href="/">
                     <span class="sr-only">Replicant - New Jersey Death Metal</span>
-                    <img src="/assets/logo-white.png" alt="Replicant Logo" class="w-24" />
+                    <img src={logoSrc} alt="Replicant Logo" class="w-24" width="96" height="68" />
                 </a>
                 <div class="hidden items-center space-x-8 lg:flex">
                     {#each navItems as navItem}
