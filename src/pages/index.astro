@@ -168,7 +168,7 @@ try {
 
 <BaseLayout
     title="Replicant | New Jersey Death Metal | Official Site"
-    desc="Official site of Replicant, technical death metal from New Jersey. Stream music, shop vinyl & merch, book shows. New album Infinite Mortality available now."
+    desc="Official merch store and home of Replicant — dissonant death metal from New Jersey. Shirts, vinyl, CDs, patches, and more. Est. 2014. New album Infinite Mortality available now."
 >
     <script
         type="application/ld+json"
@@ -185,11 +185,40 @@ try {
                     image: product.image?.url,
                     offers: {
                         '@type': 'Offer',
+                        url: 'https://replicant.band/',
                         price: product.sale
                             ? (product.price * 0.8).toFixed(2)
                             : product.price.toFixed(2),
                         priceCurrency: 'USD',
                         availability: 'https://schema.org/InStock',
+                        priceValidUntil: '2026-12-31',
+                        shippingDetails: {
+                            '@type': 'OfferShippingDetails',
+                            shippingDestination: {
+                                '@type': 'DefinedRegion',
+                                addressCountry: 'US',
+                            },
+                            deliveryTime: {
+                                '@type': 'ShippingDeliveryTime',
+                                handlingTime: {
+                                    '@type': 'QuantitativeValue',
+                                    minValue: 1,
+                                    maxValue: 3,
+                                    unitCode: 'DAY',
+                                },
+                                transitTime: {
+                                    '@type': 'QuantitativeValue',
+                                    minValue: 3,
+                                    maxValue: 7,
+                                    unitCode: 'DAY',
+                                },
+                            },
+                        },
+                        hasMerchantReturnPolicy: {
+                            '@type': 'MerchantReturnPolicy',
+                            applicableCountry: 'US',
+                            returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+                        },
                     },
                 },
             })),
