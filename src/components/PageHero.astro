@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import hero from '../assets/discography/album-hero.jpg';
+---
+
+<section>
+    <div class="px-6 mx-auto max-w-7xl lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+            <h1
+                class="text-5xl font-semibold tracking-tight text-white uppercase text-balance sm:text-8xl"
+            >
+                Discography
+            </h1>
+        </div>
+        <div class="flow-root mt-16 sm:mt-24">
+            <div
+                class="p-2 -m-2 rounded-xl ring-1 ring-inset bg-gray-900/5 ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4"
+            >
+                <Image
+                    src={hero}
+                    alt="Replicant Discography"
+                    class="object-cover w-full h-full"
+                    width={2432}
+                    height={1442}
+                />
+            </div>
+        </div>
+    </div>
+</section>

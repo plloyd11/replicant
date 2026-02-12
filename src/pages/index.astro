@@ -194,6 +194,11 @@ try {
                         priceValidUntil: '2026-12-31',
                         shippingDetails: {
                             '@type': 'OfferShippingDetails',
+                            shippingRate: {
+                                '@type': 'MonetaryAmount',
+                                value: '4.99',
+                                currency: 'USD',
+                            },
                             shippingDestination: {
                                 '@type': 'DefinedRegion',
                                 addressCountry: 'US',

@@ -1,0 +1,20 @@
+---
+const { title } = Astro.props;
+---
+
+<div class="flex section-intro">
+    <div class="container px-6 pt-48 mx-auto w-full xl:px-0">
+        <h2 class="text-6xl lg:text-[128px] text-white leading-[5.4rem] font-bold uppercase">
+            {title}
+        </h2>
+    </div>
+</div>
+
+<style>
+    .section-intro {
+        background-image: url('../assets/overview.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
