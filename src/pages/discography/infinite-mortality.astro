@@ -1,12 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import imCover from '../../assets/discography/im-cover-hi-res.jpg';
 import AudioPlayer from '../../components/AudioPlayer.svelte';
 
 const title = 'Infinite Mortality | Replicant Discography';
 const desc =
     'Infinite Mortality — the third full-length album from Replicant. Nine tracks of dissonant, technical death metal. Released April 12, 2024 via Transcending Obscurity Records. Available on vinyl, CD, cassette, and digital.';
+
+const ogImage = await getImage({
+    src: imCover,
+    width: 1200,
+    height: 1200,
+    format: 'jpg',
+    quality: 80,
+});
+const ogImageUrl = new URL(ogImage.src, Astro.site).href;
 
 const audioBase = 'https://res.cloudinary.com/observatory-team/video/upload';
 
@@ -149,7 +158,7 @@ const credits = [
 ];
 ---
 
-<BaseLayout title={title} desc={desc}>
+<BaseLayout title={title} desc={desc} image={ogImageUrl}>
     <Fragment slot="head">
         <script
             type="application/ld+json"
