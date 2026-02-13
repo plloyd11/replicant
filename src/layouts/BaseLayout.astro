@@ -55,9 +55,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             set:html={JSON.stringify({
                 '@context': 'https://schema.org',
                 '@type': 'MusicGroup',
+                '@id': 'https://replicant.band/#band',
                 name: 'Replicant',
                 url: 'https://replicant.band',
-                genre: ['Death Metal', 'Technical Death Metal'],
+                genre: ['Death Metal', 'Dissonant Death Metal', 'Technical Death Metal'],
                 image: defaultImage,
                 sameAs: [
                     'https://ampwall.com/a/replicant',
@@ -67,6 +68,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
                 ],
             })}
         />
+        <slot name="head" />
 
         <script type="text/javascript" src="//script.crazyegg.com/pages/scripts/0130/9529.js" async
         ></script>

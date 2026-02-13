@@ -12,7 +12,7 @@ import njCover from '../assets/discography/nj-cover.jpeg';
 import wdCover from '../assets/discography/wd-cover.jpeg';
 
 const albums = [
-    { title: 'Infinite Mortality', cover: imCover, date: 'April 4, 2024' },
+    { title: 'Infinite Mortality', cover: imCover, date: 'April 12, 2024' },
     { title: 'Malignant Reality', cover: mrCover, date: 'September 10, 2021' },
     { title: 'Negative Life', cover: nlCover, date: 'March 23, 2018' },
 ];
@@ -24,6 +24,384 @@ const eps = [
     { title: 'Worthless Desires', cover: wdCover, date: 'May 20, 2016' },
 ];
 ---
+
+<Fragment slot="head">
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'Replicant Discography',
+            description:
+                'Full discography of Replicant, a dissonant death metal band from New Jersey. Albums, EPs, and splits from 2016 to present.',
+            url: 'https://replicant.band/discography/',
+            mainEntity: {
+                '@type': 'MusicGroup',
+                '@id': 'https://replicant.band/#band',
+                album: [
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Infinite Mortality',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/AlbumRelease',
+                        datePublished: '2024-04-12',
+                        numTracks: 9,
+                        image: 'https://replicant.band/_astro/im-cover.C3yB7JfE_G5HpW.avif',
+                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                        recordLabel: {
+                            '@type': 'Organization',
+                            name: 'Transcending Obscurity Records',
+                        },
+                        track: {
+                            '@type': 'ItemList',
+                            numberOfItems: 9,
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    item: { '@type': 'MusicRecording', name: 'Acid Mirror' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Shrine to the Incomprehensible',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 3,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Orgasm of Bereavement',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 4,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Reciprocal Abandonment',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 5,
+                                    item: { '@type': 'MusicRecording', name: 'SCN9A' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 6,
+                                    item: { '@type': 'MusicRecording', name: 'Pain Enduring' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 7,
+                                    item: { '@type': 'MusicRecording', name: 'Nekrotunnel' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 8,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Dwelling on the Threshold',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 9,
+                                    item: { '@type': 'MusicRecording', name: 'Planet of Skin' },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Malignant Reality',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/AlbumRelease',
+                        datePublished: '2021-09-10',
+                        numTracks: 10,
+                        image: 'https://replicant.band/_astro/mr-cover.I7kavFJs_D5uTz.avif',
+                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                        recordLabel: {
+                            '@type': 'Organization',
+                            name: 'Transcending Obscurity Records',
+                        },
+                        track: {
+                            '@type': 'ItemList',
+                            numberOfItems: 10,
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Caverns of Insipid Reflection',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Relinquish the Self',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 3,
+                                    item: { '@type': 'MusicRecording', name: 'Excess Womb' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 4,
+                                    item: { '@type': 'MusicRecording', name: 'Death Curse' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 5,
+                                    item: { '@type': 'MusicRecording', name: 'Coerced to Be' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 6,
+                                    item: { '@type': 'MusicRecording', name: 'Rabid Future' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 7,
+                                    item: { '@type': 'MusicRecording', name: 'Chassis of Deceit' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 8,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Dressed in Violence',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 9,
+                                    item: { '@type': 'MusicRecording', name: 'Ektoskull' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 10,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'The Ubiquity of Time',
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Negative Life',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/AlbumRelease',
+                        datePublished: '2018-03-23',
+                        numTracks: 10,
+                        image: 'https://replicant.band/_astro/nl-cover.BI31h43I_phWj2.avif',
+                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                        recordLabel: { '@type': 'Organization', name: 'PRC Music' },
+                        track: {
+                            '@type': 'ItemList',
+                            numberOfItems: 10,
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: '(Spit) Into the Void',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    item: { '@type': 'MusicRecording', name: 'ADRA2B' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 3,
+                                    item: { '@type': 'MusicRecording', name: 'Inescapable Grief' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 4,
+                                    item: { '@type': 'MusicRecording', name: 'Oceans of Dust' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 5,
+                                    item: { '@type': 'MusicRecording', name: 'The Frail' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 6,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Sowing Seeds in Dead Soil',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 7,
+                                    item: { '@type': 'MusicRecording', name: 'Chaotic Neutral' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 8,
+                                    item: { '@type': 'MusicRecording', name: 'Shroud' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 9,
+                                    item: { '@type': 'MusicRecording', name: 'Selfish Universe' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 10,
+                                    item: { '@type': 'MusicRecording', name: 'Vessel of Iniquity' },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Chasm of Aeons',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/SingleRelease',
+                        datePublished: '2020-08-04',
+                        numTracks: 1,
+                        image: 'https://replicant.band/_astro/chasm-cover.CyAKPbaG_1sTPA3.avif',
+                        byArtist: [
+                            { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                            { '@type': 'MusicGroup', name: 'Cryptic Shift' },
+                            { '@type': 'MusicGroup', name: 'Inoculation' },
+                            { '@type': 'MusicGroup', name: 'Astral Tomb' },
+                        ],
+                        recordLabel: { '@type': 'Organization', name: 'Blood Harvest Records' },
+                    },
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Hypochondria of the Machine',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/EPRelease',
+                        datePublished: '2019-12-20',
+                        numTracks: 2,
+                        image: 'https://replicant.band/_astro/hypo-cover.CzB97tGR_Z1mWlBe.avif',
+                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                        track: {
+                            '@type': 'ItemList',
+                            numberOfItems: 2,
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Hymns of Distress',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    item: { '@type': 'MusicRecording', name: 'Limbic Thrust' },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Welcome to New Jersey',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/EPRelease',
+                        datePublished: '2019-10-25',
+                        numTracks: 3,
+                        image: 'https://replicant.band/_astro/nj-cover.BXsujR88_Z1nYDj7.avif',
+                        byArtist: [
+                            { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                            { '@type': 'MusicGroup', name: 'Bayht Lahm' },
+                        ],
+                        recordLabel: { '@type': 'Organization', name: 'CDN Records' },
+                        track: {
+                            '@type': 'ItemList',
+                            numberOfItems: 3,
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    item: { '@type': 'MusicRecording', name: 'Exit 9' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Demolished by Solitude',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 3,
+                                    item: { '@type': 'MusicRecording', name: 'Shooter McGavin' },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        '@type': 'MusicAlbum',
+                        name: 'Worthless Desires',
+                        albumProductionType: 'https://schema.org/StudioAlbum',
+                        albumReleaseType: 'https://schema.org/EPRelease',
+                        datePublished: '2016-05-20',
+                        numTracks: 4,
+                        image: 'https://replicant.band/_astro/wd-cover.BGkDPh8Q_2v4RqF.avif',
+                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                        recordLabel: { '@type': 'Organization', name: 'PRC Music' },
+                        track: {
+                            '@type': 'ItemList',
+                            numberOfItems: 4,
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    item: { '@type': 'MusicRecording', name: 'Ripped From Within' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    item: { '@type': 'MusicRecording', name: 'Shroud' },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 3,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'The Everdying Realm',
+                                    },
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 4,
+                                    item: {
+                                        '@type': 'MusicRecording',
+                                        name: 'Anti-Instinct: The Withered End',
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        })}
+    />
+</Fragment>
 
 <BaseLayout
     title="Discography | Replicant"

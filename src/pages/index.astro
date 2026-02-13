@@ -170,93 +170,96 @@ try {
     title="Replicant | New Jersey Death Metal | Official Site"
     desc="Official merch store and home of Replicant — dissonant death metal from New Jersey. Shirts, vinyl, CDs, patches, and more. Est. 2014. New album Infinite Mortality available now."
 >
-    <script
-        type="application/ld+json"
-        set:html={JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'ItemList',
-            itemListElement: products.map((product, i) => ({
-                '@type': 'ListItem',
-                position: i + 1,
-                item: {
-                    '@type': 'Product',
-                    name: product.title,
-                    description: product.description,
-                    image: product.image?.url,
-                    offers: {
-                        '@type': 'Offer',
-                        url: 'https://replicant.band/',
-                        price: product.sale
-                            ? (product.price * 0.8).toFixed(2)
-                            : product.price.toFixed(2),
-                        priceCurrency: 'USD',
-                        availability: 'https://schema.org/InStock',
-                        priceValidUntil: '2026-12-31',
-                        shippingDetails: {
-                            '@type': 'OfferShippingDetails',
-                            shippingRate: {
-                                '@type': 'MonetaryAmount',
-                                value: '4.99',
-                                currency: 'USD',
-                            },
-                            shippingDestination: {
-                                '@type': 'DefinedRegion',
-                                addressCountry: 'US',
-                            },
-                            deliveryTime: {
-                                '@type': 'ShippingDeliveryTime',
-                                handlingTime: {
-                                    '@type': 'QuantitativeValue',
-                                    minValue: 1,
-                                    maxValue: 3,
-                                    unitCode: 'DAY',
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                itemListElement: products.map((product, i) => ({
+                    '@type': 'ListItem',
+                    position: i + 1,
+                    item: {
+                        '@type': 'Product',
+                        name: product.title,
+                        description: product.description,
+                        image: product.image?.url,
+                        offers: {
+                            '@type': 'Offer',
+                            url: 'https://replicant.band/',
+                            price: product.sale
+                                ? (product.price * 0.8).toFixed(2)
+                                : product.price.toFixed(2),
+                            priceCurrency: 'USD',
+                            availability: 'https://schema.org/InStock',
+                            priceValidUntil: '2026-12-31',
+                            shippingDetails: {
+                                '@type': 'OfferShippingDetails',
+                                shippingRate: {
+                                    '@type': 'MonetaryAmount',
+                                    value: '4.99',
+                                    currency: 'USD',
                                 },
-                                transitTime: {
-                                    '@type': 'QuantitativeValue',
-                                    minValue: 3,
-                                    maxValue: 7,
-                                    unitCode: 'DAY',
+                                shippingDestination: {
+                                    '@type': 'DefinedRegion',
+                                    addressCountry: 'US',
+                                },
+                                deliveryTime: {
+                                    '@type': 'ShippingDeliveryTime',
+                                    handlingTime: {
+                                        '@type': 'QuantitativeValue',
+                                        minValue: 1,
+                                        maxValue: 3,
+                                        unitCode: 'DAY',
+                                    },
+                                    transitTime: {
+                                        '@type': 'QuantitativeValue',
+                                        minValue: 3,
+                                        maxValue: 7,
+                                        unitCode: 'DAY',
+                                    },
                                 },
                             },
-                        },
-                        hasMerchantReturnPolicy: {
-                            '@type': 'MerchantReturnPolicy',
-                            applicableCountry: 'US',
-                            returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+                            hasMerchantReturnPolicy: {
+                                '@type': 'MerchantReturnPolicy',
+                                applicableCountry: 'US',
+                                returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+                            },
                         },
                     },
-                },
-            })),
-        })}
-    />
-    {
-        shows.length > 0 && (
-            <script
-                type="application/ld+json"
-                set:html={JSON.stringify(
-                    shows.map((show) => ({
-                        '@context': 'https://schema.org',
-                        '@type': 'MusicEvent',
-                        name: show.title,
-                        startDate: show.date,
-                        location: {
-                            '@type': 'Place',
-                            name: show.venueName,
-                            geo: {
-                                '@type': 'GeoCoordinates',
-                                latitude: show.venue.latitude,
-                                longitude: show.venue.longitude,
+                })),
+            })}
+        />
+        {
+            shows.length > 0 && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(
+                        shows.map((show) => ({
+                            '@context': 'https://schema.org',
+                            '@type': 'MusicEvent',
+                            name: show.title,
+                            startDate: show.date,
+                            location: {
+                                '@type': 'Place',
+                                name: show.venueName,
+                                geo: {
+                                    '@type': 'GeoCoordinates',
+                                    latitude: show.venue.latitude,
+                                    longitude: show.venue.longitude,
+                                },
                             },
-                        },
-                        performer: {
-                            '@type': 'MusicGroup',
-                            name: 'Replicant',
-                        },
-                    })),
-                )}
-            />
-        )
-    }
+                            performer: {
+                                '@type': 'MusicGroup',
+                                '@id': 'https://replicant.band/#band',
+                                name: 'Replicant',
+                            },
+                        })),
+                    )}
+                />
+            )
+        }
+    </Fragment>
     <Hero reviews={reviews[0]} />
     <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
         <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
