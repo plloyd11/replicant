@@ -1,27 +1,64 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
-import SectionIntro from '../components/SectionIntro.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionIntro from '../../components/SectionIntro.astro';
+import PromoBanner from '../../components/PromoBanner.astro';
+
 import { Image } from 'astro:assets';
-import imCover from '../assets/discography/im-cover.jpg';
-import mrCover from '../assets/discography/mr-cover.jpeg';
-import nlCover from '../assets/discography/nl-cover.jpg';
-import chasmCover from '../assets/discography/chasm-cover.jpg';
-import hypoCover from '../assets/discography/hypo-cover.jpeg';
-import njCover from '../assets/discography/nj-cover.jpeg';
-import wdCover from '../assets/discography/wd-cover.jpeg';
+import imCover from '../../assets/discography/im-cover.jpg';
+import mrCover from '../../assets/discography/mr-cover.jpeg';
+import nlCover from '../../assets/discography/nl-cover.jpg';
+import chasmCover from '../../assets/discography/chasm-cover.jpg';
+import hypoCover from '../../assets/discography/hypo-cover.jpeg';
+import njCover from '../../assets/discography/nj-cover.jpeg';
+import wdCover from '../../assets/discography/wd-cover.jpeg';
 
 const albums = [
-    { title: 'Infinite Mortality', cover: imCover, date: 'April 12, 2024' },
-    { title: 'Malignant Reality', cover: mrCover, date: 'September 10, 2021' },
-    { title: 'Negative Life', cover: nlCover, date: 'March 23, 2018' },
+    {
+        title: 'Infinite Mortality',
+        cover: imCover,
+        date: 'April 12, 2024',
+        link: '/discography/infinite-mortality',
+    },
+    {
+        title: 'Malignant Reality',
+        cover: mrCover,
+        date: 'September 10, 2021',
+        link: '/discography/malignant-reality',
+    },
+    {
+        title: 'Negative Life',
+        cover: nlCover,
+        date: 'March 23, 2018',
+        link: '/discography/negative-life',
+    },
 ];
 
 const eps = [
-    { title: 'Chasm of Aeons', cover: chasmCover, date: 'August 4, 2020' },
-    { title: 'Hypochondria of the Machine', cover: hypoCover, date: 'December 20, 2019' },
-    { title: 'Welcome to New Jersey', cover: njCover, date: 'October 25, 2019' },
-    { title: 'Worthless Desires', cover: wdCover, date: 'May 20, 2016' },
+    {
+        title: 'Chasm of Aeons',
+        cover: chasmCover,
+        date: 'August 4, 2020',
+        link: '/discography/chasm-of-aeons',
+    },
+    {
+        title: 'Hypochondria of the Machine',
+        cover: hypoCover,
+        date: 'December 20, 2019',
+        link: '/discography/hypochondria-of-the-machine',
+    },
+    {
+        title: 'Welcome to New Jersey',
+        cover: njCover,
+        date: 'October 25, 2019',
+        link: '/discography/welcome-to-new-jersey',
+    },
+    {
+        title: 'Worthless Desires',
+        cover: wdCover,
+        date: 'May 20, 2016',
+        link: '/discography/worthless-desires',
+    },
 ];
 ---
 
@@ -426,6 +463,13 @@ const eps = [
                                 <div class="flex flex-col gap-1 mt-4">
                                     <h4 class="text-3xl font-bold text-white">{album.title}</h4>
                                     <span class="text-replicant-300">{album.date}</span>
+                                    {album.title === 'Infinite Mortality' ? (
+                                        <a href={album.link} class="text-primary hover:underline">
+                                            View Album
+                                        </a>
+                                    ) : (
+                                        <p class="text-replicant-500">Page coming soon</p>
+                                    )}
                                 </div>
                             </div>
                         ))
@@ -450,12 +494,16 @@ const eps = [
                                 <div class="flex flex-col gap-1 mt-4">
                                     <h4 class="text-3xl font-bold text-white">{ep.title}</h4>
                                     <span class="text-replicant-300">{ep.date}</span>
+                                    <p class="text-replicant-500">Page coming soon</p>
                                 </div>
                             </div>
                         ))
                     }
                 </div>
             </div>
+        </section>
+        <section class="mt-32">
+            <PromoBanner />
         </section>
     </main>
 </BaseLayout>

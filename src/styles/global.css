@@ -24,6 +24,7 @@
     --color-replicant-700: #262626;
     --color-replicant-800: #2A2A2A;
     --color-replicant-900: #161616;
+    --color-replicant-1000: #0E0E0E;
 }
 
 @layer components {

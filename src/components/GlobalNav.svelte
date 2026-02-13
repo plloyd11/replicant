@@ -5,23 +5,11 @@
     let navItems = [
         {
             name: 'merch',
-            anchor: '#merch',
+            anchor: '/#merch',
         },
         {
-            name: 'transmissions',
-            anchor: '#transmissions',
-        },
-        {
-            name: 'emanations',
-            anchor: '#emanations',
-        },
-        {
-            name: 'communications',
-            anchor: '#communications',
-        },
-        {
-            name: 'build',
-            anchor: '#build',
+            name: 'discography',
+            anchor: '/discography',
         },
     ];
     let { logoSrc = '/assets/logo-white.png' } = $props();
@@ -32,21 +20,21 @@
     };
 </script>
 
-<header class="z-10 w-full shadow">
+<header class="z-10 w-full bg-replicant-900 border-b border-replicant-700">
     <nav aria-label="Top" class="relative py-4 rounded">
         <div class="flex relative z-10 justify-between px-4 w-full h-full sm:px-6 lg:px-8">
+            <div class="hidden items-center space-x-8 lg:flex">
+                {#each navItems as navItem}
+                    <a href={navItem.anchor} class="uppercase font-medium text-replicant-200">
+                        {navItem.name}
+                    </a>
+                {/each}
+            </div>
             <div class="flex gap-8 justify-start sm:justify-center">
                 <a href="/">
                     <span class="sr-only">Replicant - New Jersey Death Metal</span>
-                    <img src={logoSrc} alt="Replicant Logo" class="w-24" width="96" height="68" />
+                    <img src={logoSrc} alt="Replicant Logo" class="w-32" width="128" height="92" />
                 </a>
-                <div class="hidden items-center space-x-8 lg:flex">
-                    {#each navItems as navItem}
-                        <a href={navItem.anchor} class="text-lg font-medium text-replicant-200">
-                            {navItem.name}
-                        </a>
-                    {/each}
-                </div>
             </div>
             <div class="flex justify-end items-center space-x-8">
                 <div class="hidden items-center space-x-2 cursor-pointer sm:flex">
@@ -64,7 +52,9 @@
                             d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                     </svg>
-                    <button class="font-medium snipcart-customer-signin text-replicant-200">
+                    <button
+                        class="font-medium snipcart-customer-signin text-replicant-200 cursor-pointer uppercase"
+                    >
                         account
                     </button>
                 </div>
@@ -99,10 +89,10 @@
                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                         />
                     </svg>
-                    <button class="font-medium text-replicant-200">
-                        <span class="hidden sm:inline-block">bag</span>
+                    <button class="font-medium text-replicant-200 cursor-pointer relative">
+                        <span class="hidden sm:inline-block uppercase">bag</span>
                         <span
-                            class="ml-2 text-sm font-medium text-tertiary group-hover:text-gray-800 snipcart-items-count"
+                            class="ml-2 absolute top-0 text-sm font-medium text-tertiary group-hover:text-gray-800 snipcart-items-count"
                         />
                     </button>
                 </div>
@@ -122,7 +112,7 @@
                 >
                     <div class="flex flex-col space-y-4">
                         {#each navItems as navItem}
-                            <a href={navItem.anchor} class="text-lg font-medium text-replicant-200">
+                            <a href={navItem.anchor} class="font-medium text-replicant-200">
                                 {navItem.name}
                             </a>
                         {/each}
