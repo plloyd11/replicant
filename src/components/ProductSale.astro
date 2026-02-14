@@ -8,9 +8,9 @@ const { product } = Astro.props;
 const salePrice = (product.price * 0.8).toFixed(2);
 
 const formattedSizes = formatSizesForDisplay(product.sizes, product.productType);
-const sizeOptions = parseSizes(product.sizes);
+let sizeOptions = parseSizes(product.sizes);
 if (sizeOptions.length === 0 && product.productType === 'clothing') {
-    sizeOptions.push('Small', 'Medium', 'Large', 'XL', '2XL', '3XL');
+    sizeOptions = ['Small', 'Medium', 'Large', 'XL', '2XL', '3XL'];
 }
 const filterSizes = formattedSizes;
 ---

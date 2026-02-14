@@ -13,7 +13,7 @@ const preOrderDate = new Date(product.preOrder);
 // Format the date as mm/dd/yy
 const formattedPreOrderDate = `${
     preOrderDate.getMonth() + 1
-}/${preOrderDate.getDate()}/${preOrderDate.getFullYear().toString()}`;
+}/${preOrderDate.getDate()}/${preOrderDate.getFullYear().toString().slice(-2)}`;
 
 // Calculate sale price if item is on sale (20% discount)
 const salePrice = product.sale ? (product.price * 0.8).toFixed(2) : null;
