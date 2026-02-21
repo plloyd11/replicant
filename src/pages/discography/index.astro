@@ -438,6 +438,26 @@ const eps = [
             },
         })}
     />
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                {
+                    '@type': 'ListItem',
+                    position: 1,
+                    name: 'Home',
+                    item: 'https://replicant.band/',
+                },
+                {
+                    '@type': 'ListItem',
+                    position: 2,
+                    name: 'Discography',
+                },
+            ],
+        })}
+    />
 </Fragment>
 
 <BaseLayout
