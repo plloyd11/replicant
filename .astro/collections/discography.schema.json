@@ -1,0 +1,203 @@
+{
+  "$ref": "#/definitions/discography",
+  "definitions": {
+    "discography": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "releaseType": {
+          "type": "string",
+          "enum": [
+            "Full Length",
+            "EP",
+            "Split",
+            "Single"
+          ]
+        },
+        "releaseDate": {
+          "type": "string"
+        },
+        "datePublished": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "cover": {
+          "type": "string"
+        },
+        "audioBase": {
+          "type": "string"
+        },
+        "tracks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "num": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "num",
+              "name",
+              "duration",
+              "file"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "quote": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "quote",
+              "source",
+              "link"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "musicVideos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "track": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "track"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "lineup": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "role"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "credits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "guestAppearances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "part": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "part"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "numTracks": {
+          "type": "number"
+        },
+        "albumReleaseType": {
+          "type": "string"
+        },
+        "additionalArtists": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "productFilterTerm": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "slug",
+        "releaseType",
+        "releaseDate",
+        "datePublished",
+        "label",
+        "format",
+        "cover",
+        "lineup",
+        "credits",
+        "numTracks",
+        "albumReleaseType"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

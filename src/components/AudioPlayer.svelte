@@ -160,7 +160,7 @@
         }
     }
 
-    let progress = $derived(totalDuration > 0 ? (currentTime / totalDuration) * 100 : 0);
+    let progress = $derived(totalDuration > 0 ? Math.min(100, (currentTime / totalDuration) * 100) : 0);
 
     onDestroy(() => {
         destroyHowl();
