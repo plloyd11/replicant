@@ -23,17 +23,14 @@ reviews:
     - quote: 'Negative Life is a cinematic-level experience that takes me by the hand and guides me through the rough and tumble walk of death metal fervor. Negative Life isn’t just badass, it’s pretty damn clever as well. Put yourself in Roy Batty’s porcelain-alloy kicks and ask yourself, “How would you feel?”'
       source: 'No Clean Singing'
       link: 'https://www.nocleansinging.com/2018/01/25/replicant-negative-life/'
-    - quote: "Nobody out there sounds like Replicant, and Replicant is officially at the top of their game. Infinite Mortality is their best work so far, an enormous destructive machine dripping blood and oil that will crush you between its horrible steel jaws. It's focused, quirky, and hideous as can be, filled with groove that's more infectious than the plague. Get this one in your ears ASAP."
-      source: 'Noob Heavy'
-      link: 'https://noobheavy.com/album-review-replicant-infinite-mortality/'
+    - quote: 'If anything, this trio’s debut album deconstructs tech-death; picking apart its elements from the inside-out, incubating and keeping the subgenre’s traits warm in the palm of their collective hand before lightly tossing the balled up components aloft, and smacking them towards the fences with a custom-made New Brunswick Slugger.'
+      source: 'Metal Injection'
+      link: 'https://metalinjection.net/reviews/replicant-negative-life'
 lineup:
-    # TODO: confirm lineup for this release
     - { name: 'Michael Gonçalves', role: 'Vocals, Bass, Guitars' }
     - { name: 'Peter Lloyd', role: 'Guitars' }
-    - { name: 'Matt Thompson', role: 'Drums' }
+    - { name: 'Matthew Thompson', role: 'Drums' }
 credits:
-    # TODO: add recording/mix/artwork credits
-    - { label: 'Recording', text: 'TBD' }
     - {
           label: 'Engineering & Mix',
           text: 'Engineered and mixed by Peter Lloyd at One Stone Recording & Mastering.',
@@ -45,4 +42,4 @@ albumReleaseType: 'AlbumRelease'
 productFilterTerm: 'negative life'
 ---
 
-<!-- TODO: Add album description -->
+Replicant's debut full-length Negative Life announced the arrival of one of New Jersey's most ferocious death metal acts. Across ten tracks, the trio channels a restless, confrontational energy — dissonant riffing collides with crushing low-end grooves, angular tempo shifts, and unrelenting aggression. Songs like "(Spit) Into the Void" and "Oceans of Dust" showcase the band's ability to sustain long-form intensity while "Chaotic Neutral" and "Selfish Universe" hit with concise, devastating precision. The album closes with the sprawling "Vessel of Iniquity," an eight-minute descent into layered dissonance that set the tone for everything Replicant would become. Engineered, mixed, and mastered by Peter Lloyd, Negative Life is a raw, self-assured statement of intent from a band that would quickly outgrow the underground's expectations.

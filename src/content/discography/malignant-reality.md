@@ -9,32 +9,34 @@ format: 'Vinyl · CD · Digital'
 cover: 'mr-cover.jpeg'
 audioBase: 'https://res.cloudinary.com/observatory-team/video/upload'
 tracks:
-    - { num: '01', name: 'Caverns of Insipid Reflection', duration: '6:21', file: '' }
-    - { num: '02', name: 'Relinquish the Self', duration: '3:31', file: '' }
-    - { num: '03', name: 'Excess Womb', duration: '3:32', file: '' }
-    - { num: '04', name: 'Death Curse', duration: '4:48', file: '' }
-    - { num: '05', name: 'Coerced to Be', duration: '6:13', file: '' }
-    - { num: '06', name: 'Rabid Future', duration: '3:18', file: '' }
-    - { num: '07', name: 'Chassis of Deceit', duration: '4:55', file: '' }
-    - { num: '08', name: 'Dressed in Violence', duration: '3:10', file: '' }
-    - { num: '09', name: 'Ektoskull', duration: '3:56', file: '' }
-    - { num: '10', name: 'The Ubiquity of Time', duration: '8:53', file: '' }
+    - { num: '01', name: 'Caverns of Insipid Reflection', duration: '6:21', file: 'caverns' }
+    - { num: '02', name: 'Relinquish the Self', duration: '3:31', file: 'relinquish' }
+    - { num: '03', name: 'Excess Womb', duration: '3:32', file: 'excess' }
+    - { num: '04', name: 'Death Curse', duration: '4:48', file: 'curse' }
+    - { num: '05', name: 'Coerced to Be', duration: '6:13', file: 'coerced' }
+    - { num: '06', name: 'Rabid Future', duration: '3:18', file: 'rabid' }
+    - { num: '07', name: 'Chassis of Deceit', duration: '4:55', file: 'chassis' }
+    - { num: '08', name: 'Dressed in Violence', duration: '3:10', file: 'dressed' }
+    - { num: '09', name: 'Ektoskull', duration: '3:56', file: 'ektoskull' }
+    - { num: '10', name: 'The Ubiquity of Time', duration: '8:53', file: 'ubiquity' }
 reviews:
-    - quote: "The simple truth is that Replicant have me head over heels for Infinite Mortality. It's brutal, it's smart as hell, and it's a novel entry in the wild world of skronky death. You'd be remiss to let it pass you by."
+    - quote: 'Though soaked with the reek of the avant-garde, there isn’t a song on Malignant Reality that you can sit still for. Every minute twists the trio to a new position, feet firm and knuckles bared with sinewed grace'
       source: 'Angry Metal Guy'
-      link: 'https://www.angrymetalguy.com/replicant-infinite-mortality-review/'
-    - quote: "Nobody out there sounds like Replicant, and Replicant is officially at the top of their game. Infinite Mortality is their best work so far, an enormous destructive machine dripping blood and oil that will crush you between its horrible steel jaws. It's focused, quirky, and hideous as can be, filled with groove that's more infectious than the plague. Get this one in your ears ASAP."
-      source: 'Noob Heavy'
-      link: 'https://noobheavy.com/album-review-replicant-infinite-mortality/'
+      link: 'https://www.angrymetalguy.com/replicant-malignant-reality-review/'
+    - quote: 'Replicant finds great balance both between and within the dissonant and catchy/groovy sides of death metal, and anyone that has ever found themselves wondering about a hypothetical New Jersey offspring of Gorguts and Demilich ought to find a ton to love with Malignant Reality.'
+      source: 'Last Rites'
+      link: 'https://yourlastrites.com/2021/09/08/replicant-malignant-reality-review/'
 lineup:
     - { name: 'Michael Gonçalves', role: 'Vocals, Bass, Guitars' }
     - { name: 'Peter Lloyd', role: 'Guitars, High-frequency transmissions' }
     - { name: 'James Applegate', role: 'Drums' }
 credits:
-    # TODO: add recording/mix/artwork credits
-    - { label: 'Recording', text: 'TBD' }
-    - { label: 'Engineering & Mix', text: 'TBD' }
+    - { label: 'Engineering', text: 'Ben Karas' }
+    - { label: 'Engineering', text: 'Peter Lloyd' }
+    - { label: 'Engineering & Mixing', text: 'Bobby Torres' }
+    - { label: 'Mastering', text: 'Colin Marston' }
     - { label: 'Artwork', text: 'Alli Tuttle' }
+    - { label: 'Layout', text: 'Ashish Patel' }
 guestAppearances:
     - { name: 'Cody McCorry', part: 'Theremin on "Caverns of Insipid Reflection"' }
     - { name: 'Peter Brown', part: 'Guitar solo on "Dressed in Violence"' }

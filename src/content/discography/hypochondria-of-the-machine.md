@@ -7,9 +7,10 @@ datePublished: '2019-12-20'
 label: 'Self-Released'
 format: 'Vinyl · Digital'
 cover: 'hypo-cover.jpeg'
+audioBase: 'https://res.cloudinary.com/observatory-team/video/upload'
 tracks:
-    - { num: '01', name: 'Hymns of Distress', duration: '5:12', file: '' }
-    - { num: '02', name: 'Limbic Thrust', duration: '3:12', file: '' }
+    - { num: '01', name: 'Hymns of Distress', duration: '5:12', file: 'hymns' }
+    - { num: '02', name: 'Limbic Thrust', duration: '3:12', file: 'limbic' }
 lineup:
     # TODO: confirm lineup for this release
     - { name: 'Michael Gonçalves', role: 'Vocals, Bass, Guitars' }

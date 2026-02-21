@@ -138,6 +138,12 @@ const hasProducts = albumProducts.length > 0 || !!data.productFilterTerm;
 // Release year from date
 const releaseYear = data.datePublished.split('-')[0];
 
+// Convert "M:SS" or "MM:SS" to ISO 8601 duration "PTXMXS"
+function toIsoDuration(d: string) {
+    const [m, s] = d.split(':').map(Number);
+    return `PT${m}M${s}S`;
+}
+
 // JSON-LD byArtist
 const byArtist = data.additionalArtists?.length
     ? [
@@ -171,9 +177,26 @@ const byArtist = data.additionalArtists?.length
                               itemListElement: data.tracks.map((t, i) => ({
                                   '@type': 'ListItem',
                                   position: i + 1,
-                                  item: { '@type': 'MusicRecording', name: t.name },
+                                  item: {
+                                      '@type': 'MusicRecording',
+                                      name: t.name,
+                                      duration: toIsoDuration(t.duration),
+                                  },
                               })),
                           },
+                      }
+                    : {}),
+                ...(data.reviews?.length
+                    ? {
+                          review: data.reviews.map((r) => ({
+                              '@type': 'Review',
+                              reviewBody: r.quote,
+                              author: {
+                                  '@type': 'Organization',
+                                  name: r.source,
+                              },
+                              url: r.link,
+                          })),
                       }
                     : {}),
             })}

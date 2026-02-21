@@ -7,15 +7,16 @@ datePublished: '2020-08-04'
 label: 'Blood Harvest Records'
 format: 'Vinyl · Digital'
 cover: 'chasm-cover.jpg'
+audioBase: 'https://res.cloudinary.com/observatory-team/video/upload'
+tracks:
+    - { num: '01', name: 'Unbeing', duration: '3:09', file: 'unbeing.mp3' }
 lineup:
-    # TODO: confirm lineup for this release
     - { name: 'Michael Gonçalves', role: 'Vocals, Bass, Guitars' }
     - { name: 'Peter Lloyd', role: 'Guitars' }
     - { name: 'James Applegate', role: 'Drums' }
 credits:
-    # TODO: add recording/mix/artwork credits
-    - { label: 'Recording', text: 'TBD' }
-    - { label: 'Artwork', text: 'TBD' }
+    - { label: 'Tracked, Mixed & Mastered', text: 'Peter Lloyd at One Stone Recording & Mastering' }
+    - { label: 'Artwork & Layout', text: 'Bruce Pennington' }
 numTracks: 1
 albumReleaseType: 'SingleRelease'
 additionalArtists:
