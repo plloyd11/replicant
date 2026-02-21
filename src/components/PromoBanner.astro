@@ -1,39 +1,18 @@
+---
+import NewsletterForm from './NewsletterForm.astro';
+---
+
 <div>
     <div class="mx-auto container py-2 px-4 promo-banner shadow-xl rounded-xl">
         <div class="relative isolate overflow-hidden px-6 py-32 text-center sm:px-16">
             <h2 class="text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
-                Subcribe to Void Channels
+                Subscribe to Void Channels
             </h2>
             <p class="mx-auto mt-6 max-w-xl text-xl text-pretty text-white">
                 Be the first to know about the latest news, merch drops, and tour dates.
             </p>
             <div class="mt-10 flex items-center justify-center gap-x-6">
-                <form
-                    class="w-full max-w-md"
-                    action="https://buttondown.com/api/emails/embed-subscribe/replicant"
-                    method="post"
-                    target="popupwindow"
-                    onsubmit="window.open('https://buttondown.com/replicant', 'popupwindow')"
-                >
-                    <div class="flex gap-x-4">
-                        <label for="email-address" class="sr-only">Email address</label>
-                        <input
-                            id="email-address"
-                            name="email"
-                            type="email"
-                            autocomplete="email"
-                            required
-                            class="min-w-0 flex-auto rounded-md px-3.5 pt-2 pb-1 text-base text-white outline -outline-offset-1 outline-white/10 placeholder:text-replicant-300/80 bg-replicant-600/80 focus:outline focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"
-                            placeholder="Enter your email"
-                        />
-                        <button
-                            type="submit"
-                            class="flex items-center justify-center px-4 py-2 text-base cursor-pointer font-medium text-replicant-900 border border-transparent rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                        >
-                            Subscribe
-                        </button>
-                    </div>
-                </form>
+                <NewsletterForm id="email-promo" />
             </div>
         </div>
     </div>

@@ -1,0 +1,614 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import AudioPlayer from '../../components/AudioPlayer.svelte';
+import { getSizeOptions } from '../../utils/sizes';
+
+export async function getStaticPaths() {
+    const allReleases = await getCollection('discography');
+
+    // Full lengths first (newest→oldest), then EPs/splits (newest→oldest)
+    const fullLengths = allReleases
+        .filter((r) => r.data.releaseType === 'Full Length')
+        .sort((a, b) => b.data.datePublished.localeCompare(a.data.datePublished));
+    const others = allReleases
+        .filter((r) => r.data.releaseType !== 'Full Length')
+        .sort((a, b) => b.data.datePublished.localeCompare(a.data.datePublished));
+    const ordered = [...fullLengths, ...others];
+
+    return ordered.map((release, i) => ({
+        params: { slug: release.data.slug },
+        props: {
+            release,
+            prevRelease: i > 0 ? ordered[i - 1].data : null,
+            nextRelease: i < ordered.length - 1 ? ordered[i + 1].data : null,
+        },
+    }));
+}
+
+const { release, prevRelease, nextRelease } = Astro.props;
+const { data } = release;
+const { Content } = await render(release);
+
+// Resolve cover image dynamically
+const coverImages = import.meta.glob<{ default: ImageMetadata }>(
+    '/src/assets/discography/*.{jpg,jpeg,png,webp}',
+    { eager: true },
+);
+const coverPath = `/src/assets/discography/${data.cover}`;
+const coverImage = coverImages[coverPath]?.default;
+
+if (!coverImage) {
+    throw new Error(`Cover image not found: ${coverPath}`);
+}
+
+// Build page meta
+const title = `${data.title} | Replicant Discography`;
+const desc = `${data.title} — ${data.releaseType === 'Full Length' ? `full-length album` : data.releaseType.toLowerCase()} from Replicant. ${data.numTracks} track${data.numTracks !== 1 ? 's' : ''} of dissonant, technical death metal. Released ${data.releaseDate} via ${data.label}. Available on ${data.format.toLowerCase()}.`;
+
+const ogImage = await getImage({
+    src: coverImage,
+    width: 1200,
+    height: 1200,
+    format: 'jpg',
+    quality: 80,
+});
+const ogImageUrl = new URL(ogImage.src, Astro.site).href;
+
+// Build tracks with full src URLs for the audio player
+const tracks = data.tracks
+    ?.filter((t) => t.file)
+    ?.map((t) => ({
+        num: t.num,
+        name: t.name,
+        duration: t.duration,
+        src: data.audioBase ? `${data.audioBase}/${t.file}` : '',
+    }));
+const hasAudio = tracks && tracks.length > 0 && tracks.some((t) => t.src);
+
+// Fetch products from CMS
+interface AlbumProduct {
+    slug: string;
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    image: { url: string; secure_url?: string };
+    productType: string;
+    productWeight: number;
+    fileGuid: string;
+    sale?: boolean;
+    sizes?: string;
+}
+
+let albumProducts: AlbumProduct[] = [];
+
+if (data.productFilterTerm) {
+    try {
+        const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({
+                query: `query {
+                    products {
+                        slug
+                        id
+                        title
+                        description
+                        price
+                        image
+                        productType
+                        productWeight
+                        fileGuid
+                        sale
+                        sizes
+                    }
+                }`,
+            }),
+        });
+        if (result.ok) {
+            const json = await result.json();
+            const allProducts: AlbumProduct[] = json.data.products;
+            albumProducts = allProducts.filter((p) =>
+                p.title.toLowerCase().includes(data.productFilterTerm!.toLowerCase()),
+            );
+            albumProducts.forEach((p) => {
+                if (p.image) {
+                    const raw = p.image.secure_url || p.image.url;
+                    if (raw?.includes('res.cloudinary.com')) {
+                        p.image.url = raw
+                            .replace('/upload/', '/upload/f_avif,q_auto/')
+                            .replace(/\.(png|jpg|jpeg|webp)$/i, '.avif');
+                    } else if (raw) {
+                        p.image.url = raw;
+                    }
+                }
+            });
+        }
+    } catch {
+        // Graceful fallback — section will show empty if CMS is unreachable
+    }
+}
+
+const hasReviews = data.reviews && data.reviews.length > 0;
+const hasVideos = data.musicVideos && data.musicVideos.length > 0;
+const hasProducts = albumProducts.length > 0 || !!data.productFilterTerm;
+
+// Release year from date
+const releaseYear = data.datePublished.split('-')[0];
+
+// Convert "M:SS" or "MM:SS" to ISO 8601 duration "PTXMXS"
+function toIsoDuration(d: string) {
+    const [m, s] = d.split(':').map(Number);
+    return `PT${m}M${s}S`;
+}
+
+// JSON-LD byArtist
+const byArtist = data.additionalArtists?.length
+    ? [
+          { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+          ...data.additionalArtists.map((name) => ({ '@type': 'MusicGroup', name })),
+      ]
+    : { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' };
+---
+
+<BaseLayout title={title} desc={desc} image={ogImageUrl}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'MusicAlbum',
+                name: data.title,
+                albumProductionType: 'https://schema.org/StudioAlbum',
+                albumReleaseType: `https://schema.org/${data.albumReleaseType}`,
+                datePublished: data.datePublished,
+                numTracks: data.numTracks,
+                url: `https://replicant.band/discography/${data.slug}/`,
+                image: ogImageUrl,
+                byArtist,
+                recordLabel: { '@type': 'Organization', name: data.label },
+                ...(data.tracks?.length
+                    ? {
+                          track: {
+                              '@type': 'ItemList',
+                              numberOfItems: data.numTracks,
+                              itemListElement: data.tracks.map((t, i) => ({
+                                  '@type': 'ListItem',
+                                  position: i + 1,
+                                  item: {
+                                      '@type': 'MusicRecording',
+                                      name: t.name,
+                                      duration: toIsoDuration(t.duration),
+                                  },
+                              })),
+                          },
+                      }
+                    : {}),
+            })}
+        />
+    </Fragment>
+
+    <main>
+        <!-- HERO -->
+        <section class="relative lg:min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+            <!-- Left: text content -->
+            <div
+                class="relative flex items-center px-6 lg:px-16 pt-28 pb-16 lg:pt-0 lg:pb-0 animate-[fadeUp_0.8s_ease-out_both]"
+            >
+                <div
+                    class="pointer-events-none absolute inset-0"
+                    style="background: radial-gradient(ellipse at 30% 50%, rgba(218,146,82,0.06) 0%, transparent 60%);"
+                >
+                </div>
+                <div class="relative z-[1] max-w-xl">
+                    <div
+                        class="flex items-center gap-3 mb-6 text-sm font-bold tracking-[0.2em] uppercase text-primary"
+                    >
+                        <span class="w-6 h-px bg-primary"></span>
+                        {data.releaseType} · {releaseYear}
+                    </div>
+                    <h1
+                        class="text-5xl lg:text-7xl font-bold tracking-tight mb-4 text-replicant-200"
+                    >
+                        {data.title}
+                    </h1>
+
+                    <div class="flex flex-wrap gap-8 mt-8">
+                        <div class="flex flex-col gap-0.5">
+                            <span
+                                class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500"
+                                >Released</span
+                            >
+                            <span class="text-sm text-replicant-200">{data.releaseDate}</span>
+                        </div>
+                        <div class="flex flex-col gap-0.5">
+                            <span
+                                class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500"
+                                >Label</span
+                            >
+                            <span class="text-sm text-replicant-200">{data.label}</span>
+                        </div>
+                        <div class="flex flex-col gap-0.5">
+                            <span
+                                class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500"
+                                >Format</span
+                            >
+                            <span class="text-sm text-replicant-200">{data.format}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mt-12">
+                        {
+                            hasProducts && (
+                                <a
+                                    href="#buy"
+                                    class="inline-flex items-center rounded-sm gap-2 px-8 py-3.5 bg-primary text-replicant-900 text-sm font-bold tracking-[0.15em] uppercase no-underline transition-all duration-300 hover:bg-primary-dark hover:shadow-[0_0_30px_rgba(218,146,82,0.3)] hover:-translate-y-px"
+                                >
+                                    ⚔️ Buy Some Merch ⚔️
+                                </a>
+                            )
+                        }
+                        {
+                            hasAudio && (
+                                <a
+                                    href="#listen"
+                                    class="inline-flex items-center rounded-sm gap-2 px-8 py-3.5 border border-replicant-700 text-replicant-200 text-sm font-bold tracking-[0.15em] uppercase no-underline transition-all duration-300 hover:border-replicant-400 hover:bg-white/[0.03]"
+                                >
+                                    Stream Album
+                                </a>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: album art -->
+            <div
+                class="relative min-h-[400px] lg:min-h-0 animate-[fadeUp_0.8s_ease-out_0.15s_both]"
+            >
+                <Image
+                    src={coverImage}
+                    alt={`${data.title} Album Cover`}
+                    width={1800}
+                    height={1800}
+                    quality={80}
+                    format="avif"
+                    class="absolute inset-0 w-full h-full object-cover"
+                />
+            </div>
+        </section>
+
+        <!-- TRACKLIST -->
+        {hasAudio && <AudioPlayer tracks={tracks} client:load />}
+
+        <!-- ABOUT -->
+        <section class="fade-in px-6 lg:px-16 py-16 lg:py-20 border-t border-replicant-700">
+            <div class="container mx-auto">
+                <div
+                    class="flex items-center gap-4 mb-10 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500"
+                >
+                    Album Details
+                    <span class="flex-1 h-px bg-replicant-700"></span>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 lg:gap-16 items-start">
+                    <div class="text-base leading-relaxed text-replicant-400 max-w-2xl album-prose">
+                        <Content />
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <div class="p-6 bg-replicant-900 border border-replicant-700">
+                            <h2
+                                class="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-replicant-500 mb-4"
+                            >
+                                Lineup
+                            </h2>
+                            <ul class="flex flex-col gap-2 list-none">
+                                {
+                                    data.lineup.map((member) => (
+                                        <li>
+                                            <span class="text-sm font-medium text-replicant-200">
+                                                {member.name}
+                                            </span>
+                                            <span class="text-sm text-replicant-500">
+                                                {' '}
+                                                — {member.role}
+                                            </span>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                        <div class="p-6 bg-replicant-900 border border-replicant-700">
+                            <h2
+                                class="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-replicant-500 mb-4"
+                            >
+                                Credits
+                            </h2>
+                            <ul class="flex flex-col gap-2 list-none">
+                                {
+                                    data.credits.map((credit) => (
+                                        <li>
+                                            <span class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500">
+                                                {credit.label}
+                                            </span>
+                                            <p class="text-sm text-replicant-400">{credit.text}</p>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                        {
+                            data.guestAppearances && data.guestAppearances.length > 0 && (
+                                <div class="p-6 bg-replicant-900 border border-replicant-700">
+                                    <h2 class="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-replicant-500 mb-4">
+                                        Guest Appearances
+                                    </h2>
+                                    <ul class="flex flex-col gap-2 list-none">
+                                        {data.guestAppearances.map((guest) => (
+                                            <li>
+                                                <span class="text-sm font-medium text-replicant-200">
+                                                    {guest.name}
+                                                </span>
+                                                <span class="text-sm text-replicant-500">
+                                                    {' '}
+                                                    — {guest.part}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRESS -->
+        {
+            hasReviews && (
+                <section class="fade-in px-6 lg:px-16 py-16 lg:py-20 border-t border-replicant-700">
+                    <div class="container mx-auto">
+                        <div class="flex items-center gap-4 mb-10 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500">
+                            Press
+                            <span class="flex-1 h-px bg-replicant-700" />
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-24">
+                            {data.reviews!.map((review) => (
+                                <a href={review.link} target="_blank" rel="noopener noreferrer">
+                                    <blockquote class="border-l-2 border-primary pl-6">
+                                        <p class="text-lg italic text-replicant-300 leading-relaxed mb-3">
+                                            &ldquo;{review.quote}&rdquo;
+                                        </p>
+                                        <cite class="text-[0.7rem] font-bold tracking-[0.15em] uppercase text-replicant-500 not-italic">
+                                            {review.source}
+                                        </cite>
+                                    </blockquote>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )
+        }
+
+        <!-- BUY -->
+        {
+            hasProducts && (
+                <section
+                    id="buy"
+                    class="fade-in px-6 lg:px-16 py-16 lg:py-20 border-t border-replicant-700 bg-[#111]"
+                >
+                    <div class="container mx-auto">
+                        <div class="flex items-center gap-4 mb-10 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500">
+                            Buy
+                            <span class="flex-1 h-px bg-replicant-700" />
+                        </div>
+                        {albumProducts.length > 0 ? (
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {albumProducts.map((product) => (
+                                    <div class="border border-replicant-700 bg-replicant-900 flex flex-col transition-all duration-300 hover:border-primary hover:-translate-y-0.5">
+                                        {product.image?.url && (
+                                            <div class="overflow-hidden aspect-square">
+                                                <img
+                                                    src={product.image.url}
+                                                    alt={product.title}
+                                                    class="w-full h-full object-cover"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                        )}
+                                        <div class="p-6 flex flex-col gap-3 flex-1">
+                                            <span class="text-[0.65rem] font-bold tracking-[0.15em] uppercase text-replicant-500">
+                                                {product.productType}
+                                            </span>
+                                            <span class="text-lg font-semibold text-replicant-200">
+                                                {product.title}
+                                            </span>
+                                            <p class="text-sm text-replicant-500 leading-relaxed line-clamp-3">
+                                                {product.description}
+                                            </p>
+                                            <span class="text-lg font-bold text-primary mt-auto">
+                                                $
+                                                {product.sale
+                                                    ? (product.price * 0.8).toFixed(2)
+                                                    : `${product.price}.00`}
+                                            </span>
+                                            {(() => {
+                                                const sizeOptions = getSizeOptions(
+                                                    product.sizes,
+                                                    product.productType,
+                                                    product.sale,
+                                                );
+                                                return (
+                                                    <button
+                                                        class="snipcart-add-item inline-flex items-center justify-center py-3 bg-primary text-white text-[0.65rem] font-bold tracking-[0.15em] uppercase cursor-pointer transition-all duration-300 hover:bg-primary-dark border-none"
+                                                        data-item-id={product.id}
+                                                        data-item-price={
+                                                            product.sale
+                                                                ? (product.price * 0.8).toFixed(2)
+                                                                : product.price
+                                                        }
+                                                        data-item-url={`/discography/${data.slug}/`}
+                                                        data-item-description={product.description}
+                                                        data-item-image={product.image?.url}
+                                                        data-item-name={product.title}
+                                                        data-item-weight={product.productWeight}
+                                                        {...(product.productType === 'digital'
+                                                            ? {
+                                                                  'data-item-file-guid':
+                                                                      product.fileGuid,
+                                                                  'data-item-shippable': 'false',
+                                                              }
+                                                            : {})}
+                                                        {...(sizeOptions
+                                                            ? {
+                                                                  'data-item-custom1-name': 'Size',
+                                                                  'data-item-custom1-options':
+                                                                      sizeOptions,
+                                                              }
+                                                            : {})}
+                                                    >
+                                                        Add to Cart &rarr;
+                                                    </button>
+                                                );
+                                            })()}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p class="text-replicant-500">No products available at this time.</p>
+                        )}
+                    </div>
+                </section>
+            )
+        }
+
+        <!-- MUSIC VIDEOS -->
+        {
+            hasVideos && (
+                <section class="fade-in px-6 lg:px-16 py-16 lg:py-20 border-t border-replicant-700">
+                    <div class="container mx-auto">
+                        <div class="flex items-center gap-4 mb-10 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500">
+                            Music Videos
+                            <span class="flex-1 h-px bg-replicant-700" />
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {data.musicVideos!.map((video) => (
+                                <div>
+                                    <div class="aspect-video bg-replicant-900 border border-replicant-700">
+                                        <iframe
+                                            width="100%"
+                                            height="100%"
+                                            src={`https://www.youtube.com/embed/${video.id}`}
+                                            title={`${video.track} — Replicant`}
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen
+                                        />
+                                    </div>
+                                    <p class="mt-3 text-sm text-replicant-400">{video.track}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )
+        }
+        <!-- DISCOGRAPHY NAV -->
+        <section
+            class="flex justify-between items-center px-6 lg:px-16 py-12 border-t border-replicant-700"
+        >
+            {
+                prevRelease ? (
+                    <a
+                        href={`/discography/${prevRelease.slug}/`}
+                        class="flex flex-col gap-1 no-underline transition-opacity duration-300 hover:opacity-70"
+                    >
+                        <span class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500">
+                            &larr; Previous
+                        </span>
+                        <span class="text-lg text-replicant-200">{prevRelease.title}</span>
+                    </a>
+                ) : (
+                    <div class="flex flex-col gap-1 opacity-30 pointer-events-none">
+                        <span class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500">
+                            &larr; Previous
+                        </span>
+                        <span class="text-lg text-replicant-200">&mdash;</span>
+                    </div>
+                )
+            }
+            <a
+                href="/discography/"
+                class="hidden sm:inline-flex items-center gap-2 px-6 py-3 border border-replicant-700 text-replicant-200 text-[0.65rem] font-bold tracking-[0.15em] uppercase no-underline transition-all duration-300 hover:border-replicant-400 hover:bg-white/[0.03]"
+            >
+                All Releases
+            </a>
+            {
+                nextRelease ? (
+                    <a
+                        href={`/discography/${nextRelease.slug}/`}
+                        class="flex flex-col gap-1 text-right no-underline transition-opacity duration-300 hover:opacity-70"
+                    >
+                        <span class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500">
+                            Next &rarr;
+                        </span>
+                        <span class="text-lg text-replicant-200">{nextRelease.title}</span>
+                    </a>
+                ) : (
+                    <div class="flex flex-col gap-1 text-right opacity-30 pointer-events-none">
+                        <span class="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-replicant-500">
+                            Next &rarr;
+                        </span>
+                        <span class="text-lg text-replicant-200">&mdash;</span>
+                    </div>
+                )
+            }
+        </section>
+    </main>
+</BaseLayout>
+
+<style>
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        },
+        { threshold: 0.1 },
+    );
+
+    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+</script>

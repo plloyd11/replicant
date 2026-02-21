@@ -75,7 +75,6 @@ try {
                         preOrder
                         fileGuid
                         createdAt
-                        updatedAt
                     }
                     reviews {
                         pullQuote
@@ -162,7 +161,7 @@ try {
         throw new Error(`${result.status}: ${result.statusText}`);
     }
 } catch (error) {
-    throw error;
+    console.error('Failed to fetch from CMS:', error);
 }
 ---
 

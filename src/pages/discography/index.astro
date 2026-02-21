@@ -5,61 +5,67 @@ import SectionIntro from '../../components/SectionIntro.astro';
 import PromoBanner from '../../components/PromoBanner.astro';
 
 import { Image } from 'astro:assets';
-import imCover from '../../assets/discography/im-cover.jpg';
-import mrCover from '../../assets/discography/mr-cover.jpeg';
-import nlCover from '../../assets/discography/nl-cover.jpg';
-import chasmCover from '../../assets/discography/chasm-cover.jpg';
-import hypoCover from '../../assets/discography/hypo-cover.jpeg';
-import njCover from '../../assets/discography/nj-cover.jpeg';
-import wdCover from '../../assets/discography/wd-cover.jpeg';
+import { getCollection } from 'astro:content';
 
-const albums = [
-    {
-        title: 'Infinite Mortality',
-        cover: imCover,
-        date: 'April 12, 2024',
-        link: '/discography/infinite-mortality',
-    },
-    {
-        title: 'Malignant Reality',
-        cover: mrCover,
-        date: 'September 10, 2021',
-        link: '/discography/malignant-reality',
-    },
-    {
-        title: 'Negative Life',
-        cover: nlCover,
-        date: 'March 23, 2018',
-        link: '/discography/negative-life',
-    },
-];
+const allReleases = await getCollection('discography');
 
-const eps = [
-    {
-        title: 'Chasm of Aeons',
-        cover: chasmCover,
-        date: 'August 4, 2020',
-        link: '/discography/chasm-of-aeons',
-    },
-    {
-        title: 'Hypochondria of the Machine',
-        cover: hypoCover,
-        date: 'December 20, 2019',
-        link: '/discography/hypochondria-of-the-machine',
-    },
-    {
-        title: 'Welcome to New Jersey',
-        cover: njCover,
-        date: 'October 25, 2019',
-        link: '/discography/welcome-to-new-jersey',
-    },
-    {
-        title: 'Worthless Desires',
-        cover: wdCover,
-        date: 'May 20, 2016',
-        link: '/discography/worthless-desires',
-    },
-];
+// Resolve cover images
+const coverImages = import.meta.glob<{ default: ImageMetadata }>(
+    '/src/assets/discography/*.{jpg,jpeg,png,webp}',
+    { eager: true },
+);
+
+function getCover(filename: string) {
+    const path = `/src/assets/discography/${filename}`;
+    return coverImages[path]?.default;
+}
+
+// Split into albums and EPs/splits, sorted by date descending
+const albums = allReleases
+    .filter((r) => r.data.releaseType === 'Full Length')
+    .sort((a, b) => b.data.datePublished.localeCompare(a.data.datePublished));
+
+const eps = allReleases
+    .filter((r) => r.data.releaseType !== 'Full Length')
+    .sort((a, b) => b.data.datePublished.localeCompare(a.data.datePublished));
+
+// Build JSON-LD album entries from collection data
+function buildAlbumJsonLd(release: (typeof allReleases)[number]) {
+    const d = release.data;
+    const byArtist = d.additionalArtists?.length
+        ? [
+              { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+              ...d.additionalArtists.map((name) => ({ '@type': 'MusicGroup', name })),
+          ]
+        : { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' };
+
+    const cover = getCover(d.cover);
+    const entry: Record<string, unknown> = {
+        '@type': 'MusicAlbum',
+        name: d.title,
+        albumProductionType: 'https://schema.org/StudioAlbum',
+        albumReleaseType: `https://schema.org/${d.albumReleaseType}`,
+        datePublished: d.datePublished,
+        numTracks: d.numTracks,
+        image: cover?.src ? new URL(cover.src, 'https://replicant.band').href : undefined,
+        byArtist,
+        recordLabel: { '@type': 'Organization', name: d.label },
+    };
+
+    if (d.tracks?.length) {
+        entry.track = {
+            '@type': 'ItemList',
+            numberOfItems: d.numTracks,
+            itemListElement: d.tracks.map((t, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                item: { '@type': 'MusicRecording', name: t.name },
+            })),
+        };
+    }
+
+    return entry;
+}
 ---
 
 <Fragment slot="head">
@@ -75,366 +81,7 @@ const eps = [
             mainEntity: {
                 '@type': 'MusicGroup',
                 '@id': 'https://replicant.band/#band',
-                album: [
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Infinite Mortality',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/AlbumRelease',
-                        datePublished: '2024-04-12',
-                        numTracks: 9,
-                        image: 'https://replicant.band/_astro/im-cover.C3yB7JfE_G5HpW.avif',
-                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                        recordLabel: {
-                            '@type': 'Organization',
-                            name: 'Transcending Obscurity Records',
-                        },
-                        track: {
-                            '@type': 'ItemList',
-                            numberOfItems: 9,
-                            itemListElement: [
-                                {
-                                    '@type': 'ListItem',
-                                    position: 1,
-                                    item: { '@type': 'MusicRecording', name: 'Acid Mirror' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 2,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Shrine to the Incomprehensible',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 3,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Orgasm of Bereavement',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 4,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Reciprocal Abandonment',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 5,
-                                    item: { '@type': 'MusicRecording', name: 'SCN9A' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 6,
-                                    item: { '@type': 'MusicRecording', name: 'Pain Enduring' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 7,
-                                    item: { '@type': 'MusicRecording', name: 'Nekrotunnel' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 8,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Dwelling on the Threshold',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 9,
-                                    item: { '@type': 'MusicRecording', name: 'Planet of Skin' },
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Malignant Reality',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/AlbumRelease',
-                        datePublished: '2021-09-10',
-                        numTracks: 10,
-                        image: 'https://replicant.band/_astro/mr-cover.I7kavFJs_D5uTz.avif',
-                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                        recordLabel: {
-                            '@type': 'Organization',
-                            name: 'Transcending Obscurity Records',
-                        },
-                        track: {
-                            '@type': 'ItemList',
-                            numberOfItems: 10,
-                            itemListElement: [
-                                {
-                                    '@type': 'ListItem',
-                                    position: 1,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Caverns of Insipid Reflection',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 2,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Relinquish the Self',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 3,
-                                    item: { '@type': 'MusicRecording', name: 'Excess Womb' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 4,
-                                    item: { '@type': 'MusicRecording', name: 'Death Curse' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 5,
-                                    item: { '@type': 'MusicRecording', name: 'Coerced to Be' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 6,
-                                    item: { '@type': 'MusicRecording', name: 'Rabid Future' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 7,
-                                    item: { '@type': 'MusicRecording', name: 'Chassis of Deceit' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 8,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Dressed in Violence',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 9,
-                                    item: { '@type': 'MusicRecording', name: 'Ektoskull' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 10,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'The Ubiquity of Time',
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Negative Life',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/AlbumRelease',
-                        datePublished: '2018-03-23',
-                        numTracks: 10,
-                        image: 'https://replicant.band/_astro/nl-cover.BI31h43I_phWj2.avif',
-                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                        recordLabel: { '@type': 'Organization', name: 'PRC Music' },
-                        track: {
-                            '@type': 'ItemList',
-                            numberOfItems: 10,
-                            itemListElement: [
-                                {
-                                    '@type': 'ListItem',
-                                    position: 1,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: '(Spit) Into the Void',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 2,
-                                    item: { '@type': 'MusicRecording', name: 'ADRA2B' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 3,
-                                    item: { '@type': 'MusicRecording', name: 'Inescapable Grief' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 4,
-                                    item: { '@type': 'MusicRecording', name: 'Oceans of Dust' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 5,
-                                    item: { '@type': 'MusicRecording', name: 'The Frail' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 6,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Sowing Seeds in Dead Soil',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 7,
-                                    item: { '@type': 'MusicRecording', name: 'Chaotic Neutral' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 8,
-                                    item: { '@type': 'MusicRecording', name: 'Shroud' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 9,
-                                    item: { '@type': 'MusicRecording', name: 'Selfish Universe' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 10,
-                                    item: { '@type': 'MusicRecording', name: 'Vessel of Iniquity' },
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Chasm of Aeons',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/SingleRelease',
-                        datePublished: '2020-08-04',
-                        numTracks: 1,
-                        image: 'https://replicant.band/_astro/chasm-cover.CyAKPbaG_1sTPA3.avif',
-                        byArtist: [
-                            { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                            { '@type': 'MusicGroup', name: 'Cryptic Shift' },
-                            { '@type': 'MusicGroup', name: 'Inoculation' },
-                            { '@type': 'MusicGroup', name: 'Astral Tomb' },
-                        ],
-                        recordLabel: { '@type': 'Organization', name: 'Blood Harvest Records' },
-                    },
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Hypochondria of the Machine',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/EPRelease',
-                        datePublished: '2019-12-20',
-                        numTracks: 2,
-                        image: 'https://replicant.band/_astro/hypo-cover.CzB97tGR_Z1mWlBe.avif',
-                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                        track: {
-                            '@type': 'ItemList',
-                            numberOfItems: 2,
-                            itemListElement: [
-                                {
-                                    '@type': 'ListItem',
-                                    position: 1,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Hymns of Distress',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 2,
-                                    item: { '@type': 'MusicRecording', name: 'Limbic Thrust' },
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Welcome to New Jersey',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/EPRelease',
-                        datePublished: '2019-10-25',
-                        numTracks: 3,
-                        image: 'https://replicant.band/_astro/nj-cover.BXsujR88_Z1nYDj7.avif',
-                        byArtist: [
-                            { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                            { '@type': 'MusicGroup', name: 'Bayht Lahm' },
-                        ],
-                        recordLabel: { '@type': 'Organization', name: 'CDN Records' },
-                        track: {
-                            '@type': 'ItemList',
-                            numberOfItems: 3,
-                            itemListElement: [
-                                {
-                                    '@type': 'ListItem',
-                                    position: 1,
-                                    item: { '@type': 'MusicRecording', name: 'Exit 9' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 2,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Demolished by Solitude',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 3,
-                                    item: { '@type': 'MusicRecording', name: 'Shooter McGavin' },
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        '@type': 'MusicAlbum',
-                        name: 'Worthless Desires',
-                        albumProductionType: 'https://schema.org/StudioAlbum',
-                        albumReleaseType: 'https://schema.org/EPRelease',
-                        datePublished: '2016-05-20',
-                        numTracks: 4,
-                        image: 'https://replicant.band/_astro/wd-cover.BGkDPh8Q_2v4RqF.avif',
-                        byArtist: { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
-                        recordLabel: { '@type': 'Organization', name: 'PRC Music' },
-                        track: {
-                            '@type': 'ItemList',
-                            numberOfItems: 4,
-                            itemListElement: [
-                                {
-                                    '@type': 'ListItem',
-                                    position: 1,
-                                    item: { '@type': 'MusicRecording', name: 'Ripped From Within' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 2,
-                                    item: { '@type': 'MusicRecording', name: 'Shroud' },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 3,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'The Everdying Realm',
-                                    },
-                                },
-                                {
-                                    '@type': 'ListItem',
-                                    position: 4,
-                                    item: {
-                                        '@type': 'MusicRecording',
-                                        name: 'Anti-Instinct: The Withered End',
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                ],
+                album: [...albums, ...eps].map(buildAlbumJsonLd),
             },
         })}
     />
@@ -471,28 +118,34 @@ const eps = [
             <div class="container px-6 mx-auto mt-24 xl:px-0">
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {
-                        albums.map((album) => (
-                            <div>
-                                <Image
-                                    src={album.cover}
-                                    alt={`${album.title} Album Cover`}
-                                    width={496}
-                                    height={496}
-                                    format="avif"
-                                />
-                                <div class="flex flex-col gap-1 mt-4">
-                                    <h2 class="text-3xl font-bold text-white">{album.title}</h2>
-                                    <span class="text-replicant-300">{album.date}</span>
-                                    {album.title === 'Infinite Mortality' ? (
-                                        <a href={album.link} class="text-primary hover:underline">
+                        albums.map((album) => {
+                            const cover = getCover(album.data.cover);
+                            return cover ? (
+                                <div>
+                                    <Image
+                                        src={cover}
+                                        alt={`${album.data.title} Album Cover`}
+                                        width={496}
+                                        height={496}
+                                        format="avif"
+                                    />
+                                    <div class="flex flex-col gap-1 mt-4">
+                                        <h2 class="text-3xl font-bold text-white">
+                                            {album.data.title}
+                                        </h2>
+                                        <span class="text-replicant-300">
+                                            {album.data.releaseDate}
+                                        </span>
+                                        <a
+                                            href={`/discography/${album.data.slug}`}
+                                            class="text-primary hover:underline"
+                                        >
                                             View Album
                                         </a>
-                                    ) : (
-                                        <p class="text-replicant-500">Page coming soon</p>
-                                    )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ) : null;
+                        })
                     }
                 </div>
             </div>
@@ -502,22 +155,34 @@ const eps = [
             <div class="container px-6 mx-auto mt-24 xl:px-0">
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {
-                        eps.map((ep) => (
-                            <div>
-                                <Image
-                                    src={ep.cover}
-                                    alt={`${ep.title} Cover`}
-                                    width={496}
-                                    height={496}
-                                    format="avif"
-                                />
-                                <div class="flex flex-col gap-1 mt-4">
-                                    <h2 class="text-3xl font-bold text-white">{ep.title}</h2>
-                                    <span class="text-replicant-300">{ep.date}</span>
-                                    <p class="text-replicant-500">Page coming soon</p>
+                        eps.map((ep) => {
+                            const cover = getCover(ep.data.cover);
+                            return cover ? (
+                                <div>
+                                    <Image
+                                        src={cover}
+                                        alt={`${ep.data.title} Cover`}
+                                        width={496}
+                                        height={496}
+                                        format="avif"
+                                    />
+                                    <div class="flex flex-col gap-1 mt-4">
+                                        <h2 class="text-3xl font-bold text-white">
+                                            {ep.data.title}
+                                        </h2>
+                                        <span class="text-replicant-300">
+                                            {ep.data.releaseDate}
+                                        </span>
+                                        <a
+                                            href={`/discography/${ep.data.slug}`}
+                                            class="text-primary hover:underline"
+                                        >
+                                            View Release
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ) : null;
+                        })
                     }
                 </div>
             </div>
