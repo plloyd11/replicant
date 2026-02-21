@@ -8,6 +8,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
     site: 'https://replicant.band',
+    trailingSlash: 'always',
     integrations: [svelte({ compilerOptions: { experimental: { async: true } } }), sitemap()],
     vite: {
         plugins: [tailwindcss()]

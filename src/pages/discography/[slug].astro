@@ -186,19 +186,6 @@ const byArtist = data.additionalArtists?.length
                           },
                       }
                     : {}),
-                ...(data.reviews?.length
-                    ? {
-                          review: data.reviews.map((r) => ({
-                              '@type': 'Review',
-                              reviewBody: r.quote,
-                              author: {
-                                  '@type': 'Organization',
-                                  name: r.source,
-                              },
-                              url: r.link,
-                          })),
-                      }
-                    : {}),
             })}
         />
     </Fragment>
