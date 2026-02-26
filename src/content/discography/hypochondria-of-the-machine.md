@@ -12,14 +12,11 @@ tracks:
     - { num: '01', name: 'Hymns of Distress', duration: '5:12', file: 'hymns' }
     - { num: '02', name: 'Limbic Thrust', duration: '3:12', file: 'limbic' }
 lineup:
-    # TODO: confirm lineup for this release
     - { name: 'Michael Gonçalves', role: 'Vocals, Bass, Guitars' }
     - { name: 'Peter Lloyd', role: 'Guitars' }
     - { name: 'James Applegate', role: 'Drums' }
 credits:
-    # TODO: add recording/mix/artwork credits
-    - { label: 'Recording', text: 'TBD' }
-    - { label: 'Engineering & Mix', text: 'TBD' }
+    - { label: 'Tracking, Mixing & Mastering', text: 'Bobby Torres' }
     - { label: 'Artwork', text: 'Dan Rivera' }
 numTracks: 2
 albumReleaseType: 'EPRelease'

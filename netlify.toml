@@ -2,6 +2,12 @@
   command = "pnpm build"
   publish = "dist"
 
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = false
+
 [dev]
   command = "pnpm dev"
   framework = "#custom"
