@@ -1,6 +1,6 @@
 ---
-import Lightbox from '../Lightbox.astro';
 let { shows } = Astro.props;
+import { Image } from 'astro:assets';
 
 // sort by raw date (oldest first) before formatting
 shows.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -22,12 +22,26 @@ shows = shows.map((show) => {
 <div class="grid gap-12 sm:grid-cols-2">
     {
         shows.map((show) => (
-                <div class="col-span-1 text-replicant-200 h-fit">
-                    <Lightbox image={show.flyer.url} title={show.title} />
-                    <div class="mt-4 space-y-2">
-                        <p class="text-lg">{show.title}</p>
-                        <div class="mt-4 space-x-2">
-                            <span class="inline-block text-lg">{show.date}</span>
+            <div class="col-span-1 text-replicant-200 h-full">
+                <Image
+                    src={show.flyer.url}
+                    alt={show.title}
+                    width={592}
+                    height={740}
+                    format="avif"
+                />
+                <div class="mt-4 space-y-2">
+                    <div class="mt-4 space-x-2 flex justify-between flex-col sm:flex-row">
+                        <span class="inline-block text-lg">{show.date}</span>
+                        <div class="flex gap-2">
+                            <a
+                                href={show.tickets}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-block text-lg underline text-primary hover:text-primary-dark"
+                            >
+                                Tickets
+                            </a>
                             <span class="inline-block">•</span>
                             <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${show.venue.latitude},${show.venue.longitude}`}
@@ -35,11 +49,12 @@ shows = shows.map((show) => {
                                 rel="noopener noreferrer"
                                 class="inline-block text-lg underline text-primary hover:text-primary-dark"
                             >
-                                {show.venueName}
+                                Directions to {show.venueName}
                             </a>
                         </div>
                     </div>
                 </div>
-            ))
+            </div>
+        ))
     }
 </div>
