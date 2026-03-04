@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Product from '../components/Product.astro';
 import CategoryFilter from '../components/CategoryFilter.svelte';
+import { Image } from 'astro:assets';
 
 import Hero from '../components/homepage/Hero.astro';
 import Transmissions from '../components/homepage/Transmissions.astro';
@@ -10,6 +11,7 @@ import Communications from '../components/homepage/Communications.astro';
 import Build from '../components/homepage/Build.astro';
 import PromoBanner from '../components/PromoBanner.astro';
 import { extractUniqueSizes } from '../utils/sizes';
+import tombsTour from '../assets/tour-flyer.png';
 
 interface CloudinaryImage {
     url: string;
@@ -264,8 +266,43 @@ try {
     </Fragment>
     <Hero reviews={reviews[0]} />
     <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
-        <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header !mb-8">Merch</h2>
+        <section id="tour" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+            <h2 class="section-header">Tombs × Replicant — 2026 Tour</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <Image
+                        src={tombsTour}
+                        alt="Tombs × Replicant — 2026 Tour"
+                        width={1920}
+                        height={1080}
+                    />
+                </div>
+                <div>
+                    <p class="text-replicant-200 text-lg">
+                        Tombs and Replicant hit the road together in March 2026. Tour dates,
+                        tickets, and info for the East Coast mini tour can be found on the tour
+                        page.
+                    </p>
+                    <ul class="text-replicant-200 text-lg mt-8 list-disc list-inside">
+                        <li>March 25 — Philadelphia, PA</li>
+                        <li>March 26 — Hamden, CT</li>
+                        <li>March 27 — Newmarket, NH</li>
+                        <li>March 28 — Quebec City, QC</li>
+                        <li>March 29 — Albany, NY</li>
+                    </ul>
+                    <a
+                        href="/tombs-replicant-2026/"
+                        class="inline-flex mt-12 items-center justify-center px-4 py-2 text-base cursor-pointer font-medium text-replicant-900 border border-transparent rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                        >Check the Tour Page</a
+                    >
+                </div>
+            </div>
+        </section>
+        <section
+            id="merch"
+            class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32 border-t-2 border-replicant-700"
+        >
+            <h2 class="section-header pt-8 lg:pt-16 !mb-8">Merch</h2>
             <CategoryFilter client:load categories={categories} sizes={sizes}>
                 <div>
                     <div
@@ -286,22 +323,24 @@ try {
             </CategoryFilter>
         </section>
         <PromoBanner />
-        <section id="emanations" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+        <!-- <section id="emanations" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header">Emanations</h2>
             <Emanations shows={shows} />
-        </section>
+        </section> -->
         <section
             id="transmissions"
-            class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32"
+            class="scroll-mt-6 lg:scroll-mt-32 border-t-2 border-replicant-700"
         >
-            <h2 class="section-header">Transmissions</h2>
-            <Transmissions />
+            <div class="container px-4 mx-auto lg:px-6">
+                <h2 class="section-header pt-8 lg:pt-16 !mb-8">Transmissions</h2>
+                <Transmissions />
+            </div>
         </section>
         <section
             id="communications"
             class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32"
         >
-            <h2 class="section-header">Communications</h2>
+            <h2 class="section-header pt-8 lg:pt-16 !mb-8">Communications</h2>
             <Communications />
         </section>
         <section id="build" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">

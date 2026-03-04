@@ -6,10 +6,12 @@ import PromoBanner from '../components/PromoBanner.astro';
 import heroImage from '../assets/tombs-tour/main-flyer.png';
 import tombsBand from '../assets/tombs-tour/tombs-band.jpg';
 import replicantPress from '../assets/tombs-tour/rep-promo-1.jpg';
+import tourFlyer from '../assets/tour-flyer.png';
 
 const title = 'Tombs × Replicant — 2026 Tour';
 const desc =
     'Tombs and Replicant hit the road together in 2026. Tour dates, tickets, and info for the East Coast mini tour.';
+const ogImage = `https://replicant.band${tourFlyer.src}`;
 
 const tourDates = [
     {
@@ -31,12 +33,12 @@ const tourDates = [
     },
     {
         date: 'March 27',
-        day: 'Thursday',
+        day: 'Friday',
         city: 'Newmarket, NH',
         venue: 'Stone Church',
         ticketUrl:
             'https://dice.fm/event/7dm6b7-tombs-replicant-lepra-aversed-27th-mar-the-stone-church-newmarket-tickets?lng=en-US',
-        with: ['Lepra, Aversed'],
+        with: ['Lepra', 'Aversed'],
         flyerImage: 'tombs-rep-nh',
     },
     {
@@ -99,7 +101,7 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
 );
 ---
 
-<BaseLayout title={title} desc={desc}>
+<BaseLayout title={title} desc={desc} image={ogImage}>
     <Fragment slot="head">
         <script
             type="application/ld+json"
@@ -115,7 +117,7 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                 subEvent: tourDates.map((d) => ({
                     '@type': 'MusicEvent',
                     name: `Tombs × Replicant — ${d.city}`,
-                    startDate: `2026-${d.date.includes('May') ? '05' : '06'}-${d.date.split(' ')[1].padStart(2, '0')}`,
+                    startDate: `2026-03-${d.date.split(' ')[1].padStart(2, '0')}`,
                     location: {
                         '@type': 'MusicVenue',
                         name: d.venue,
@@ -125,6 +127,7 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                         { '@type': 'MusicGroup', name: 'Tombs' },
                         { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
                     ],
+                    ...(d.ticketUrl && { offers: { '@type': 'Offer', url: d.ticketUrl, availability: 'https://schema.org/InStock' } }),
                 })),
             })}
         />

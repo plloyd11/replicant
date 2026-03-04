@@ -9,7 +9,11 @@
         },
         {
             name: 'discography',
-            anchor: '/discography',
+            anchor: '/discography/',
+        },
+        {
+            name: 'tour',
+            anchor: '/tombs-replicant-2026/',
         },
     ];
     let { logoSrc = '/assets/logo-white.png' } = $props();
