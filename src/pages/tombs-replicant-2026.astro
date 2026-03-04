@@ -5,7 +5,7 @@ import PromoBanner from '../components/PromoBanner.astro';
 
 import heroImage from '../assets/tombs-tour/main-flyer.png';
 import tombsBand from '../assets/tombs-tour/tombs-band.jpg';
-import replicantPress from '../assets/heros/5.jpg';
+import replicantPress from '../assets/tombs-tour/rep-promo-1.jpg';
 
 const title = 'Tombs × Replicant — 2026 Tour';
 const desc =
@@ -17,9 +17,7 @@ const tourDates = [
         day: 'Wednesday',
         city: 'Philadelphia, PA',
         venue: 'Milkboy',
-        ticketUrl:
-            'https://www.ticketweb.com/event/tombs-replicant-milkboy-tickets/100093632202?pl=TicketWeb-Visit-Page',
-        with: ['Subtype Zero', 'Voidchaser'],
+        ticketUrl: 'https://www.tixr.com/groups/milkboy/events/tombs-175857',
         flyerImage: 'tombs-rep-philly',
     },
     {
@@ -27,8 +25,7 @@ const tourDates = [
         day: 'Thursday',
         city: 'Hamden, CT',
         venue: 'The Cellar on Treadwell',
-        ticketUrl:
-            'https://www.ticketweb.com/event/tombs-replicant-the-cellar-on-treadwell-tickets/100093632202?pl=TicketWeb-Visit-Page',
+        ticketUrl: 'https://www.eventbrite.com/e/tombs-tickets-1982452924062',
         with: ['Warm'],
         flyerImage: 'tombs-rep-ct',
     },
@@ -38,8 +35,8 @@ const tourDates = [
         city: 'Newmarket, NH',
         venue: 'Stone Church',
         ticketUrl:
-            'https://www.ticketweb.com/event/tombs-replicant-saint-vitus-tickets/100093632202?pl=TicketWeb-Visit-Page',
-        with: ['Churchburn'],
+            'https://dice.fm/event/7dm6b7-tombs-replicant-lepra-aversed-27th-mar-the-stone-church-newmarket-tickets?lng=en-US',
+        with: ['Lepra, Aversed'],
         flyerImage: 'tombs-rep-nh',
     },
     {
@@ -47,9 +44,7 @@ const tourDates = [
         day: 'Friday',
         city: 'Quebec City, QC',
         venue: "L'Anti",
-        ticketUrl:
-            'https://www.ticketweb.com/event/tombs-replicant-milkboy-tickets/100093632202?pl=TicketWeb-Visit-Page',
-        with: ['Churchburn'],
+        ticketUrl: 'https://lepointdevente.com/billets/d7p260328001',
         flyerImage: 'tombs-rep-qc',
     },
     {
@@ -57,8 +52,7 @@ const tourDates = [
         day: 'Saturday',
         city: 'Albany, NY',
         venue: 'Empire Underground',
-        ticketUrl:
-            'https://www.ticketweb.com/event/tombs-replicant-le-ministere-tickets/100093632202?pl=TicketWeb-Visit-Page',
+        ticketUrl: 'https://www.slpconcerts.net/events/detail/tombs-empire-underground-2026',
         with: ['Sons of Eden', 'Fetal Chunk Deformation'],
         flyerImage: 'tombs-rep-ny',
     },
@@ -75,11 +69,6 @@ const pressQuotes = [
         source: 'Decibel Magazine',
         link: 'https://www.decibelmagazine.com',
     },
-    {
-        quote: "Dissonant, progressive, and utterly crushing — Replicant's technical prowess is matched only by their ability to write genuinely memorable songs.",
-        source: 'Metal Injection',
-        link: 'https://metalinjection.net',
-    },
 ];
 
 const bands = [
@@ -87,9 +76,9 @@ const bands = [
         name: 'Tombs',
         bio: "Tombs is a Brooklyn-based group blending black metal, sludge, post-punk, and noise into a singular vision of darkness. Founded by Mike Hill, the band has released critically acclaimed albums on Relapse and Season of Mist, earning a reputation as one of extreme music's most forward-thinking acts.",
         links: {
-            bandcamp: 'https://tombsofficial.bandcamp.com',
-            spotify: 'https://open.spotify.com/artist/1n65ByFJvLqYMNRNmlPBba',
-            instagram: 'https://www.instagram.com/tombsbklyn',
+            bandcamp: 'https://tombscult.bandcamp.com/music',
+            spotify: 'https://open.spotify.com/artist/6TSg36yhim4Jhu4jWeJTHB',
+            instagram: 'https://www.instagram.com/tombscult',
         },
     },
     {
@@ -282,7 +271,7 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                     <span class="flex-1 h-px bg-replicant-700"></span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {
                         pressQuotes.map((quote) => (
                             <a
@@ -386,27 +375,29 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="lg:col-span-2">
-                        <div
-                            class="aspect-video bg-replicant-800 border border-replicant-700 flex items-center justify-center"
-                        >
-                            <div class="text-center">
-                                <p class="text-2xl font-display text-replicant-500">Coming Soon</p>
-                                <p class="text-sm text-replicant-600 mt-2">
-                                    Tour sizzle reel dropping soon
-                                </p>
-                            </div>
-                        </div>
+                    <div
+                        class="aspect-video bg-replicant-800 border border-replicant-700 flex items-center justify-center"
+                    >
+                        <iframe
+                            class="w-full h-full"
+                            src="https://www.youtube.com/embed/jztH9PKtXmw?si=Lw7BApwn897z-vF2"
+                            title="[hate5six] Tombs - October 13, 2023"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
                     </div>
                     <div
                         class="aspect-video bg-replicant-800 border border-replicant-700 flex items-center justify-center"
                     >
-                        <p class="text-sm font-display text-replicant-600">Video TBA</p>
-                    </div>
-                    <div
-                        class="aspect-video bg-replicant-800 border border-replicant-700 flex items-center justify-center"
-                    >
-                        <p class="text-sm font-display text-replicant-600">Video TBA</p>
+                        <iframe
+                            class="w-full h-full"
+                            src="https://www.youtube.com/embed/-FRss8SzJLQ?si=RT5BpVjXNk9ellfl"
+                            title="REPLICANT live in Belgrade, Serbia 2025"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
