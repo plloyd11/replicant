@@ -137,7 +137,7 @@ function buildAlbumJsonLd(release: (typeof allReleases)[number]) {
                                             {album.data.releaseDate}
                                         </span>
                                         <a
-                                            href={`/discography/${album.data.slug}`}
+                                            href={`/discography/${album.data.slug}/`}
                                             class="text-primary hover:underline"
                                         >
                                             View Album
@@ -174,7 +174,7 @@ function buildAlbumJsonLd(release: (typeof allReleases)[number]) {
                                             {ep.data.releaseDate}
                                         </span>
                                         <a
-                                            href={`/discography/${ep.data.slug}`}
+                                            href={`/discography/${ep.data.slug}/`}
                                             class="text-primary hover:underline"
                                         >
                                             View Release

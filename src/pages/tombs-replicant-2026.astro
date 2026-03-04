@@ -1,0 +1,455 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import PromoBanner from '../components/PromoBanner.astro';
+
+import heroImage from '../assets/tombs-tour/main-flyer.png';
+import tombsBand from '../assets/tombs-tour/tombs-band.jpg';
+import replicantPress from '../assets/tombs-tour/rep-promo-1.jpg';
+import tourFlyer from '../assets/tour-flyer.png';
+
+const title = 'Tombs × Replicant — 2026 Tour';
+const desc =
+    'Tombs and Replicant hit the road together in 2026. Tour dates, tickets, and info for the East Coast mini tour.';
+const ogImage = `https://replicant.band${tourFlyer.src}`;
+
+const tourDates = [
+    {
+        date: 'March 25',
+        day: 'Wednesday',
+        city: 'Philadelphia, PA',
+        venue: 'Milkboy',
+        ticketUrl: 'https://www.tixr.com/groups/milkboy/events/tombs-175857',
+        flyerImage: 'tombs-rep-philly',
+    },
+    {
+        date: 'March 26',
+        day: 'Thursday',
+        city: 'Hamden, CT',
+        venue: 'The Cellar on Treadwell',
+        ticketUrl: 'https://www.eventbrite.com/e/tombs-tickets-1982452924062',
+        with: ['Warm'],
+        flyerImage: 'tombs-rep-ct',
+    },
+    {
+        date: 'March 27',
+        day: 'Friday',
+        city: 'Newmarket, NH',
+        venue: 'Stone Church',
+        ticketUrl:
+            'https://dice.fm/event/7dm6b7-tombs-replicant-lepra-aversed-27th-mar-the-stone-church-newmarket-tickets?lng=en-US',
+        with: ['Lepra', 'Aversed'],
+        flyerImage: 'tombs-rep-nh',
+    },
+    {
+        date: 'March 28',
+        day: 'Friday',
+        city: 'Quebec City, QC',
+        venue: "L'Anti",
+        ticketUrl: 'https://lepointdevente.com/billets/d7p260328001',
+        flyerImage: 'tombs-rep-qc',
+    },
+    {
+        date: 'March 29',
+        day: 'Saturday',
+        city: 'Albany, NY',
+        venue: 'Empire Underground',
+        ticketUrl: 'https://www.slpconcerts.net/events/detail/tombs-empire-underground-2026',
+        with: ['Sons of Eden', 'Fetal Chunk Deformation'],
+        flyerImage: 'tombs-rep-ny',
+    },
+];
+
+const pressQuotes = [
+    {
+        quote: 'Replicant have become one of the most exciting bands in death metal, crafting labyrinthine compositions that reward repeated listens.',
+        source: 'Invisible Oranges',
+        link: 'https://www.invisibleoranges.com',
+    },
+    {
+        quote: 'Tombs have always existed in a space between black metal, sludge, and post-punk, and their live show channels all of that fury into something transcendent.',
+        source: 'Decibel Magazine',
+        link: 'https://www.decibelmagazine.com',
+    },
+];
+
+const bands = [
+    {
+        name: 'Tombs',
+        bio: "Tombs is a Brooklyn-based group blending black metal, sludge, post-punk, and noise into a singular vision of darkness. Founded by Mike Hill, the band has released critically acclaimed albums on Relapse and Season of Mist, earning a reputation as one of extreme music's most forward-thinking acts.",
+        links: {
+            bandcamp: 'https://tombscult.bandcamp.com/music',
+            spotify: 'https://open.spotify.com/artist/6TSg36yhim4Jhu4jWeJTHB',
+            instagram: 'https://www.instagram.com/tombscult',
+        },
+    },
+    {
+        name: 'Replicant',
+        bio: 'Replicant is a dissonant death metal band from New Jersey, known for labyrinthine compositions that merge technical precision with genuine atmosphere. With releases on Transcending Obscurity, the band has carved out a unique space in the modern death metal landscape.',
+        links: {
+            bandcamp: 'https://replicantband.bandcamp.com',
+            spotify: 'https://open.spotify.com/artist/0D3rZuKDs7qaBtoFaQ6tJU',
+            instagram: 'https://www.instagram.com/replicantnj',
+        },
+    },
+];
+
+// Resolve flyer images dynamically
+const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
+    '/src/assets/tombs-tour/*.{jpg,jpeg,png,webp}',
+    { eager: true },
+);
+---
+
+<BaseLayout title={title} desc={desc} image={ogImage}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'EventSeries',
+                name: 'Tombs × Replicant 2026 Tour',
+                description: desc,
+                performer: [
+                    { '@type': 'MusicGroup', name: 'Tombs' },
+                    { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                ],
+                subEvent: tourDates.map((d) => ({
+                    '@type': 'MusicEvent',
+                    name: `Tombs × Replicant — ${d.city}`,
+                    startDate: `2026-03-${d.date.split(' ')[1].padStart(2, '0')}`,
+                    location: {
+                        '@type': 'MusicVenue',
+                        name: d.venue,
+                        address: { '@type': 'PostalAddress', addressLocality: d.city },
+                    },
+                    performer: [
+                        { '@type': 'MusicGroup', name: 'Tombs' },
+                        { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
+                    ],
+                    ...(d.ticketUrl && { offers: { '@type': 'Offer', url: d.ticketUrl, availability: 'https://schema.org/InStock' } }),
+                })),
+            })}
+        />
+    </Fragment>
+
+    <main>
+        <!-- HERO -->
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <Image
+                    src={heroImage}
+                    alt="Tombs × Replicant 2026 Tour"
+                    width={1920}
+                    height={1080}
+                    quality={80}
+                    format="avif"
+                    class="w-full h-full object-cover"
+                />
+                <div class="absolute inset-0 bg-black/60"></div>
+                <div
+                    class="absolute inset-0"
+                    style="background: radial-gradient(ellipse at center, rgba(218,146,82,0.08) 0%, transparent 70%);"
+                >
+                </div>
+            </div>
+
+            <div class="relative z-10 text-center px-6 py-32 animate-[fadeUp_0.8s_ease-out_both]">
+                <h1 class="font-display leading-none">
+                    <span
+                        class="block text-7xl md:text-8xl lg:text-9xl text-replicant-100 tracking-tight"
+                        >TOMBS</span
+                    >
+                    <span class="block text-5xl md:text-6xl lg:text-7xl text-primary my-2 md:my-4"
+                        >&times;</span
+                    >
+                    <span
+                        class="block text-7xl md:text-8xl lg:text-9xl text-replicant-100 tracking-tight"
+                        >REPLICANT</span
+                    >
+                </h1>
+                <p
+                    class="mt-8 text-sm md:text-base font-bold tracking-[0.4em] uppercase text-replicant-400"
+                >
+                    2026 Tour
+                </p>
+                <div class="mt-16 flex justify-center">
+                    <a
+                        href="#dates"
+                        class="text-replicant-500 hover:text-primary transition-colors duration-300 animate-[bounce_2s_infinite]"
+                        aria-label="Scroll to tour dates"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"
+                            ></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOUR DATES -->
+        <section
+            id="dates"
+            class="fade-in px-6 lg:px-16 py-16 lg:py-24 border-t-2 border-replicant-700"
+        >
+            <div class="container mx-auto">
+                <div
+                    class="flex items-center gap-4 mb-12 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500"
+                >
+                    Tour Dates
+                    <span class="flex-1 h-px bg-replicant-700"></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {
+                        tourDates.map((show) => {
+                            const flyerPath = `/src/assets/tombs-tour/${show.flyerImage}.png`;
+                            const flyerSrc = flyerImages[flyerPath]?.default;
+                            return (
+                                <div class="group rounded-xl border border-replicant-700 bg-replicant-700/20 overflow-hidden transition-all duration-300 hover:border-replicant-600 hover:shadow-[0_4px_32px_rgba(0,0,0,0.5)]">
+                                    {flyerSrc && (
+                                        <div class="overflow-hidden">
+                                            <Image
+                                                src={flyerSrc}
+                                                alt={`Flyer for ${show.city} — ${show.date}`}
+                                                width={600}
+                                                height={600}
+                                                quality={80}
+                                                format="avif"
+                                                class="w-full object-cover max-h-[942px]"
+                                            />
+                                        </div>
+                                    )}
+                                    <div class="p-6 flex flex-col gap-3">
+                                        <div class="flex items-baseline gap-3">
+                                            <span class="text-3xl lg:text-4xl font-display text-replicant-100 leading-none">
+                                                {show.day}, {show.date}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col gap-0.5">
+                                            <span class="text-xl text-replicant-200 font-semibold">
+                                                {show.venue}
+                                            </span>
+                                            <span class="text-replicant-400 text-lg">
+                                                {show.city}
+                                            </span>
+                                        </div>
+                                        {show.with && show.with.length > 0 && (
+                                            <span class="text-replicant-400">
+                                                w/ {show.with.join(', ')}
+                                            </span>
+                                        )}
+                                        <a
+                                            href={show.ticketUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-replicant-900 text-sm font-bold tracking-[0.15em] uppercase no-underline transition-all duration-300 hover:bg-primary-dark hover:shadow-[0_0_40px_rgba(218,146,82,0.4)] hover:-translate-y-px"
+                                        >
+                                            Tickets &rarr;
+                                        </a>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- PRESS QUOTES -->
+        <section class="fade-in px-6 lg:px-16 py-16 lg:py-24 border-t-2 border-replicant-700">
+            <div class="container mx-auto">
+                <div
+                    class="flex items-center gap-4 mb-12 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500"
+                >
+                    Press
+                    <span class="flex-1 h-px bg-replicant-700"></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    {
+                        pressQuotes.map((quote) => (
+                            <a
+                                href={quote.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="block no-underline group"
+                            >
+                                <blockquote class="border-l-2 border-primary pl-6 transition-all duration-300 group-hover:border-primary-dark">
+                                    <p class="text-lg italic text-replicant-300 leading-relaxed mb-4">
+                                        &ldquo;{quote.quote}&rdquo;
+                                    </p>
+                                    <cite class="text-[0.7rem] font-bold tracking-[0.15em] uppercase text-replicant-500 not-italic">
+                                        — {quote.source}
+                                    </cite>
+                                </blockquote>
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT THE BANDS -->
+        <section class="fade-in px-6 lg:px-16 py-16 lg:py-24 border-t-2 border-replicant-700">
+            <div class="container mx-auto">
+                <div
+                    class="flex items-center gap-4 mb-12 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500"
+                >
+                    The Bands
+                    <span class="flex-1 h-px bg-replicant-700"></span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {
+                        bands.map((band, i) => {
+                            const photo = i === 0 ? tombsBand : replicantPress;
+                            return (
+                                <div class="rounded-2xl bg-replicant-700/30 border border-replicant-700 overflow-hidden transition-all duration-300 hover:border-replicant-600">
+                                    <div class="aspect-video overflow-hidden">
+                                        <Image
+                                            src={photo}
+                                            alt={band.name}
+                                            width={800}
+                                            height={450}
+                                            quality={80}
+                                            format="avif"
+                                            class="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div class="p-8 lg:p-10">
+                                        <h3 class="text-3xl font-display text-replicant-100 mb-4">
+                                            {band.name}
+                                        </h3>
+                                        <p class="text-base text-replicant-400 leading-relaxed mb-6">
+                                            {band.bio}
+                                        </p>
+                                        <div class="flex gap-4">
+                                            <a
+                                                href={band.links.bandcamp}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-xs font-bold tracking-[0.15em] uppercase text-replicant-500 hover:text-primary transition-colors duration-300 no-underline"
+                                            >
+                                                Bandcamp
+                                            </a>
+                                            <a
+                                                href={band.links.spotify}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-xs font-bold tracking-[0.15em] uppercase text-replicant-500 hover:text-primary transition-colors duration-300 no-underline"
+                                            >
+                                                Spotify
+                                            </a>
+                                            <a
+                                                href={band.links.instagram}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-xs font-bold tracking-[0.15em] uppercase text-replicant-500 hover:text-primary transition-colors duration-300 no-underline"
+                                            >
+                                                Instagram
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEO -->
+        <section class="fade-in px-6 lg:px-16 py-16 lg:py-24 border-t-2 border-replicant-700">
+            <div class="container mx-auto">
+                <div
+                    class="flex items-center gap-4 mb-12 text-xs uppercase font-bold tracking-[0.25em] text-replicant-500"
+                >
+                    Videos
+                    <span class="flex-1 h-px bg-replicant-700"></span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div
+                        class="aspect-video bg-replicant-800 border border-replicant-700 flex items-center justify-center"
+                    >
+                        <iframe
+                            class="w-full h-full"
+                            src="https://www.youtube.com/embed/jztH9PKtXmw?si=Lw7BApwn897z-vF2"
+                            title="[hate5six] Tombs - October 13, 2023"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div
+                        class="aspect-video bg-replicant-800 border border-replicant-700 flex items-center justify-center"
+                    >
+                        <iframe
+                            class="w-full h-full"
+                            src="https://www.youtube.com/embed/-FRss8SzJLQ?si=RT5BpVjXNk9ellfl"
+                            title="REPLICANT live in Belgrade, Serbia 2025"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section class="fade-in py-16 lg:py-24 border-t-2 border-replicant-700">
+            <PromoBanner />
+        </section>
+    </main>
+</BaseLayout>
+
+<style>
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        },
+        { threshold: 0.1 },
+    );
+
+    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+</script>
