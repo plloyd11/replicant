@@ -54,7 +54,7 @@ const tourDates = [
         day: 'Saturday',
         city: 'Albany, NY',
         venue: 'Empire Underground',
-        ticketUrl: 'https://www.slpconcerts.net/events/detail/tombs-empire-underground-2026',
+        ticketUrl: 'https://www.ticketmaster.com/event/300064442DE89D1F',
         with: ['Sons of Eden', 'Fetal Chunk Deformation'],
         flyerImage: 'tombs-rep-ny',
     },
@@ -127,7 +127,13 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                         { '@type': 'MusicGroup', name: 'Tombs' },
                         { '@type': 'MusicGroup', '@id': 'https://replicant.band/#band' },
                     ],
-                    ...(d.ticketUrl && { offers: { '@type': 'Offer', url: d.ticketUrl, availability: 'https://schema.org/InStock' } }),
+                    ...(d.ticketUrl && {
+                        offers: {
+                            '@type': 'Offer',
+                            url: d.ticketUrl,
+                            availability: 'https://schema.org/InStock',
+                        },
+                    }),
                 })),
             })}
         />
@@ -135,17 +141,26 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
 
     <main>
         <!-- HERO -->
-        <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
             <div class="absolute inset-0">
-                <Image
-                    src={heroImage}
-                    alt="Tombs × Replicant 2026 Tour"
-                    width={1920}
-                    height={1080}
-                    quality={80}
-                    format="avif"
-                    class="w-full h-full object-cover"
-                />
+                <video
+                    class="absolute inset-0 w-full h-full object-cover"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="auto"
+                    poster="/img/homepage/hero.webp"
+                >
+                    <source
+                        src="https://vz-30c6dcc0-eb1.b-cdn.net/8a58b551-fb48-47ae-8368-0866ede24b9b/playlist.m3u8"
+                        type="application/x-mpegURL"
+                    />
+                    <source
+                        src="https://vz-30c6dcc0-eb1.b-cdn.net/8a58b551-fb48-47ae-8368-0866ede24b9b/play_720p.mp4"
+                        type="video/mp4"
+                    />
+                </video>
                 <div class="absolute inset-0 bg-black/60"></div>
                 <div
                     class="absolute inset-0"
@@ -160,7 +175,8 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                         class="block text-7xl md:text-8xl lg:text-9xl text-replicant-100 tracking-tight"
                         >TOMBS</span
                     >
-                    <span class="block text-5xl md:text-6xl lg:text-7xl text-primary my-2 md:my-4"
+                    <span
+                        class="block text-5xl md:text-6xl lg:text-[112px] text-primary my-2 md:my-4"
                         >&times;</span
                     >
                     <span
@@ -169,14 +185,14 @@ const flyerImages = import.meta.glob<{ default: ImageMetadata }>(
                     >
                 </h1>
                 <p
-                    class="mt-8 text-sm md:text-base font-bold tracking-[0.4em] uppercase text-replicant-400"
+                    class="mt-8 text-sm md:text-xl font-bold tracking-[0.4em] uppercase text-replicant-300"
                 >
                     2026 Tour
                 </p>
                 <div class="mt-16 flex justify-center">
                     <a
                         href="#dates"
-                        class="text-replicant-500 hover:text-primary transition-colors duration-300 animate-[bounce_2s_infinite]"
+                        class="text-replicant-400 hover:text-primary transition-colors duration-300 animate-[bounce_2s_infinite]"
                         aria-label="Scroll to tour dates"
                     >
                         <svg
