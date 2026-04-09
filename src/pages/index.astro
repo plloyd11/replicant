@@ -266,42 +266,7 @@ try {
     </Fragment>
     <Hero reviews={reviews[0]} />
     <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
-        <section id="tour" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
-            <h2 class="section-header">Tombs × Replicant — 2026 Tour</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div>
-                    <Image
-                        src={tombsTour}
-                        alt="Tombs × Replicant — 2026 Tour"
-                        width={1920}
-                        height={1080}
-                    />
-                </div>
-                <div>
-                    <p class="text-replicant-200 text-lg">
-                        Tombs and Replicant hit the road together in March 2026. Tour dates,
-                        tickets, and info for the East Coast mini tour can be found on the tour
-                        page.
-                    </p>
-                    <ul class="text-replicant-200 text-lg mt-8 list-disc list-inside">
-                        <li>March 25 — Philadelphia, PA</li>
-                        <li>March 26 — Hamden, CT</li>
-                        <li>March 27 — Newmarket, NH</li>
-                        <li>March 28 — Quebec City, QC</li>
-                        <li>March 29 — Albany, NY</li>
-                    </ul>
-                    <a
-                        href="/tombs-replicant-2026/"
-                        class="inline-flex mt-12 items-center justify-center px-4 py-2 text-base cursor-pointer font-medium text-replicant-900 border border-transparent rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                        >Check the Tour Page</a
-                    >
-                </div>
-            </div>
-        </section>
-        <section
-            id="merch"
-            class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32 border-t-2 border-replicant-700"
-        >
+        <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header pt-8 lg:pt-16 !mb-8">Merch</h2>
             <CategoryFilter client:load categories={categories} sizes={sizes}>
                 <div>
