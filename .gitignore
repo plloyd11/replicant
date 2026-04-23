@@ -19,3 +19,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Claude Code local state (worktrees, settings)
+.claude/
