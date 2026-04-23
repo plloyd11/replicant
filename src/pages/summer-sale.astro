@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Product from '../components/Product.astro';
+import { Image } from 'astro:assets';
+import summerSale from '../assets/sale-hero.png';
+
+interface CloudinaryImage {
+    url: string;
+    secure_url?: string;
+}
+
+interface Product {
+    slug: string;
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    image: CloudinaryImage;
+    productType: string;
+    productWeight: number;
+    preOrder: boolean;
+    fileGuid: string;
+    createdAt: Date;
+    sale?: boolean;
+    sizes?: string;
+}
+
+let products: Product[] = [];
+
+try {
+    const result = await fetch(import.meta.env.PUBLIC_GRAPHCMS_API, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            query: `query{
+                    products{
+                        slug
+                        id
+                        title
+                        description
+                        price
+                        sale
+                        sizes
+                        image
+                        productType
+                        productWeight
+                        preOrder
+                        fileGuid
+                        createdAt
+                    }
+                }`,
+        }),
+    });
+    if (result.ok) {
+        const resultJSON = await result.json();
+        products = resultJSON.data.products;
+
+        const transformCloudinaryUrl = (url: string) => {
+            if (url.includes('res.cloudinary.com')) {
+                return url
+                    .replace('/upload/', '/upload/f_avif,q_auto/')
+                    .replace(/\.(png|jpg|jpeg|webp)$/i, '.avif');
+            }
+            return url;
+        };
+
+        products.forEach((product) => {
+            product.createdAt = new Date(product.createdAt);
+            if (product.image) {
+                if (typeof product.image === 'object' && product.image.secure_url) {
+                    product.image.url = transformCloudinaryUrl(product.image.secure_url);
+                } else if (typeof product.image === 'object' && product.image.url) {
+                    product.image.url = transformCloudinaryUrl(product.image.url);
+                }
+            }
+        });
+    } else {
+        throw new Error(`${result.status}: ${result.statusText}`);
+    }
+} catch (error) {
+    console.error('Failed to fetch from CMS:', error);
+}
+
+const saleProducts = products
+    .filter((product) => product.sale)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+---
+
+<BaseLayout
+    title="Summer Sale | Replicant"
+    desc="Shop the Replicant Summer Sale — limited-time deals on shirts, vinyl, CDs, and more from New Jersey death metal band Replicant."
+>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                name: 'Replicant Summer Sale',
+                itemListElement: saleProducts.map((product, i) => ({
+                    '@type': 'ListItem',
+                    position: i + 1,
+                    item: {
+                        '@type': 'Product',
+                        name: product.title,
+                        description: product.description,
+                        image: product.image?.url,
+                        offers: {
+                            '@type': 'Offer',
+                            url: 'https://replicant.band/summer-sale/',
+                            price: (product.price * 0.8).toFixed(2),
+                            priceCurrency: 'USD',
+                            availability: 'https://schema.org/InStock',
+                            priceValidUntil: '2026-12-31',
+                        },
+                    },
+                })),
+            })}
+        />
+    </Fragment>
+    <main class="pb-16 sm:pb-24">
+        <div class="relative">
+            <Image
+                src={summerSale}
+                alt="Summer Sale"
+                width={1920}
+                height={1080}
+                class="w-full h-auto"
+            />
+            <div class="absolute inset-0 flex items-end">
+                <div class="w-full container mx-auto px-4 lg:px-6">
+                    <h1
+                        class="text-5xl font-semibold tracking-tight text-white uppercase text-balance sm:text-8xl"
+                    >
+                        Summer Sale
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <section class="px-4 mx-auto mt-20 lg:px-6 lg:mt-32 container">
+            {
+                saleProducts.length > 0 ? (
+                    <div class="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
+                        {saleProducts.map((product) => (
+                            <Product product={product} />
+                        ))}
+                    </div>
+                ) : (
+                    <div class="text-center py-20">
+                        <p class="mb-2 text-3xl font-bold text-replicant-100">🤘</p>
+                        <p class="text-xl font-bold text-replicant-100">
+                            No sale items right now — check back soon!
+                        </p>
+                    </div>
+                )
+            }
+        </section>
+    </main>
+</BaseLayout>

@@ -1,8 +1,10 @@
 ---
 import Lightbox from './Lightbox.astro';
-import { getSizeOptions, formatSizesForDisplay } from '../utils/sizes';
+import { getSizeOptions, formatSizesForDisplay, parseSizes } from '../utils/sizes';
 
 const { product } = Astro.props;
+
+const remainingSizes = parseSizes(product.sizes);
 
 // Safely get image URL or use placeholder
 const imageUrl = product.image?.url || product.image?.secure_url || '/assets/logo.png';
@@ -77,6 +79,14 @@ const filterSizes = formatSizesForDisplay(product.sizes, product.productType);
             <p class="mt-2 text-replicant-400 sm:line-clamp-3">
                 {product.description}
             </p>
+            {
+                product.sale && product.productType === 'clothing' && remainingSizes.length > 0 && (
+                    <p class="mt-6 text-replicant-300">
+                        <span class="font-semibold text-replicant-100">Sizes available:</span>{' '}
+                        {remainingSizes.join(' · ')}
+                    </p>
+                )
+            }
         </div>
     </div>
     <div class="mt-6">

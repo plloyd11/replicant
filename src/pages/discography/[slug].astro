@@ -44,7 +44,7 @@ if (!coverImage) {
 }
 
 // Build page meta
-const title = `${data.title} | Replicant Discography`;
+const title = `${data.title} by Replicant | Technical Death Metal`;
 const desc = `${data.title} — ${data.releaseType === 'Full Length' ? `full-length album` : data.releaseType.toLowerCase()} from Replicant. ${data.numTracks} track${data.numTracks !== 1 ? 's' : ''} of dissonant, technical death metal. Released ${data.releaseDate} via ${data.label}. Available on ${data.format.toLowerCase()}.`;
 
 const ogImage = await getImage({
@@ -155,6 +155,18 @@ const byArtist = data.additionalArtists?.length
 
 <BaseLayout title={title} desc={desc} image={ogImageUrl}>
     <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://replicant.band/' },
+                    { '@type': 'ListItem', position: 2, name: 'Discography', item: 'https://replicant.band/discography/' },
+                    { '@type': 'ListItem', position: 3, name: data.title },
+                ],
+            })}
+        />
         <script
             type="application/ld+json"
             set:html={JSON.stringify({

@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import hero from '../assets/discography/album-hero.jpg';
+
+const { title = 'Discography' } = Astro.props;
 ---
 
 <section>
@@ -9,7 +11,7 @@ import hero from '../assets/discography/album-hero.jpg';
             <h1
                 class="text-5xl font-semibold tracking-tight text-white uppercase text-balance sm:text-8xl"
             >
-                Discography
+                {title}
             </h1>
         </div>
         <div class="flow-root mt-16 sm:mt-24">
