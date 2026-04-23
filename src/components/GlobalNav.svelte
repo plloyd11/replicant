@@ -12,8 +12,8 @@
             anchor: '/discography/',
         },
         {
-            name: 'tour',
-            anchor: '/tombs-replicant-2026/',
+            name: 'summer sale',
+            anchor: '/summer-sale/',
         },
     ];
     let { logoSrc = '/assets/logo-white.png' } = $props();
@@ -31,7 +31,7 @@
 </script>
 
 <header class="z-10 w-full bg-replicant-900 border-b border-replicant-700">
-    <nav aria-label="Top" class="relative py-4 rounded">
+    <nav aria-label="Top" class="relative py-6 rounded">
         <div class="flex relative z-10 justify-between px-4 w-full h-full sm:px-6 lg:px-8">
             <div class="hidden items-center space-x-8 lg:flex">
                 {#each navItems as navItem}
