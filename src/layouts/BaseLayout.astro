@@ -3,7 +3,6 @@ import { getImage } from 'astro:assets';
 import logoSrc from '../assets/logo-white.png';
 import GlobalNav from '../components/GlobalNav.svelte';
 import GlobalFooter from '../components/GlobalFooter.astro';
-import SaleBanner from '../components/SaleBanner.astro';
 import '../styles/global.css';
 
 const optimizedLogo = await getImage({ src: logoSrc, width: 192, format: 'avif', quality: 80 });
@@ -106,7 +105,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         </noscript>
     </head>
     <body class="bg-replicant-900">
-        <SaleBanner />
         <GlobalNav client:load="svelte" logoSrc={optimizedLogo.src} />
         <slot />
         <GlobalFooter />

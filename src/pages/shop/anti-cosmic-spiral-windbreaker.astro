@@ -1,0 +1,432 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
+import ac1 from '../../assets/windbreaker/ac-1.jpg';
+import ac2 from '../../assets/windbreaker/ac-2.jpg';
+import ac3 from '../../assets/windbreaker/ac-3.jpg';
+import ac4 from '../../assets/windbreaker/ac-4.webp';
+
+const imageSources = [ac1, ac2, ac3, ac4];
+
+// Pre-generate optimized URLs for the main image at display size — used
+// for JS-driven swap when a thumbnail is clicked.
+const mainImages = await Promise.all(
+    imageSources.map((src) => getImage({ src, width: 1200, format: 'avif', quality: 90 })),
+);
+
+// ---------------------------------------------------------------------------
+// Hardcoded product data — will migrate to a content collection (or Square)
+// once we drop Hygraph. Edit values below to update the page.
+// ---------------------------------------------------------------------------
+const product = {
+    id: 'anti-cosmic-spiral-windbreaker',
+    title: 'Anti-Cosmic Spiral Windbreaker',
+    price: 75,
+    weight: 400, // grams, for Snipcart shipping
+    url: '/shop/anti-cosmic-spiral-windbreaker',
+    shortDescription:
+        'Lightweight water-resistant pullover anorak featuring the Anti-Cosmic Spiral artwork by Simone @ STRX Art. Packable shell built for the end times. Limited to 20 units, so get em while you can.',
+    sizes: ['Medium', 'Large', 'XL', '2XL'],
+    tagline: 'Cut from the void.',
+    longDescription:
+        'The Anti-Cosmic Spiral Windbreaker was built to outlast the heat death of the universe — or at least your next tour run. A lightweight, water-resistant pullover anorak with a mesh-lined hood, half-front zip, and the Anti-Cosmic Spiral printed across the back. Independent Trading Co. EXP54LWP blank.',
+    features: [
+        '82 GSM 100% polyester shell with interior water-resistant coating',
+        'Mesh-lined 3-panel hood with scuba-style neckline',
+        'Half-front #4 reverse coil zipper with pull tab',
+        'Welt pockets with mesh pocket bags',
+        'Elastic cuffs at wrists',
+        'Adjustable toggle drawcord at waistband',
+        'Locker loop at center back',
+        'Tear-away neck label',
+        'Anti-Cosmic Spiral print on back, Replicant mark at left chest',
+        'Unisex fit',
+    ],
+    fabric: '100% polyester, 82 GSM, with interior water-resistant coating (600mm waterproof pressure resistance). Matte-finish eyelets and hardware.',
+    care: 'Machine wash cold with like colors, inside out. Tumble dry low. Do not iron print. Do not dry clean. Do not bleach.',
+    shipping:
+        'Ships from New Jersey within 1–3 business days. Domestic orders typically arrive in 3–7 business days. International shipping available at checkout. Returns accepted within 30 days for unworn items with tags attached.',
+    credits: {
+        artist: { name: 'Simone @ STRX Art', url: 'https://strxart.com/' },
+        printer: { name: 'Possession Press', url: 'https://possessionpress.com/' },
+    },
+};
+
+const sizeOptions = product.sizes.join('|');
+const siteOrigin = Astro.site?.origin ?? 'https://replicant.band';
+const primaryImageUrl = mainImages[0].src;
+const absoluteImages = mainImages.map((m) => `${siteOrigin}${m.src}`);
+const ogImage = absoluteImages[0];
+---
+
+<BaseLayout title={`${product.title} | Replicant`} desc={product.shortDescription} image={ogImage}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Product',
+                name: product.title,
+                description: product.shortDescription,
+                image: absoluteImages,
+                sku: product.id,
+                brand: { '@type': 'Brand', name: 'Replicant' },
+                offers: {
+                    '@type': 'Offer',
+                    url: `https://replicant.band${product.url}`,
+                    price: product.price.toFixed(2),
+                    priceCurrency: 'USD',
+                    availability: 'https://schema.org/InStock',
+                    priceValidUntil: '2026-12-31',
+                },
+            })}
+        />
+    </Fragment>
+
+    <main class="pb-20 lg:pb-32">
+        <!-- ============ Top: Gallery + Buy Box ============ -->
+        <section class="container px-4 mx-auto pt-8 lg:px-6 lg:pt-16">
+            <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+                <!-- Gallery -->
+                <div>
+                    <div class="overflow-hidden rounded-lg bg-replicant-800">
+                        <Image
+                            id="main-image"
+                            src={imageSources[0]}
+                            alt={product.title}
+                            width={1200}
+                            format="avif"
+                            quality={80}
+                            class="w-full h-auto object-cover aspect-[4/5]"
+                            loading="eager"
+                            decoding="async"
+                        />
+                    </div>
+                    {
+                        imageSources.length > 1 && (
+                            <div class="grid grid-cols-4 gap-3 mt-3">
+                                {imageSources.map((img, i) => (
+                                    <button
+                                        class="overflow-hidden rounded-md border-2 border-transparent thumb-button focus:border-primary focus:outline-none"
+                                        data-image={mainImages[i].src}
+                                        aria-label={`View image ${i + 1}`}
+                                    >
+                                        <Image
+                                            src={img}
+                                            alt={`${product.title} view ${i + 1}`}
+                                            width={300}
+                                            format="avif"
+                                            quality={80}
+                                            class="w-full h-full object-cover aspect-square"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                    </button>
+                                ))}
+                            </div>
+                        )
+                    }
+                </div>
+
+                <!-- Buy Box -->
+                <div class="lg:sticky lg:top-8 lg:self-start">
+                    <h1
+                        class="text-4xl font-medium tracking-wider uppercase text-replicant-100 lg:text-5xl"
+                    >
+                        {product.title}
+                    </h1>
+                    <p class="mt-4 text-2xl font-semibold text-primary">
+                        ${product.price}.00
+                    </p>
+                    <p class="mt-6 text-replicant-300 leading-relaxed">
+                        {product.shortDescription}
+                    </p>
+
+                    <!-- Size Selector -->
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between">
+                            <h2
+                                class="text-sm font-semibold uppercase tracking-wider text-replicant-100"
+                            >
+                                Size
+                            </h2>
+                            <span id="size-error" class="hidden text-sm text-primary">
+                                Please select a size
+                            </span>
+                        </div>
+                        <div
+                            class="grid grid-cols-5 gap-2 mt-3"
+                            role="radiogroup"
+                            aria-label="Size"
+                        >
+                            {
+                                product.sizes.map((size) => (
+                                    <button
+                                        type="button"
+                                        class="size-option py-3 text-sm font-medium rounded-md border-2 border-replicant-700 bg-replicant-800 text-replicant-100 transition-colors hover:border-replicant-400 focus:outline-none focus:border-primary"
+                                        data-size={size}
+                                        role="radio"
+                                        aria-checked="false"
+                                    >
+                                        {size}
+                                    </button>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Add to Bag -->
+                    <button
+                        id="add-to-bag"
+                        class="snipcart-add-item mt-8 flex w-full items-center justify-center px-8 py-4 text-base font-semibold tracking-wider uppercase rounded-md border border-transparent transition-all duration-200 cursor-pointer bg-replicant-200 text-replicant-900 hover:bg-replicant-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        data-item-id={product.id}
+                        data-item-price={product.price}
+                        data-item-url={product.url}
+                        data-item-description={product.shortDescription}
+                        data-item-image={primaryImageUrl}
+                        data-item-name={product.title}
+                        data-item-weight={product.weight}
+                        data-item-custom1-name="Size"
+                        data-item-custom1-options={sizeOptions}
+                    >
+                        Add to Bag
+                    </button>
+
+                    <p class="mt-4 text-xs text-replicant-400 text-center">
+                        Free domestic shipping on orders over $75
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Bottom: Long Copy + Accordions ============ -->
+        <section class="container px-4 mx-auto mt-20 lg:px-6 lg:mt-32">
+            <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+                <div>
+                    <h2
+                        class="text-3xl font-medium tracking-wider uppercase text-replicant-100 lg:text-5xl"
+                    >
+                        {product.tagline}
+                    </h2>
+                    <p class="mt-6 text-replicant-300 leading-relaxed">
+                        {product.longDescription}
+                    </p>
+                    <dl class="mt-8 space-y-2 text-sm text-replicant-400">
+                        <div class="flex gap-2">
+                            <dt class="uppercase tracking-wider text-replicant-100/80">Artwork:</dt>
+                            <dd>
+                                <a
+                                    href={product.credits.artist.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="underline decoration-replicant-500 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
+                                >
+                                    {product.credits.artist.name}
+                                </a>
+                            </dd>
+                        </div>
+                        <div class="flex gap-2">
+                            <dt class="uppercase tracking-wider text-replicant-100/80">
+                                Printed by:
+                            </dt>
+                            <dd>
+                                <a
+                                    href={product.credits.printer.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="underline decoration-replicant-500 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
+                                >
+                                    {product.credits.printer.name}
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="rounded-xl bg-replicant-800/50 divide-y divide-replicant-700">
+                    <details class="group accordion" open>
+                        <summary
+                            class="flex items-center justify-between px-5 py-5 cursor-pointer list-none text-replicant-100 font-semibold"
+                        >
+                            <span>Features &amp; Specs</span>
+                            <span
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-replicant-700 text-replicant-100 transition-transform group-open:rotate-180"
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M3 5l4 4 4-4"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <ul class="px-5 pb-5 space-y-2 text-replicant-300">
+                            {
+                                product.features.map((feature) => (
+                                    <li class="flex gap-2">
+                                        <span class="text-primary">•</span>
+                                        <span>{feature}</span>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </details>
+
+                    <details class="group accordion">
+                        <summary
+                            class="flex items-center justify-between px-5 py-5 cursor-pointer list-none text-replicant-100 font-semibold"
+                        >
+                            <span>Fabric Details / Weight</span>
+                            <span
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-replicant-700 text-replicant-100 transition-transform group-open:rotate-180"
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M3 5l4 4 4-4"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <p class="px-5 pb-5 text-replicant-300">
+                            {product.fabric}
+                        </p>
+                    </details>
+
+                    <details class="group accordion">
+                        <summary
+                            class="flex items-center justify-between px-5 py-5 cursor-pointer list-none text-replicant-100 font-semibold"
+                        >
+                            <span>Wash / Care Instructions</span>
+                            <span
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-replicant-700 text-replicant-100 transition-transform group-open:rotate-180"
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M3 5l4 4 4-4"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <p class="px-5 pb-5 text-replicant-300">
+                            {product.care}
+                        </p>
+                    </details>
+
+                    <details class="group accordion">
+                        <summary
+                            class="flex items-center justify-between px-5 py-5 cursor-pointer list-none text-replicant-100 font-semibold"
+                        >
+                            <span>Shipping / Returns</span>
+                            <span
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-replicant-700 text-replicant-100 transition-transform group-open:rotate-180"
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M3 5l4 4 4-4"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <p class="px-5 pb-5 text-replicant-300">
+                            {product.shipping}
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+</BaseLayout>
+
+<style>
+    .size-option[aria-checked='true'] {
+        border-color: var(--color-primary);
+        background-color: var(--color-replicant-700);
+    }
+
+    .thumb-button.active {
+        border-color: var(--color-primary);
+    }
+
+    details.accordion summary::-webkit-details-marker {
+        display: none;
+    }
+</style>
+
+<script is:inline>
+    (function () {
+        const sizeButtons = document.querySelectorAll('.size-option');
+        const addToBag = document.getElementById('add-to-bag');
+        const sizeError = document.getElementById('size-error');
+
+        if (!addToBag) return;
+
+        let selectedSize = null;
+
+        sizeButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                sizeButtons.forEach((b) => b.setAttribute('aria-checked', 'false'));
+                btn.setAttribute('aria-checked', 'true');
+                selectedSize = btn.dataset.size;
+                addToBag.setAttribute('data-item-custom1-value', selectedSize);
+                if (sizeError) sizeError.classList.add('hidden');
+            });
+        });
+
+        // Block Snipcart from firing if no size is picked
+        addToBag.addEventListener(
+            'click',
+            (e) => {
+                if (!selectedSize) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (sizeError) sizeError.classList.remove('hidden');
+                }
+            },
+            true,
+        );
+
+        // Thumbnail gallery swap
+        const mainImage = document.getElementById('main-image');
+        const thumbs = document.querySelectorAll('.thumb-button');
+        thumbs.forEach((thumb, i) => {
+            if (i === 0) thumb.classList.add('active');
+            thumb.addEventListener('click', () => {
+                if (!mainImage) return;
+                mainImage.setAttribute('src', thumb.dataset.image);
+                thumbs.forEach((t) => t.classList.remove('active'));
+                thumb.classList.add('active');
+            });
+        });
+    })();
+</script>
