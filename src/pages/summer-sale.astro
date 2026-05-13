@@ -35,22 +35,22 @@ try {
         method: 'POST',
         body: JSON.stringify({
             query: `query{
-                    products{
-                        slug
-                        id
-                        title
-                        description
-                        price
-                        sale
-                        sizes
-                        image
-                        productType
-                        productWeight
-                        preOrder
-                        fileGuid
-                        createdAt
-                    }
-                }`,
+                products{
+                    slug
+                    id
+                    title
+                    description
+                    price
+                    sale
+                    sizes
+                    image
+                    productType
+                    productWeight
+                    preOrder
+                    fileGuid
+                    createdAt
+                }
+            }`,
         }),
     });
     if (result.ok) {
