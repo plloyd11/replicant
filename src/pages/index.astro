@@ -9,6 +9,7 @@ import Transmissions from '../components/homepage/Transmissions.astro';
 import Emanations from '../components/homepage/Emanations.astro';
 import Communications from '../components/homepage/Communications.astro';
 import Build from '../components/homepage/Build.astro';
+import WindbreakerCTA from '../components/homepage/WindbreakerCTA.astro';
 import PromoBanner from '../components/PromoBanner.astro';
 import { extractUniqueSizes } from '../utils/sizes';
 import tombsTour from '../assets/tour-flyer.png';
@@ -266,6 +267,7 @@ try {
     </Fragment>
     <Hero reviews={reviews[0]} />
     <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
+        <WindbreakerCTA />
         <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
             <h2 class="section-header pt-8 lg:pt-16 !mb-8">Replicant Merch</h2>
             <CategoryFilter client:load categories={categories} sizes={sizes}>

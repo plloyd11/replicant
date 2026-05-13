@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import windbreaker from '../../assets/windbreaker/2.jpg';
+---
+
+<section id="windbreaker-cta" class="container px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">
+    <a
+        href="/shop/anti-cosmic-spiral-windbreaker/"
+        class="group relative grid grid-cols-1 overflow-hidden rounded-xl bg-replicant-800 ring-1 ring-replicant-700 transition-all duration-300 hover:ring-primary lg:grid-cols-2"
+    >
+        <div class="relative overflow-hidden bg-replicant-900 aspect-[4/5] lg:aspect-auto">
+            <Image
+                src={windbreaker}
+                alt="Anti-Cosmic Spiral Windbreaker"
+                width={1200}
+                format="avif"
+                quality={90}
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+            />
+        </div>
+
+        <div class="flex flex-col justify-center px-6 py-10 lg:px-12 lg:py-24">
+            <p class="text-xs font-semibold tracking-[0.2em] uppercase text-primary">
+                New Drop · Limited to 20
+            </p>
+            <h2
+                class="mt-4 text-4xl font-medium tracking-wider uppercase text-replicant-100 lg:text-5xl"
+            >
+                Anti-Cosmic Spiral Windbreaker
+            </h2>
+            <p class="mt-6 max-w-md text-replicant-300 leading-relaxed">
+                Lightweight, water-resistant pullover anorak featuring artwork by Simone @ STRX Art.
+                Packable shell built for the end times. Once they're gone, they're gone.
+            </p>
+
+            <div class="flex items-center gap-6 mt-8">
+                <span
+                    class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold tracking-wider uppercase rounded-md bg-replicant-200 text-replicant-900 transition-all duration-200 group-hover:bg-primary"
+                >
+                    Shop Now
+                    <svg
+                        class="ml-2 transition-transform duration-200 group-hover:translate-x-1"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M3 8h10M9 4l4 4-4 4"></path>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </a>
+</section>
