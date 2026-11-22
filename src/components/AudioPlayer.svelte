@@ -67,6 +67,9 @@
 
         howl = new Howl({
             src: [tracks[index].src],
+            // Some Cloudinary URLs have no file extension, so Howler can't infer the codec.
+            // Cloudinary serves every track as audio/mpeg.
+            format: ['mp3'],
             html5: true,
             preload: true,
             onplay() {

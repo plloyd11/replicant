@@ -4,7 +4,7 @@ import Product from '../components/Product.astro';
 import CategoryFilter from '../components/CategoryFilter.svelte';
 import { Image } from 'astro:assets';
 
-import Hero from '../components/homepage/Hero.astro';
+import SplitHero from '../components/homepage/SplitHero.astro';
 import Transmissions from '../components/homepage/Transmissions.astro';
 import Emanations from '../components/homepage/Emanations.astro';
 import Communications from '../components/homepage/Communications.astro';
@@ -172,7 +172,7 @@ try {
 
 <BaseLayout
     title="Replicant | New Jersey Death Metal | Official Site"
-    desc="Official merch store and home of Replicant — dissonant death metal from New Jersey. Shirts, vinyl, CDs, patches, and more. Est. 2014. New album Infinite Mortality available now."
+    desc="Official merch store and home of Replicant — dissonant death metal from New Jersey. Shirts, vinyl, CDs, patches, and more. Est. 2014. New split Indomitable Hostility with Elitist out now on vinyl and CD."
 >
     <Fragment slot="head">
         <script
@@ -265,7 +265,10 @@ try {
             )
         }
     </Fragment>
-    <Hero reviews={reviews[0]} />
+    <SplitHero
+        lp={products.find((p) => p.slug === 'indom-lp')}
+        cd={products.find((p) => p.slug === 'indom-cd')}
+    />
     <main class="py-10 space-y-20 lg:space-y-32 lg:py-16">
         <WindbreakerCTA />
         <section id="merch" class="px-4 mx-auto lg:px-6 scroll-mt-6 lg:scroll-mt-32">

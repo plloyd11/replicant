@@ -161,8 +161,18 @@ const byArtist = data.additionalArtists?.length
                 '@context': 'https://schema.org',
                 '@type': 'BreadcrumbList',
                 itemListElement: [
-                    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://replicant.band/' },
-                    { '@type': 'ListItem', position: 2, name: 'Discography', item: 'https://replicant.band/discography/' },
+                    {
+                        '@type': 'ListItem',
+                        position: 1,
+                        name: 'Home',
+                        item: 'https://replicant.band/',
+                    },
+                    {
+                        '@type': 'ListItem',
+                        position: 2,
+                        name: 'Discography',
+                        item: 'https://replicant.band/discography/',
+                    },
                     { '@type': 'ListItem', position: 3, name: data.title },
                 ],
             })}
