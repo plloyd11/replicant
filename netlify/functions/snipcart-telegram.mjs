@@ -17,8 +17,14 @@ const escapeHtml = (s) =>
 
 // Snipcart signs each webhook with a one-time token we confirm against their API.
 async function isFromSnipcart(token) {
-    if (!token) return false;
-    const keys = [process.env.SNIPCART_SECRET_KEY, process.env.SNIPCART_TEST_SECRET_KEY].filter(Boolean);
+    const keys = [process.env.SNIPCART_SECRET_KEY, process.env.SNIPCART_TEST_SECRET_KEY]
+        .map((k) => k?.trim())
+        .filter(Boolean);
+    if (!token || keys.length === 0) {
+        console.warn(`Snipcart auth failed: token ${token ? 'present' : 'missing'}, ${keys.length} secret key(s) configured`);
+        return false;
+    }
+    const statuses = [];
     for (const key of keys) {
         const res = await fetch(`https://app.snipcart.com/api/requesttokens/${encodeURIComponent(token)}`, {
             headers: {
@@ -27,7 +33,9 @@ async function isFromSnipcart(token) {
             },
         });
         if (res.ok) return true;
+        statuses.push(res.status);
     }
+    console.warn(`Snipcart auth failed: Snipcart rejected the token check with ${keys.length} key(s), statuses ${statuses.join(', ')}`);
     return false;
 }
 
