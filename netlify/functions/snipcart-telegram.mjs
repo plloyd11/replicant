@@ -26,7 +26,7 @@ async function isFromSnipcart(token) {
     }
     const statuses = [];
     for (const key of keys) {
-        const res = await fetch(`https://app.snipcart.com/api/requesttokens/${encodeURIComponent(token)}`, {
+        const res = await fetch(`https://app.snipcart.com/api/requestvalidation/${encodeURIComponent(token)}`, {
             headers: {
                 Accept: 'application/json',
                 Authorization: `Basic ${Buffer.from(`${key}:`).toString('base64')}`,
