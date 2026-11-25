@@ -8,6 +8,7 @@
 //   SNIPCART_TEST_SECRET_KEY  Optional: test-mode secret key, so test orders also get through
 //   TELEGRAM_BOT_TOKEN        Bot token from @BotFather
 //   TELEGRAM_CHAT_ID          Group chat ID (negative number, e.g. -1001234567890)
+//   TELEGRAM_THREAD_ID        Optional: forum topic ID (Orders = 20508)
 
 const escapeHtml = (s) =>
     String(s ?? '')
@@ -86,7 +87,8 @@ async function sendTelegram(text) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            chat_id: process.env.TELEGRAM_CHAT_ID,
+          chat_id: process.env.TELEGRAM_CHAT_ID,
+          ...(process.env.TELEGRAM_THREAD_ID && { message_thread_id: Number(process.env.TELEGRAM_THREAD_ID) }),
             text,
             parse_mode: 'HTML',
             link_preview_options: { is_disabled: true },
